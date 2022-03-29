@@ -1,0 +1,23 @@
+{
+  "name": "fluer",
+  "version": "1.0.0",
+  "description": "Trun base strategii multiplayer game written with three.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaanonim/Fluer.git"
+  },
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaanonim/Fluer/issues"
+  },
+  "homepage": "https://github.com/jaanonim/Fluer#readme"
+}
