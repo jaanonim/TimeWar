@@ -1,4 +1,8 @@
-import * as THREE from "three"
+import * as THREE from "three";
+import {
+    OrbitControls
+} from "three/examples/jsm/controls/OrbitControls";
+
 
 export default class GameManager {
     static _instance = null;
@@ -21,10 +25,18 @@ export default class GameManager {
         displayElement.appendChild(this.renderer.domElement);
         // TODO (n2one): Remove later
         let geometry = new THREE.BoxGeometry(1, 1, 1);
-        let material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+        let material = new THREE.MeshBasicMaterial({
+            color: 0x00ff00
+        });
         let cube = new THREE.Mesh(geometry, material);
-
         this.scene.add(cube);
+
+        //Helpers
+        this.cameraConrols = new OrbitControls(this.camera, this.renderer.domElement);
+
+        const gridHelper = new THREE.GridHelper(100, 100);
+        this.scene.add(gridHelper);
+
         this.camera.position.z = 5;
 
         this.update();
@@ -36,6 +48,9 @@ export default class GameManager {
 
     update() {
         requestAnimationFrame(this.update.bind(this));
+
+        this.cameraConrols.update();
+
         this.renderer.render(this.scene, this.camera);
     }
 
@@ -46,8 +61,4 @@ export default class GameManager {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 
     }
-
-
 }
-
-
