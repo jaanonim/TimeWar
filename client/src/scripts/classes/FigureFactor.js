@@ -1,16 +1,18 @@
 import {FigureTypes} from "../enums/FigureTypes";
-import {ArmyFigureTypes} from "../enums/ArmyFigureTypes";
-import ArachnodroidFigure from "./figures/ArachnodroidFigure";
+import FigureManager from "../FigureManager";
+import ArmyFigure from "./figures/ArmyFigure";
 
 export default class FigureFactor {
 
     createArmy(figureId, x, y) {
-        switch (figureId) {
-            case ArmyFigureTypes.ARACHNODROID:
-                return new ArachnodroidFigure(x, y);
-            default:
-                console.error("Unknown army figure " + figureId);
+        let objData = FigureManager.landArmy.find(obj => obj.id === figureId);
+        if (objData === undefined) {
+            console.error("Unknown type");
+            return;
         }
+        return new ArmyFigure(x, y, objData.name, objData.image, objData.description, objData.capturingMask, objData.lives,
+            objData.model, objData.attackMask, objData.moveMask, objData.damage, objData.isFlyable);
+
     }
 
     createFigure(figureId, x, y, typeFigure) {

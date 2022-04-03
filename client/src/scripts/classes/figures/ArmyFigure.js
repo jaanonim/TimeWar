@@ -1,9 +1,10 @@
 import Figure from "../Figure";
 import MapCreator from "../../MapCreator";
+import ModelsManager from "../../ModelsManager";
 
 export default class ArmyFigure extends Figure {
     constructor(positionX, positionY, name, image, description, capturingMask, lives,
-                attackMask, moveMask, damage, isFlyable) {
+                modelName, attackMask, moveMask, damage, isFlyable) {
         super(positionX, positionY, name, image, description, capturingMask, lives);
         this.isMoved = false;
         this.isAttack = false;
@@ -11,6 +12,13 @@ export default class ArmyFigure extends Figure {
         this.moveMask = moveMask;
         this.damage = damage;
         this.isFlyable = isFlyable;
+        if (ModelsManager.models[modelName] === undefined) {
+            console.error("Unknown model", modelName);
+            return;
+        }
+        let model = ModelsManager.models[modelName].clone();
+        model.scale.set(0.5, 0.5, 0.5);
+        this.add(model);
     }
 
     move(x, y) {

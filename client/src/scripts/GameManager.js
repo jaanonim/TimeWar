@@ -6,7 +6,6 @@ import {
 import Player from "./classes/Player";
 import MapLand from "./classes/MapLand";
 import FigureFactor from "./classes/FigureFactor";
-import {ArmyFigureTypes} from "./enums/ArmyFigureTypes";
 import {FigureTypes} from "./enums/FigureTypes";
 import ModelsManager from "./ModelsManager";
 
@@ -86,7 +85,7 @@ export default class GameManager {
                     let figureFactory = new FigureFactor();
                     console.log(land);
                     if (land.figure !== null) return;
-                    let figure = figureFactory.createFigure(ArmyFigureTypes.ARACHNODROID, land.mapPositionX, land.mapPositionY, FigureTypes.ARMY);
+                    let figure = figureFactory.createFigure(1, land.mapPositionX, land.mapPositionY, FigureTypes.ARMY);
                     console.log(figure);
                     this.scene.add(figure);
                 }
