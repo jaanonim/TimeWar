@@ -1,11 +1,11 @@
-import GrassLand from "./tiles/GrassLand";
+import GrassLand from "./lands/GrassLand";
 import {MapLandTypes} from "../enums/MapTileTypes";
 
 export default class MapLandFactor {
-    createTile(x, y, width, height, type) {
+    createTile(x, y, mapPositionX, mapPositionY, width, height, type) {
         switch (type) {
             case MapLandTypes.GRASS:
-                return new GrassLand(x, y, width, height);
+                return new GrassLand(x, y, mapPositionX, mapPositionY, width, height);
             case MapLandTypes.NOTHING:
                 return null;
             default:
