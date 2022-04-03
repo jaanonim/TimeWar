@@ -1,9 +1,9 @@
 import './App.css';
-import GameComponent from "./components/GameComponent";
+import GameScreen from "./components/GameScreen";
 const App = () => {
     return (
         <div className="App">
-            <GameComponent/>
+            <GameScreen/>
         </div>
     )
 };

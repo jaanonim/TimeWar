@@ -1,8 +1,8 @@
-import styles from "../styles/GameComponent.module.css";
+import styles from "../styles/GameScreen.module.css";
 import {useEffect, useRef} from "react";
 import GameManager from "../scripts/GameManager";
 
-const GameComponent = () => {
+const GameScreen = () => {
     let displayRef = useRef();
     useEffect(() => {
         GameManager.instance.initDisplay(displayRef.current);
@@ -14,4 +14,4 @@ const GameComponent = () => {
     )
 };
 
-export default GameComponent;
+export default GameScreen;
