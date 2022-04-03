@@ -1,5 +1,3 @@
-import GrassLand from "./lands/GrassLand";
-import {MapLandTypes} from "../enums/MapTileTypes";
 import {FigureTypes} from "../enums/FigureTypes";
 import {ArmyFigureTypes} from "../enums/ArmyFigureTypes";
 import ArachnodroidFigure from "./figures/ArachnodroidFigure";
