@@ -2,8 +2,12 @@ import * as THREE from "three";
 import GameManager from "../GameManager";
 
 export default class MapLand extends THREE.Mesh {
-    constructor(x, y, geometry, material) {
+    constructor(x, y, mapPositionX, mapPositionY, width, height, geometry, material) {
         super(geometry, material);
+        this.mapPositionX = mapPositionX;
+        this.mapPositionY = mapPositionY;
+        this.width = width;
+        this.height = height;
         this.position.set(x, 0, y);
         this.captured = null;
         this.figure = null;

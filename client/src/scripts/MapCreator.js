@@ -41,7 +41,7 @@ export default class MapCreator {
             for (let y = 0; y < heightLength; y++) {
                 let xPos = (x - widthLength / 2) * tileWidth + tileWidth / 2;
                 let yPos = (y - heightLength / 2) * tileHeight + tileHeight / 2;
-                let tile = landFactory.createTile(xPos, yPos, tileWidth, tileHeight, this.map[x][y]);
+                let tile = landFactory.createTile(xPos, yPos, x, y, tileWidth, tileHeight, this.map[x][y]);
                 this.mapObjects[x][y] = tile;
                 if (tile != null)
                     scene.add(tile);

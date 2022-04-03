@@ -14,15 +14,16 @@ export default class Figure extends THREE.Mesh {
         this.place(positionX, positionY);
     }
 
-    update();
+    update() {
+    }
 
     place(x, y) {
         this.mapPositionX = x;
         this.mapPositionY = y;
-        let landPosition = MapCreator.instance.mapObjects[x][y].position;
-        if (landPosition.figure != null) return false;
-        this.position.set(landPosition.x, 0, landPosition.z);
-        landPosition.figure = this;
+        let land = MapCreator.instance.mapObjects[x][y];
+        if (land.figure != null) return false;
+        this.position.set(land.position.x, 0, land.position.z);
+        land.figure = this;
         return true;
     }
 
@@ -49,7 +50,9 @@ export default class Figure extends THREE.Mesh {
         }
     }
 
-    canBuy();
+    canBuy() {
+    }
 
-    buy();
+    buy() {
+    }
 }

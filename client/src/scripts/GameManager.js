@@ -4,6 +4,10 @@ import {
     OrbitControls
 } from "three/examples/jsm/controls/OrbitControls";
 import Player from "./classes/Player";
+import MapLand from "./classes/MapLand";
+import FigureFactor from "./classes/FigureFactor";
+import {ArmyFigureTypes} from "./enums/ArmyFigureTypes";
+import {FigureTypes} from "./enums/FigureTypes";
 
 
 export default class GameManager {
@@ -15,10 +19,12 @@ export default class GameManager {
         }
         return GameManager._instance;
     }
+
     constructor() {
         //TODO: Change to create player on start game
-        this.player = new Player("Player","blue");
+        this.player = new Player("Player", "blue");
     }
+
     initDisplay(displayElement) {
         //Initialization Scene
         this.scene = new THREE.Scene();
@@ -40,7 +46,7 @@ export default class GameManager {
 
         //Add Listener for resizing screen
         window.addEventListener("resize", this.onWindowResize.bind(this));
-
+        displayElement.addEventListener("mousedown", this.raycasting.bind(this));
     }
 
     update() {
@@ -53,7 +59,31 @@ export default class GameManager {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+    }
 
+    raycasting(event) {
+        if (event.button === 0) {
+            const raycaster = new THREE.Raycaster();
+            const mouseVector = new THREE.Vector2();
+            mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouseVector, this.camera);
+            const intersects = raycaster.intersectObjects(this.scene.children);
+            console.log(intersects.length);
+            if (intersects.length > 0) {
+                let intersectLand = intersects.find(obj => obj.object instanceof MapLand);
+                if (intersectLand !== undefined) {
+                    let land = intersectLand.object;
+                    //TODO: change to create selected object
+                    let figureFactory = new FigureFactor();
+                    console.log(land);
+                    if (land.figure !== null) return;
+                    let figure = figureFactory.createFigure(ArmyFigureTypes.ARACHNODROID, land.mapPositionX, land.mapPositionY, FigureTypes.ARMY);
+                    console.log(figure);
+                    this.scene.add(figure);
+                }
+            }
+        }
     }
 
 
