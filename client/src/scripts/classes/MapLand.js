@@ -1,4 +1,4 @@
-import * as THREE from "three"
+import * as THREE from "three";
 
 export default class MapLand extends THREE.Mesh {
     constructor(x, y, geometry, material) {
