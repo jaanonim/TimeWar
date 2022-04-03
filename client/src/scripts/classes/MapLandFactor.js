@@ -1,4 +1,4 @@
-import GrassLand from "./tiles/GrassLand";
+import GrassLand from "./lands/GrassLand";
 import {MapLandTypes} from "../enums/MapTileTypes";
 
 export default class MapLandFactor {
