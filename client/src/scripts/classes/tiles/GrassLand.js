@@ -10,5 +10,6 @@ export default class GrassLand extends MapLand {
         });
 
         super(x, y, geometry, material);
+        this.position.y = -0.5;
     }
 }

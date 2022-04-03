@@ -35,13 +35,13 @@ export default class MapCreator {
         let tileHeight = this.height / heightLength;
         this.mapObjects = [];
         let landFactory = new MapLandFactor();
-        for (let x = -widthLength / 2; x < widthLength / 2; x++) {
-            this.mapObjects[x + widthLength / 2] = [];
-            for (let y = -heightLength / 2; y < heightLength / 2; y++) {
-                let xPos = x * tileWidth + tileWidth / 2;
-                let yPos = y * tileHeight + tileHeight / 2;
-                let tile = landFactory.createTile(xPos, yPos, tileWidth, tileHeight, this.map[x + widthLength / 2][y + heightLength / 2]);
-                this.mapObjects[x + widthLength / 2][y + heightLength / 2] = tile;
+        for (let x = 0; x < widthLength; x++) {
+            this.mapObjects[x] = [];
+            for (let y = 0; y < heightLength; y++) {
+                let xPos = (x - widthLength / 2) * tileWidth + tileWidth / 2;
+                let yPos = (y - heightLength / 2) * tileHeight + tileHeight / 2;
+                let tile = landFactory.createTile(xPos, yPos, tileWidth, tileHeight, this.map[x][y]);
+                this.mapObjects[x][y] = tile;
                 if (tile != null)
                     scene.add(tile);
             }
