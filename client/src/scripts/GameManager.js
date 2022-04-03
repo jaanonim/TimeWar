@@ -1,3 +1,4 @@
+import MapCreator from "./MapCreator";
 import * as THREE from "three";
 import {
     OrbitControls
@@ -14,6 +15,10 @@ export default class GameManager {
         return GameManager._instance;
     }
 
+    constructor() {
+    }
+
+
     initDisplay(displayElement) {
         //Initialization Scene
         this.scene = new THREE.Scene();
@@ -21,15 +26,9 @@ export default class GameManager {
         this.renderer = new THREE.WebGLRenderer();
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-
+        displayElement.innerHTML = "";
         displayElement.appendChild(this.renderer.domElement);
-        // TODO (n2one): Remove later
-        let geometry = new THREE.BoxGeometry(1, 1, 1);
-        let material = new THREE.MeshBasicMaterial({
-            color: 0x00ff00
-        });
-        let cube = new THREE.Mesh(geometry, material);
-        this.scene.add(cube);
+        MapCreator.instance.createMap(this.scene);
 
         //Helpers
         this.cameraConrols = new OrbitControls(this.camera, this.renderer.domElement);
@@ -37,7 +36,8 @@ export default class GameManager {
         const gridHelper = new THREE.GridHelper(100, 100);
         this.scene.add(gridHelper);
 
-        this.camera.position.z = 5;
+        this.camera.position.y = 25;
+        this.camera.position.z = 35;
 
         this.update();
 
@@ -61,4 +61,6 @@ export default class GameManager {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 
     }
+
+
 }
