@@ -15,10 +15,6 @@ export default class GameManager {
         return GameManager._instance;
     }
 
-    constructor() {
-    }
-
-
     initDisplay(displayElement) {
         //Initialization Scene
         this.scene = new THREE.Scene();
@@ -32,13 +28,10 @@ export default class GameManager {
 
         //Helpers
         this.cameraConrols = new OrbitControls(this.camera, this.renderer.domElement);
-
         const gridHelper = new THREE.GridHelper(100, 100);
         this.scene.add(gridHelper);
-
         this.camera.position.y = 25;
         this.camera.position.z = 35;
-
         this.update();
 
         //Add Listener for resizing screen
@@ -48,14 +41,11 @@ export default class GameManager {
 
     update() {
         requestAnimationFrame(this.update.bind(this));
-
         this.cameraConrols.update();
-
         this.renderer.render(this.scene, this.camera);
     }
 
     onWindowResize() {
-
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);

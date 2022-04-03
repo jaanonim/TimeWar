@@ -46,9 +46,5 @@ export default class MapCreator {
                     scene.add(tile);
             }
         }
-
-
     }
-
-
 }
