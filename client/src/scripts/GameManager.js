@@ -3,6 +3,7 @@ import * as THREE from "three";
 import {
     OrbitControls
 } from "three/examples/jsm/controls/OrbitControls";
+import Player from "./classes/Player";
 
 
 export default class GameManager {
@@ -14,7 +15,10 @@ export default class GameManager {
         }
         return GameManager._instance;
     }
-
+    constructor() {
+        //TODO: Change to create player on start game
+        this.player = new Player("Player","blue");
+    }
     initDisplay(displayElement) {
         //Initialization Scene
         this.scene = new THREE.Scene();
