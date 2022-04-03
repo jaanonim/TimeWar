@@ -4,4 +4,8 @@
 body{
     padding: 0;
     margin: 0;
+    background-color: #333;
+    color: #fff;
+    font-family: 'VT323', sans-serif;
+    font-size: 25px;
 }
