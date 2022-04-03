@@ -11,6 +11,7 @@ export default class Figure extends THREE.Object3D {
         this.description = description;
         this.capturingMask = capturingMask;
         this.lives = lives;
+        this.price = 0;
         this.place(positionX, positionY);
     }
 
