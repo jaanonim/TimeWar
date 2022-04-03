@@ -2,10 +2,11 @@ import * as THREE from "three"
 import MapCreator from "../MapCreator";
 
 export default class Figure extends THREE.Mesh {
-    constructor(positionX, positionY, image, description, capturingMask, lives, geometry, material) {
+    constructor(positionX, positionY, name, image, description, capturingMask, lives, geometry, material) {
         super(geometry, material);
         this.mapPositionX = positionX;
         this.mapPositionY = positionY;
+        this.name = name;
         this.image = image;
         this.description = description;
         this.capturingMask = capturingMask;
