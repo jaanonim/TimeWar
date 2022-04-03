@@ -6,6 +6,7 @@ export default class MapLand extends THREE.Mesh {
         super(geometry, material);
         this.position.set(x, 0, y);
         this.captured = null;
+        this.figure = null;
     }
 
     capture() {

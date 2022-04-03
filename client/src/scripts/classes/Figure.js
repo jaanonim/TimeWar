@@ -19,7 +19,10 @@ export default class Figure extends THREE.Mesh {
         this.mapPositionX = x;
         this.mapPositionY = y;
         let landPosition = MapCreator.instance.mapObjects[x][y].position;
+        if (landPosition.figure != null) return false;
         this.position.set(landPosition.x, 0, landPosition.z);
+        landPosition.figure = this;
+        return true;
     }
 
     makeDamage(damage) {
