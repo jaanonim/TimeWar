@@ -1,10 +1,15 @@
-import './App.css';
-import GameScreen from "./components/GameScreen";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Loading from "./components/Loading";
+const GameScreen = React.lazy(() => import("./components/GameScreen"));
+const MainPage = React.lazy(() => import("./pages/mainPage/MainPage"));
+
 const App = () => {
     return (
-        <div className="App">
-            <GameScreen/>
-        </div>
+        <Routes>
+            <Route path="/" element={<React.Suspense fallback={<Loading />}><MainPage/></React.Suspense>}/>
+            <Route path="/game" element={<React.Suspense fallback={<Loading />}><GameScreen/></React.Suspense>}/>
+        </Routes>
     )
 };
 
