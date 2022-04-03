@@ -8,6 +8,7 @@ import MapLand from "./classes/MapLand";
 import FigureFactor from "./classes/FigureFactor";
 import {ArmyFigureTypes} from "./enums/ArmyFigureTypes";
 import {FigureTypes} from "./enums/FigureTypes";
+import ModelsManager from "./ModelsManager";
 
 
 export default class GameManager {
@@ -25,7 +26,9 @@ export default class GameManager {
         this.player = new Player("Player", "blue");
     }
 
-    initDisplay(displayElement) {
+    async initDisplay(displayElement) {
+        await ModelsManager.loadModels();
+
         //Initialization Scene
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -35,6 +38,11 @@ export default class GameManager {
         displayElement.innerHTML = "";
         displayElement.appendChild(this.renderer.domElement);
         MapCreator.instance.createMap(this.scene);
+
+        //light
+        const light = new THREE.DirectionalLight(0xffffff, 4);
+        light.rotateX(45 * Math.PI / 180);
+        this.scene.add(light);
 
         //Helpers
         this.cameraConrols = new OrbitControls(this.camera, this.renderer.domElement);

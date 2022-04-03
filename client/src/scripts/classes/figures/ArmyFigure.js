@@ -1,14 +1,10 @@
 import Figure from "../Figure";
-import * as THREE from "three";
 import MapCreator from "../../MapCreator";
 
 export default class ArmyFigure extends Figure {
     constructor(positionX, positionY, name, image, description, capturingMask, lives,
                 attackMask, moveMask, damage, isFlyable) {
-        //TODO: change after to model
-        const geometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
-        const material = new THREE.MeshBasicMaterial({color: 0xffff00});
-        super(positionX, positionY, name, image, description, capturingMask, lives, geometry, material);
+        super(positionX, positionY, name, image, description, capturingMask, lives);
         this.isMoved = false;
         this.isAttack = false;
         this.attackMask = attackMask;
