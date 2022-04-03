@@ -3,5 +3,4 @@ export default class Player {
         this.name = name;
         this.color = color; // Color as string
     }
-
 }

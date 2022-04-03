@@ -59,5 +59,4 @@ export default class ArmyFigure extends Figure {
         this.isMoved = false;
         this.isAttack = false;
     }
-
 }
