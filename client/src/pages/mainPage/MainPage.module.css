@@ -31,7 +31,11 @@
 	text-decoration: none;
 	color: var(--text);
 	width: 100%;
-	margin: 0 2rem 0 0;
+	margin: 1rem 2rem 1rem 1rem;
+}
+
+.box {
+	padding: 0.5rem 0.5rem 0.5rem 1rem;
 }
 
 .nav {

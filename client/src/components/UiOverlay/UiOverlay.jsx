@@ -1,4 +1,4 @@
-import FiguresPleaceSection from "../FiguresPleaceSection";
+import LeftPanel from "../LeftPanel";
 import NextTurn from "../NextTurn";
 import SettingsButton from "../SettingsButton";
 import styles from "./UiOverlay.module.css";
@@ -6,11 +6,7 @@ import styles from "./UiOverlay.module.css";
 function UiOverlay() {
 	return (
 		<main className={styles.main}>
-			<div className={`${styles.ui} ${styles.placementPanel}`}>
-				<FiguresPleaceSection></FiguresPleaceSection>
-				<FiguresPleaceSection></FiguresPleaceSection>
-				<FiguresPleaceSection></FiguresPleaceSection>
-			</div>
+			<LeftPanel />
 			<NextTurn />
 			<SettingsButton />
 		</main>

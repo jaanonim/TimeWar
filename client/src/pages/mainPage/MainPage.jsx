@@ -11,17 +11,23 @@ function MainPage() {
 				<ul className={styles.navList}>
 					<li className={styles.navItem}>
 						<Link className={styles.link} to="/game">
-							<Button>Game</Button>
+							<Button>
+								<div className={styles.box}>Game</div>
+							</Button>
 						</Link>
 					</li>
 					<li className={styles.navItem}>
 						<Link className={styles.link} to="/settings">
-							<Button>Settings</Button>
+							<Button>
+								<div className={styles.box}>Settings</div>
+							</Button>
 						</Link>
 					</li>
 					<li className={styles.navItem}>
 						<Link className={styles.link} to="/aboute">
-							<Button>Aboute</Button>
+							<Button>
+								<div className={styles.box}>Aboute</div>
+							</Button>
 						</Link>
 					</li>
 				</ul>

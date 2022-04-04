@@ -6,16 +6,3 @@
 	height: 100vh;
 	pointer-events: none;
 }
-
-.ui {
-	z-index: 100;
-	pointer-events: all;
-}
-
-.placementPanel {
-	width: calc(20vw + var(--scroll-width));
-	height: 100vh;
-	background-color: var(--background);
-	overflow-y: auto;
-	overflow-x: hidden;
-}
