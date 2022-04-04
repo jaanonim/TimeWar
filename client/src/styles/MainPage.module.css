@@ -32,7 +32,7 @@
     -moz-box-shadow: var(--shadow-size) var(--shadow-size) 0px 0px var(--shadow-color);
     box-shadow: var(--shadow-size) var(--shadow-size) 0px 0px var(--shadow-color);
     width: 100%;
-    border: 0.2rem solid var(--text);
+    border: var(--border-size) solid var(--text);
     display: block;
     text-decoration: none;
     background-color: var(--main);
@@ -52,13 +52,13 @@
     box-shadow: 0px 0px 0px 0px var(--shadow-color);
 }
 
-nav{
+.nav{
     background-color: var(--secend-background);
     width: 40vw;
     height: 100vh;
 }
 
-aside{
+.aside{
     width: 60vw;    
     text-align: center;
     display: flex;
@@ -66,7 +66,7 @@ aside{
     align-items: center;
 }
 
-footer{
+.footer{
     width: 40vw;
     text-align: center;
     background-color: black;

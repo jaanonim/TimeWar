@@ -1,7 +1,7 @@
-import { default as React, default as React } from "react";
+import { default as React } from "react";
 import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
-const GameScreen = React.lazy(() => import("./components/GameScreen"));
+const GamePage = React.lazy(() => import("./pages/gamePage/GamePage"));
 const MainPage = React.lazy(() => import("./pages/mainPage/MainPage"));
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
 				path="/game"
 				element={
 					<React.Suspense fallback={<Loading />}>
-						<GameScreen />
+						<GamePage />
 					</React.Suspense>
 				}
 			/>

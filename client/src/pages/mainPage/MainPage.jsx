@@ -5,7 +5,7 @@ import styles from "../../styles/MainPage.module.css";
 function MainPage() {
 	return (
 		<div className={styles.container}>
-			<nav>
+			<nav className={styles.nav}>
 				<h1 className={styles.logo}>TimeWar</h1>
 				<ul className={styles.navList}>
 					<li className={styles.navItem}>
@@ -24,9 +24,11 @@ function MainPage() {
 						</Link>
 					</li>
 				</ul>
-				<footer>jaanonim &amp; n2one &copy; 2021</footer>
+				<footer className={styles.footer}>
+					jaanonim &amp; n2one &copy; 2021
+				</footer>
 			</nav>
-			<aside>
+			<aside className={styles.aside}>
 				<h2>TODO: Some 3d animation</h2>
 			</aside>
 		</div>

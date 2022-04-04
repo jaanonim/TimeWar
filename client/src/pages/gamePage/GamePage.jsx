@@ -1,10 +1,14 @@
-import React from 'react'
-import GameScreen from '../../components/GameScreen'
+import React from "react";
+import GameScreen from "../../components/GameScreen";
+import UiOverlay from "../../components/UiOverlay";
 
 function GamePage() {
-  return (
-    <GameScreen/>
-  )
+	return (
+		<>
+			<UiOverlay />
+			<GameScreen />
+		</>
+	);
 }
 
-export default GamePage
+export default GamePage;
