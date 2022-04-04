@@ -7,7 +7,7 @@ import styles from "./UiOverlay.module.css";
 
 function UiOverlay() {
 	return (
-		<main className={styles.main}>
+		<main className={styles.main + " noselect"}>
 			<LeftPanel />
 			<NextTurn />
 			<SettingsButton />
