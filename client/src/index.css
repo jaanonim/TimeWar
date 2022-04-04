@@ -1,24 +1,44 @@
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 
-    --background: #252525;
-    --secend-background: #3a3a3a;
-    --text: #fff;
-    --main: #369ff0;
-    --main-dark: #1666a5;
-    --main-ligth: #51b1fb;
-    --akcent: #f3a343;
-    --akcent-dark: #a66219;
-    --shadow-size: 0.75rem; 
-    --shadow-color: rgba(0,0,0,0.2)
+	--background: #252525;
+	--secend-background: #353535;
+	--third-background: #555555;
+	--text: #fff;
+	--main: #369ff0;
+	--main-dark: #1666a5;
+	--main-ligth: #51b1fb;
+	--akcent: #f3a343;
+	--akcent-dark: #a66219;
+	--shadow-size: 0.75rem;
+	--shadow-color: rgba(0, 0, 0, 0.2);
+	--border-size: 0.2rem;
+	--scroll-width: 0.5rem;
 }
 
-body{
-    padding: 0;
-    margin: 0;
-    background-color: var(--background);
-    color: var(--text);
-    font-family: 'VT323', sans-serif;
-    font-size: 2rem;
-    overflow: hidden;
+body {
+	padding: 0;
+	margin: 0;
+	background-color: var(--background);
+	color: var(--text);
+	font-family: "VT323", sans-serif;
+	font-size: 2rem;
+	overflow: hidden;
+}
+
+/* scrollbars */
+::-webkit-scrollbar {
+	width: var(--scroll-width);
+}
+
+::-webkit-scrollbar-track {
+	background: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--secend-background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--third-background);
 }

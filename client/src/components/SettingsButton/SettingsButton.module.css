@@ -1,0 +1,18 @@
+.button {
+	z-index: 100;
+	pointer-events: all;
+	position: fixed;
+	top: 0;
+	right: 0;
+	background: url("../../assets/img/Settnings.png");
+	background-size: cover;
+	image-rendering: pixelated;
+	margin: 0.5rem;
+	width: 2rem;
+	height: 2rem;
+	transition: transform 0.3s ease-in-out;
+}
+
+.button:hover {
+	transform: rotateZ(180deg);
+}
