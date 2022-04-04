@@ -23,6 +23,7 @@ export default class GameManager {
     constructor() {
         //TODO: Change to create player on start game
         this.player = new Player("Player", "blue");
+        this.lastHighLight = null;
     }
 
     async initDisplay(displayElement) {
@@ -53,7 +54,8 @@ export default class GameManager {
 
         //Add Listener for resizing screen
         window.addEventListener("resize", this.onWindowResize.bind(this));
-        displayElement.addEventListener("mousedown", this.raycasting.bind(this));
+        displayElement.addEventListener("mousedown", this.mouseClickInteration.bind(this));
+        displayElement.addEventListener("mousemove", this.highlighting.bind(this));
     }
 
     update() {
@@ -68,7 +70,26 @@ export default class GameManager {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-    raycasting(event) {
+    highlighting(event) {
+        const raycaster = new THREE.Raycaster();
+        const mouseVector = new THREE.Vector2();
+        mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouseVector, this.camera);
+        const intersects = raycaster.intersectObjects(this.scene.children);
+        if (this.lastHighLight !== null)
+            this.lastHighLight.unHighLight();
+        this.lastHighLight = null;
+        if (intersects.length > 0) {
+            let intersectLand = intersects.find(obj => obj.object instanceof MapLand);
+            if (intersectLand !== undefined) {
+                this.lastHighLight = intersectLand.object;
+                this.lastHighLight.highLight();
+            }
+        }
+    }
+
+    mouseClickInteration(event) {
         if (event.button === 0) {
             const raycaster = new THREE.Raycaster();
             const mouseVector = new THREE.Vector2();

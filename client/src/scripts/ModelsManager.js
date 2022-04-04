@@ -19,7 +19,7 @@ export default class ModelsManager {
                     src + ".obj",
                     (object) => {
                         resolve(object);
-                    },
+                    }, null,
                     (error) => {
                         console.log('An error happened', error);
                     }

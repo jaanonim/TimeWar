@@ -19,4 +19,12 @@ export default class MapLand extends THREE.Mesh {
             this.captured = GameManager.instance.player
         }
     }
+
+    highLight() {
+        this.material.color = new THREE.Color(0.5, 0.5, 0.5);
+    }
+
+    unHighLight() {
+        this.material.color = new THREE.Color(1, 1, 1);
+    }
 }
