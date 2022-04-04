@@ -1,4 +1,5 @@
 import LeftPanel from "../LeftPanel";
+import MasterBar from "../MasterBar";
 import NextTurn from "../NextTurn";
 import SettingsButton from "../SettingsButton";
 import styles from "./UiOverlay.module.css";
@@ -9,6 +10,7 @@ function UiOverlay() {
 			<LeftPanel />
 			<NextTurn />
 			<SettingsButton />
+			<MasterBar />
 		</main>
 	);
 }
