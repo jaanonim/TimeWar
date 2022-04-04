@@ -1,7 +1,7 @@
-import styles from "../styles/UiOverlay.module.css";
-import FiguresPleaceSection from "./FiguresPleaceSection";
-import NextTurn from "./NextTurn";
-import SettingsButton from "./SettingsButton";
+import FiguresPleaceSection from "../FiguresPleaceSection";
+import NextTurn from "../NextTurn";
+import SettingsButton from "../SettingsButton";
+import styles from "./UiOverlay.module.css";
 
 function UiOverlay() {
 	return (

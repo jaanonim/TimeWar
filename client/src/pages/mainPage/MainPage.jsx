@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "../../styles/MainPage.module.css";
+import Button from "../../components/Button";
+import styles from "./MainPage.module.css";
 
 function MainPage() {
 	return (
@@ -9,18 +10,18 @@ function MainPage() {
 				<h1 className={styles.logo}>TimeWar</h1>
 				<ul className={styles.navList}>
 					<li className={styles.navItem}>
-						<Link className={styles.navLink} to="/game">
-							Game
+						<Link className={styles.link} to="/game">
+							<Button>Game</Button>
 						</Link>
 					</li>
 					<li className={styles.navItem}>
-						<Link className={styles.navLink} to="/settings">
-							Settings
+						<Link className={styles.link} to="/settings">
+							<Button>Settings</Button>
 						</Link>
 					</li>
 					<li className={styles.navItem}>
-						<Link className={styles.navLink} to="/about">
-							About
+						<Link className={styles.link} to="/aboute">
+							<Button>Aboute</Button>
 						</Link>
 					</li>
 				</ul>

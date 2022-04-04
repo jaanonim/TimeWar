@@ -1,4 +1,4 @@
-import styles from "../styles/FigurePleace.module.css";
+import styles from "./FigurePleace.module.css";
 
 function FigurePleace(props) {
 	return (

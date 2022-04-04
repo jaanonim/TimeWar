@@ -1,0 +1,59 @@
+.container {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: row;
+}
+
+.logo {
+	text-align: center;
+	margin: 2rem;
+	color: var(--akcent);
+	font-size: 5rem;
+	letter-spacing: 10px;
+	font-weight: bolder;
+	font-variant: small-caps;
+	text-shadow: 0.5rem 0.5rem var(--shadow-color);
+}
+
+.navList {
+	font-size: 2rem;
+	padding: 0;
+	margin: 2rem;
+}
+
+.navItem {
+	display: flex;
+	cursor: pointer;
+}
+
+.link {
+	text-decoration: none;
+	color: var(--text);
+	width: 100%;
+	margin: 0 2rem 0 0;
+}
+
+.nav {
+	background-color: var(--secend-background);
+	width: 40vw;
+	height: 100vh;
+}
+
+.aside {
+	width: 60vw;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.footer {
+	width: 40vw;
+	text-align: center;
+	background-color: black;
+	padding: 0.4rem;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}

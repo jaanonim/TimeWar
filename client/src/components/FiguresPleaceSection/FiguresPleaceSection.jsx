@@ -1,5 +1,5 @@
-import styles from "../styles/FiguresPleaceSection.module.css";
-import FigurePleace from "./FigurePleace";
+import FigurePleace from "../FigurePleace";
+import styles from "./FiguresPleaceSection.module.css";
 
 function FiguresPleaceSection() {
 	return (

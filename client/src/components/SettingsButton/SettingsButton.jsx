@@ -1,4 +1,4 @@
-import styles from "../styles/SettingsButton.module.css";
+import styles from "./SettingsButton.module.css";
 
 function SettingsButton() {
 	return <div className={styles.button}></div>;
