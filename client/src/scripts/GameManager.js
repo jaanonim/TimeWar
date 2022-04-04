@@ -8,6 +8,7 @@ import MapLand from "./classes/MapLand";
 import FigureFactor from "./classes/FigureFactor";
 import {FigureTypes} from "./enums/FigureTypes";
 import ModelsManager from "./ModelsManager";
+import ArmyFigure from "./classes/figures/ArmyFigure";
 
 
 export default class GameManager {
@@ -24,6 +25,7 @@ export default class GameManager {
         //TODO: Change to create player on start game
         this.player = new Player("Player", "blue");
         this.lastHighLight = null;
+        this.selectedFigure = null;
     }
 
     async initDisplay(displayElement) {
@@ -105,13 +107,29 @@ export default class GameManager {
                     //TODO: change to create selected object
                     let figureFactory = new FigureFactor();
                     console.log(land);
-                    if (land.figure !== null) return;
+                    if (land.figure !== null) {
+                        this.selectFigure(land);
+                        return;
+                    }
                     let figure = figureFactory.createFigure(1, land.mapPositionX, land.mapPositionY, FigureTypes.ARMY);
                     console.log(figure);
                     this.scene.add(figure);
                 }
             }
         }
+    }
+
+    selectFigure(land) {
+        let figure = land.figure;
+        if (this.selectedFigure !== null) {
+            if (this.selectedFigure instanceof ArmyFigure) {
+                this.selectedFigure.unHighLightMovePosition();
+            }
+        }
+        if (figure instanceof ArmyFigure) {
+            figure.highLightMovePosition();
+        }
+        this.selectedFigure = figure;
     }
 
 

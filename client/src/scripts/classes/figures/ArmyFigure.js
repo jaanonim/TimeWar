@@ -1,6 +1,7 @@
 import Figure from "../Figure";
 import MapCreator from "../../MapCreator";
 import ModelsManager from "../../ModelsManager";
+import {HighLightType} from "../../enums/HighLightType";
 
 export default class ArmyFigure extends Figure {
     constructor(positionX, positionY, name, image, description, capturingMask, lives,
@@ -66,5 +67,35 @@ export default class ArmyFigure extends Figure {
     renew() {
         this.isMoved = false;
         this.isAttack = false;
+    }
+
+    highLightMovePosition() {
+        for (let x = 0; x < this.moveMask.length; x++) {
+            for (let y = 0; y < this.moveMask[0].length; y++) {
+                let xPos = this.mapPositionX - (this.moveMask.length - 1) / 2 + x;
+                let yPos = this.mapPositionY - (this.moveMask[0].length - 1) / 2 + y;
+                if (MapCreator.instance.mapObjects[xPos] == null) break;
+                let object = MapCreator.instance.mapObjects[xPos][yPos];
+                if (object != null) {
+                    object.hightLightType = HighLightType.MOVE;
+                    object.unHighLight();
+                }
+            }
+        }
+    }
+
+    unHighLightMovePosition() {
+        for (let x = 0; x < this.moveMask.length; x++) {
+            for (let y = 0; y < this.moveMask[0].length; y++) {
+                let xPos = this.mapPositionX - (this.moveMask.length - 1) / 2 + x;
+                let yPos = this.mapPositionY - (this.moveMask[0].length - 1) / 2 + y;
+                if (MapCreator.instance.mapObjects[xPos] == null) break;
+                let object = MapCreator.instance.mapObjects[xPos][yPos];
+                if (object != null) {
+                    object.hightLightType = HighLightType.NONE;
+                    object.unHighLight();
+                }
+            }
+        }
     }
 }
