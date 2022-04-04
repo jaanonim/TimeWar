@@ -1,7 +1,7 @@
 import Button from "../Button/Button";
-import styles from "./FigurePleace.module.css";
+import styles from "./FigurePlace.module.css";
 
-function FigurePleace({ isSelected }) {
+function FigurePlace({ isSelected }) {
 	return (
 		<div className={styles.wrapper}>
 			<Button
@@ -17,4 +17,4 @@ function FigurePleace({ isSelected }) {
 		</div>
 	);
 }
-export default FigurePleace;
+export default FigurePlace;

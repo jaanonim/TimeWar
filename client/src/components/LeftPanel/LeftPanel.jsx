@@ -1,12 +1,12 @@
-import FiguresPleaceSection from "../FiguresPleaceSection";
+import FiguresPlaceSection from "../FiguresPlaceSection";
 import styles from "./LeftPanel.module.css";
 
 function LeftPanel() {
 	return (
 		<div className={`${styles.ui} ${styles.placementPanel}`}>
-			<FiguresPleaceSection></FiguresPleaceSection>
-			<FiguresPleaceSection></FiguresPleaceSection>
-			<FiguresPleaceSection></FiguresPleaceSection>
+			<FiguresPlaceSection></FiguresPlaceSection>
+			<FiguresPlaceSection></FiguresPlaceSection>
+			<FiguresPlaceSection></FiguresPlaceSection>
 		</div>
 	);
 }
