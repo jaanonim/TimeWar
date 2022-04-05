@@ -9,6 +9,7 @@ import FigureFactor from "./classes/FigureFactor";
 import {FigureTypes} from "./enums/FigureTypes";
 import ModelsManager from "./ModelsManager";
 import ArmyFigure from "./classes/figures/ArmyFigure";
+import {HighLightType} from "./enums/HighLightType";
 
 
 export default class GameManager {
@@ -105,17 +106,44 @@ export default class GameManager {
                 if (intersectLand !== undefined) {
                     let land = intersectLand.object;
                     //TODO: change to create selected object
-                    let figureFactory = new FigureFactor();
-                    console.log(land);
                     if (land.figure !== null) {
                         this.selectFigure(land);
                         return;
                     }
-                    let figure = figureFactory.createFigure(1, land.mapPositionX, land.mapPositionY, FigureTypes.ARMY);
-                    console.log(figure);
-                    this.scene.add(figure);
+                    if (this.selectedFigure !== undefined && land.hightLightType !== HighLightType.NONE) {
+                        this.makeAction(land)
+                    } else {
+                        this.placeFigure(land);
+                    }
                 }
             }
+        }
+    }
+
+    placeFigure(land) {
+        if (this.selectedFigure != null) {
+            this.selectedFigure.unHighLightMovePosition();
+            this.selectedFigure = null;
+        }
+        let figureFactory = new FigureFactor();
+        let figure = figureFactory.createFigure(1, land.mapPositionX, land.mapPositionY, FigureTypes.ARMY);
+        console.log(figure);
+        this.scene.add(figure);
+    }
+
+    makeAction(land) {
+        let x = land.mapPositionX;
+        let y = land.mapPositionY;
+        if (this.selectedFigure.canMove(x, y)) {
+            console.log("MOVE");
+            this.selectedFigure.unHighLightMovePosition();
+            let oldX = this.selectedFigure.mapPositionX;
+            let oldY = this.selectedFigure.mapPositionY;
+            if (this.selectedFigure.move(x, y)) {
+                let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
+                oldLand.figure = null;
+            }
+            this.selectedFigure = null;
         }
     }
 
@@ -127,9 +155,14 @@ export default class GameManager {
             }
         }
         if (figure instanceof ArmyFigure) {
-            figure.highLightMovePosition();
+            if (figure === this.selectedFigure) {
+                figure.unHighLightMovePosition();
+                this.selectedFigure = null;
+            } else {
+                figure.highLightMovePosition();
+                this.selectedFigure = figure;
+            }
         }
-        this.selectedFigure = figure;
     }
 
 
