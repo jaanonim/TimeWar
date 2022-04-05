@@ -32,29 +32,31 @@ export default class FigureManager {
         {
 
             id: 2,
-            name: "Arachnodroid",
+            name: "RaconBot",
             image: "src",
-            description: "Lorem ipsum",
-            lives: 10,
-            damage: 2,
+            description: "Lorem ipsum2",
+            lives: 6,
+            damage: 1,
             isFlyable: false,
-            model: "arachnoid",
+            model: "reconBot",
             capturingMask: [
-                [0, 1, 0],
                 [1, 1, 1],
-                [0, 1, 0]
+                [1, 1, 1],
+                [1, 1, 1]
             ],
             attackMask: [
-                [1, 1, 1, 1, 1],
-                [1, 1, 0, 1, 1],
-                [1, 0, 0, 0, 1],
-                [1, 1, 0, 1, 1],
-                [1, 1, 1, 1, 1]
+                [1, 1, 1],
+                [1, 0, 1],
+                [1, 1, 1]
             ],
             moveMask: [
-                [0, 1, 0],
-                [1, 1, 1],
-                [0, 1, 0]
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1]
             ]
         }
     ]
