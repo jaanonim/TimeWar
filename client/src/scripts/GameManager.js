@@ -135,7 +135,6 @@ export default class GameManager {
         let x = land.mapPositionX;
         let y = land.mapPositionY;
         if (this.selectedFigure.canMove(x, y)) {
-            console.log("MOVE");
             this.selectedFigure.unHighLightMovePosition();
             let oldX = this.selectedFigure.mapPositionX;
             let oldY = this.selectedFigure.mapPositionY;
