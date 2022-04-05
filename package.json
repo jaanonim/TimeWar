@@ -4,12 +4,18 @@
   "description": "Trun base strategii multiplayer game written with three.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently \"npm -w server run dev\" \"npm -w client run dev\"",
+    "build": "npm run build -w client",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run start -w server"
   },
   "workspaces": [
     "server",
     "client"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
 }
