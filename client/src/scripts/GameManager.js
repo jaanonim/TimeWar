@@ -6,7 +6,6 @@ import {
 import Player from "./classes/Player";
 import MapLand from "./classes/MapLand";
 import FigureFactor from "./classes/FigureFactor";
-import {FigureTypes} from "./enums/FigureTypes";
 import ModelsManager from "./ModelsManager";
 import ArmyFigure from "./classes/figures/ArmyFigure";
 import {HighLightType} from "./enums/HighLightType";
@@ -27,6 +26,8 @@ export default class GameManager {
         this.player = new Player("Player", "blue");
         this.lastHighLight = null;
         this.selectedFigure = null;
+        this.selectFigureIdInUI = null;
+        this.selectFigureTypeInUI = null;
     }
 
     async initDisplay(displayElement) {
@@ -72,6 +73,12 @@ export default class GameManager {
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
+
+    onSelectFigureInUI(newId, type) {
+        this.selectFigureIdInUI = newId;
+        this.selectFigureTypeInUI = type;
+    }
+
 
     highlighting(event) {
         const raycaster = new THREE.Raycaster();
@@ -126,7 +133,8 @@ export default class GameManager {
             this.selectedFigure = null;
         }
         let figureFactory = new FigureFactor();
-        let figure = figureFactory.createFigure(1, land.mapPositionX, land.mapPositionY, FigureTypes.ARMY);
+        if (this.selectFigureIdInUI == null) return;
+        let figure = figureFactory.createFigure(this.selectFigureIdInUI, land.mapPositionX, land.mapPositionY, this.selectFigureTypeInUI);
         console.log(figure);
         this.scene.add(figure);
     }

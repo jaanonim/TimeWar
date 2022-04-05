@@ -28,6 +28,36 @@ export default class FigureManager {
                 [1, 1, 1],
                 [0, 1, 0]
             ]
+        },
+        {
+
+            id: 2,
+            name: "RaconBot",
+            image: "src",
+            description: "Lorem ipsum2",
+            lives: 6,
+            damage: 1,
+            isFlyable: false,
+            model: "reconBot",
+            capturingMask: [
+                [1, 1, 1],
+                [1, 1, 1],
+                [1, 1, 1]
+            ],
+            attackMask: [
+                [1, 1, 1],
+                [1, 0, 1],
+                [1, 1, 1]
+            ],
+            moveMask: [
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1]
+            ]
         }
     ]
 }

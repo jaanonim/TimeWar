@@ -6,6 +6,7 @@ export default class ModelsManager {
 
     static async loadModels() {
         this.models.arachnoid = await this.loadModel("models/Arachnodroid/Arachnoid");
+        this.models.reconBot = await this.loadModel("models/ReconBot/ReconBot");
         console.log(this.models);
     }
 
