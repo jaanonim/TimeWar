@@ -10,6 +10,7 @@ function Button({
 	h,
 	borderColor,
 	borderColorHover,
+	onClick
 }) {
 	return (
 		<div
@@ -24,6 +25,7 @@ function Button({
 				"--borderColor": borderColor || "var(--text)",
 				"--borderColorHover": borderColorHover || "var(--text)",
 			}}
+			onClick={onClick}
 		>
 			{children}
 		</div>
