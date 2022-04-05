@@ -8,6 +8,8 @@ import MapLand from "./classes/MapLand";
 import FigureFactor from "./classes/FigureFactor";
 import {FigureTypes} from "./enums/FigureTypes";
 import ModelsManager from "./ModelsManager";
+import ArmyFigure from "./classes/figures/ArmyFigure";
+import {HighLightType} from "./enums/HighLightType";
 
 
 export default class GameManager {
@@ -23,6 +25,8 @@ export default class GameManager {
     constructor() {
         //TODO: Change to create player on start game
         this.player = new Player("Player", "blue");
+        this.lastHighLight = null;
+        this.selectedFigure = null;
     }
 
     async initDisplay(displayElement) {
@@ -53,7 +57,8 @@ export default class GameManager {
 
         //Add Listener for resizing screen
         window.addEventListener("resize", this.onWindowResize.bind(this));
-        displayElement.addEventListener("mousedown", this.raycasting.bind(this));
+        displayElement.addEventListener("mousedown", this.mouseClickInteration.bind(this));
+        displayElement.addEventListener("mousemove", this.highlighting.bind(this));
     }
 
     update() {
@@ -68,7 +73,26 @@ export default class GameManager {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-    raycasting(event) {
+    highlighting(event) {
+        const raycaster = new THREE.Raycaster();
+        const mouseVector = new THREE.Vector2();
+        mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouseVector, this.camera);
+        const intersects = raycaster.intersectObjects(this.scene.children);
+        if (this.lastHighLight !== null)
+            this.lastHighLight.unHighLight();
+        this.lastHighLight = null;
+        if (intersects.length > 0) {
+            let intersectLand = intersects.find(obj => obj.object instanceof MapLand);
+            if (intersectLand !== undefined) {
+                this.lastHighLight = intersectLand.object;
+                this.lastHighLight.highLight();
+            }
+        }
+    }
+
+    mouseClickInteration(event) {
         if (event.button === 0) {
             const raycaster = new THREE.Raycaster();
             const mouseVector = new THREE.Vector2();
@@ -82,13 +106,60 @@ export default class GameManager {
                 if (intersectLand !== undefined) {
                     let land = intersectLand.object;
                     //TODO: change to create selected object
-                    let figureFactory = new FigureFactor();
-                    console.log(land);
-                    if (land.figure !== null) return;
-                    let figure = figureFactory.createFigure(1, land.mapPositionX, land.mapPositionY, FigureTypes.ARMY);
-                    console.log(figure);
-                    this.scene.add(figure);
+                    if (land.figure !== null) {
+                        this.selectFigure(land);
+                        return;
+                    }
+                    if (this.selectedFigure !== undefined && land.hightLightType !== HighLightType.NONE) {
+                        this.makeAction(land)
+                    } else {
+                        this.placeFigure(land);
+                    }
                 }
+            }
+        }
+    }
+
+    placeFigure(land) {
+        if (this.selectedFigure != null) {
+            this.selectedFigure.unHighLightMovePosition();
+            this.selectedFigure = null;
+        }
+        let figureFactory = new FigureFactor();
+        let figure = figureFactory.createFigure(1, land.mapPositionX, land.mapPositionY, FigureTypes.ARMY);
+        console.log(figure);
+        this.scene.add(figure);
+    }
+
+    makeAction(land) {
+        let x = land.mapPositionX;
+        let y = land.mapPositionY;
+        if (this.selectedFigure.canMove(x, y)) {
+            this.selectedFigure.unHighLightMovePosition();
+            let oldX = this.selectedFigure.mapPositionX;
+            let oldY = this.selectedFigure.mapPositionY;
+            if (this.selectedFigure.move(x, y)) {
+                let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
+                oldLand.figure = null;
+            }
+            this.selectedFigure = null;
+        }
+    }
+
+    selectFigure(land) {
+        let figure = land.figure;
+        if (this.selectedFigure !== null) {
+            if (this.selectedFigure instanceof ArmyFigure) {
+                this.selectedFigure.unHighLightMovePosition();
+            }
+        }
+        if (figure instanceof ArmyFigure) {
+            if (figure === this.selectedFigure) {
+                figure.unHighLightMovePosition();
+                this.selectedFigure = null;
+            } else {
+                figure.highLightMovePosition();
+                this.selectedFigure = figure;
             }
         }
     }

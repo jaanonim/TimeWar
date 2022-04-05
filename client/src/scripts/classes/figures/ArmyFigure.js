@@ -1,6 +1,7 @@
 import Figure from "../Figure";
 import MapCreator from "../../MapCreator";
 import ModelsManager from "../../ModelsManager";
+import {HighLightType} from "../../enums/HighLightType";
 
 export default class ArmyFigure extends Figure {
     constructor(positionX, positionY, name, image, description, capturingMask, lives,
@@ -34,9 +35,11 @@ export default class ArmyFigure extends Figure {
         let relY = y - this.mapPositionY;
         let moveMaskWidth = this.moveMask.length;
         let moveMaskHeight = this.moveMask[0].length;
-        let maskX = relX + moveMaskWidth / 2;
-        let maskY = relY + moveMaskHeight / 2;
+        let maskX = relX + Math.floor(moveMaskWidth / 2);
+        let maskY = relY + Math.floor(moveMaskHeight / 2);
+        console.log(relX, relY, maskX, maskY, moveMaskWidth, moveMaskHeight);
         if (maskX < 0 || maskX >= moveMaskWidth || maskY < 0 || maskY >= moveMaskHeight) return false;
+        console.log(this.moveMask[maskX][maskY], this.moveMask);
         return this.moveMask[maskX][maskY];
 
     }
@@ -57,8 +60,8 @@ export default class ArmyFigure extends Figure {
         let relY = y - this.mapPositionY;
         let attackMaskWidth = this.attackMask.length;
         let attackMaskHeight = this.attackMask[0].length;
-        let maskX = relX + attackMaskWidth / 2;
-        let maskY = relY + attackMaskHeight / 2;
+        let maskX = relX - Math.floor(attackMaskWidth / 2);
+        let maskY = relY - Math.floor(attackMaskHeight / 2);
         if (maskX < 0 || maskX >= attackMaskWidth || maskY < 0 || maskY >= attackMaskHeight) return false;
         return this.attackMask[maskX][maskY];
     }
@@ -66,5 +69,39 @@ export default class ArmyFigure extends Figure {
     renew() {
         this.isMoved = false;
         this.isAttack = false;
+    }
+
+    highLightMovePosition() {
+        for (let x = 0; x < this.moveMask.length; x++) {
+            for (let y = 0; y < this.moveMask[0].length; y++) {
+                let xPos = this.mapPositionX - (this.moveMask.length - 1) / 2 + x;
+                let yPos = this.mapPositionY - (this.moveMask[0].length - 1) / 2 + y;
+                if (MapCreator.instance.mapObjects[xPos] == null) break;
+                let object = MapCreator.instance.mapObjects[xPos][yPos];
+                if (object != null) {
+                    if (this.moveMask[x][y]) {
+                        object.hightLightType = HighLightType.MOVE;
+                        object.unHighLight();
+                    }
+                }
+            }
+        }
+    }
+
+    unHighLightMovePosition() {
+        for (let x = 0; x < this.moveMask.length; x++) {
+            for (let y = 0; y < this.moveMask[0].length; y++) {
+                let xPos = this.mapPositionX - (this.moveMask.length - 1) / 2 + x;
+                let yPos = this.mapPositionY - (this.moveMask[0].length - 1) / 2 + y;
+                if (MapCreator.instance.mapObjects[xPos] == null) break;
+                let object = MapCreator.instance.mapObjects[xPos][yPos];
+                if (object != null) {
+                    if (this.moveMask[x][y]) {
+                        object.hightLightType = HighLightType.NONE;
+                        object.unHighLight();
+                    }
+                }
+            }
+        }
     }
 }
