@@ -1,10 +1,14 @@
 import FigurePlace from "../FigurePlace";
 import styles from "./FiguresPlaceSection.module.css";
 
-function FiguresPlaceSection({name,figures, select, selecting}) {
+function FiguresPlaceSection({name, figures, select, selecting}) {
     let places = figures.map((figure) => {
         return (
-            <FigurePlace key={figure.name} figure={figure} isSelected={figure.id === select} onClick={selecting}/>
+            <FigurePlace
+                key={figure.name}
+                figure={figure}
+                isSelected={figure.id === select} onClick={selecting}
+            />
         )
     });
 

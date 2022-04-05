@@ -19,7 +19,6 @@ function LeftPanel() {
                                      setSelectedFigureId(newId);
                                      setSelectedFigureType(FigureTypes.ARMY);
                                  }}/>
-            {/*<FiguresPlaceSection/>*/}
         </div>
     );
 }
