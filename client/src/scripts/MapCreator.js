@@ -16,17 +16,18 @@ export default class MapCreator {
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-            [1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-            [1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-            [1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+            [2, 2, 1, 2, 0, 0, 0, 1, 1, 1],
+            [2, 2, 2, 2, 1, 1, 0, 1, 1, 1],
+            [1, 2, 2, 2, 2, 1, 0, 1, 1, 1],
+            [1, 1, 1, 2, 2, 2, 0, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ];
+        this.tileSize = 3.2;
         this.mapObjects = [];
-        this.mapWidth = 50;
-        this.mapHeight = 50;
+        this.mapWidth = this.map.length * this.tileSize;
+        this.mapHeight = this.map[0].length * this.tileSize;
     }
 
     createMap(scene) {

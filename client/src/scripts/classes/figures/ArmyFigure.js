@@ -1,11 +1,13 @@
-import Figure from "../Figure";
+import {
+    HighLightType
+} from "../../enums/HighLightType";
 import MapCreator from "../../MapCreator";
 import ModelsManager from "../../ModelsManager";
-import {HighLightType} from "../../enums/HighLightType";
+import Figure from "../Figure";
 
 export default class ArmyFigure extends Figure {
     constructor(positionX, positionY, name, image, description, capturingMask, lives,
-                modelName, attackMask, moveMask, damage, isFlyable) {
+        modelName, attackMask, moveMask, damage, isFlyable) {
         super(positionX, positionY, name, image, description, capturingMask, lives);
         this.isMoved = false;
         this.isAttack = false;
@@ -37,9 +39,7 @@ export default class ArmyFigure extends Figure {
         let moveMaskHeight = this.moveMask[0].length;
         let maskX = relX + Math.floor(moveMaskWidth / 2);
         let maskY = relY + Math.floor(moveMaskHeight / 2);
-        console.log(relX, relY, maskX, maskY, moveMaskWidth, moveMaskHeight);
         if (maskX < 0 || maskX >= moveMaskWidth || maskY < 0 || maskY >= moveMaskHeight) return false;
-        console.log(this.moveMask[maskX][maskY], this.moveMask);
         return this.moveMask[maskX][maskY];
 
     }

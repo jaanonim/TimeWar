@@ -1,14 +1,16 @@
-import MapCreator from "./MapCreator";
 import * as THREE from "three";
 import {
     OrbitControls
 } from "three/examples/jsm/controls/OrbitControls";
-import Player from "./classes/Player";
-import MapLand from "./classes/MapLand";
 import FigureFactor from "./classes/FigureFactor";
-import ModelsManager from "./ModelsManager";
 import ArmyFigure from "./classes/figures/ArmyFigure";
-import {HighLightType} from "./enums/HighLightType";
+import MapLand from "./classes/MapLand";
+import Player from "./classes/Player";
+import {
+    HighLightType
+} from "./enums/HighLightType";
+import MapCreator from "./MapCreator";
+import ModelsManager from "./ModelsManager";
 
 
 export default class GameManager {
@@ -36,7 +38,11 @@ export default class GameManager {
         //Initialization Scene
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.renderer = new THREE.WebGLRenderer();
+        this.renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFShadowMap;
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         displayElement.innerHTML = "";
@@ -44,17 +50,29 @@ export default class GameManager {
         MapCreator.instance.createMap(this.scene);
 
         //light
-        const light = new THREE.DirectionalLight(0xffffff, 4);
-        light.rotateX(45 * Math.PI / 180);
+        const light = new THREE.DirectionalLight(0xffffff, 4, 100);
+        light.position.set(10, 20, 10);
+        light.castShadow = true;
         this.scene.add(light);
+
+        const shadowSize = 100;
+        light.shadow.blurSamples = 1;
+        light.shadow.mapSize.width = 8192;
+        light.shadow.mapSize.height = 8192;
+        light.shadow.camera.near = 0.5;
+        light.shadow.camera.far = 100;
+        light.shadow.camera.left = -shadowSize;
+        light.shadow.camera.right = shadowSize;
+        light.shadow.camera.top = shadowSize;
+        light.shadow.camera.bottom = -shadowSize;
 
         //Helpers
         this.cameraConrols = new OrbitControls(this.camera, this.renderer.domElement);
-        const gridHelper = new THREE.GridHelper(100, 100);
-        this.scene.add(gridHelper);
         this.camera.position.y = 25;
         this.camera.position.z = 35;
         this.update();
+        const helper = new THREE.CameraHelper(light.shadow.camera);
+        this.scene.add(helper);
 
         //Add Listener for resizing screen
         window.addEventListener("resize", this.onWindowResize.bind(this));
@@ -107,7 +125,6 @@ export default class GameManager {
             mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
             raycaster.setFromCamera(mouseVector, this.camera);
             const intersects = raycaster.intersectObjects(this.scene.children);
-            console.log(intersects.length);
             if (intersects.length > 0) {
                 let intersectLand = intersects.find(obj => obj.object instanceof MapLand);
                 if (intersectLand !== undefined) {
@@ -135,7 +152,6 @@ export default class GameManager {
         let figureFactory = new FigureFactor();
         if (this.selectFigureIdInUI == null) return;
         let figure = figureFactory.createFigure(this.selectFigureIdInUI, land.mapPositionX, land.mapPositionY, this.selectFigureTypeInUI);
-        console.log(figure);
         this.scene.add(figure);
     }
 
