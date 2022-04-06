@@ -4,7 +4,7 @@
 	position: fixed;
 	top: 0;
 	right: 0;
-	background: url("../../assets/img/Settnings.png");
+	background: url("../../public/img/Settnings.png");
 	background-size: cover;
 	image-rendering: pixelated;
 	margin: 0.5rem;
