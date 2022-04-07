@@ -10,7 +10,6 @@ export default class Land extends MapLand {
         this.model.rotateY(Math.PI / 2 * Math.round(Math.random() * 4));
         this.model.material = this.model.material.clone();
         this.add(this.model);
-        this.defaultColor = 0xaaffee;
         this.unHighLight();
     }
 }
