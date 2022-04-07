@@ -21,9 +21,9 @@ const onError = error => {
         throw error;
     }
 
-    const bind = typeof port === 'string'
-        ? 'Pipe ' + port
-        : 'Port ' + port;
+    const bind = typeof port === 'string' ?
+        'Pipe ' + port :
+        'Port ' + port;
 
     switch (error.code) {
         case 'EACCES':
@@ -40,10 +40,10 @@ const onError = error => {
 };
 const onListening = () => {
     const addr = server.address();
-    const bind = typeof addr === 'string'
-        ? 'pipe ' + addr
-        : 'http://localhost:' + addr.port;
-    console.error('Listening on ' + bind);
+    const bind = typeof addr === 'string' ?
+        'pipe ' + addr :
+        'http://localhost:' + addr.port;
+    console.log('Listening on ' + bind);
 };
 
 const port = normalizePort(process.env.PORT || '5000');
