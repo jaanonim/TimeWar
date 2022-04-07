@@ -6,6 +6,7 @@ export default class Socket {
     static instance = null;
 
     constructor(room) {
+        if(Socket.instance != null) return null;
         Socket.instance = this;
         this.socket = io('ws://localhost:5000', {
             query: {
