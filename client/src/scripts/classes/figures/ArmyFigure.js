@@ -1,14 +1,13 @@
-import {
-    HighLightType
-} from "../../enums/HighLightType";
 import MapCreator from "../../MapCreator";
 import ModelsManager from "../../ModelsManager";
+import {HighLightType} from "../../enums/HighLightType";
+import {FigureTypes} from "../../enums/FigureTypes";
 import Figure from "../Figure";
 
 export default class ArmyFigure extends Figure {
-    constructor(positionX, positionY, name, image, description, capturingMask, lives,
-        modelName, attackMask, moveMask, damage, isFlyable) {
-        super(positionX, positionY, name, image, description, capturingMask, lives);
+    constructor(who, positionX, positionY, figureId, name, image, description, capturingMask, lives,
+                modelName, attackMask, moveMask, damage, isFlyable) {
+        super(who, positionX, positionY, figureId, FigureTypes.ARMY, name, image, description, capturingMask, lives);
         this.isMoved = false;
         this.isAttack = false;
         this.attackMask = attackMask;
@@ -20,6 +19,8 @@ export default class ArmyFigure extends Figure {
             return;
         }
         let model = ModelsManager.models[modelName].clone();
+        if(this.who === "RED")
+            model.rotation.y = Math.PI;
         model.scale.set(0.5, 0.5, 0.5);
         this.add(model);
     }

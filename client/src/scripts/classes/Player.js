@@ -1,6 +1,15 @@
+import GameManager from "../GameManager";
+
 export default class Player {
     constructor(name, color) {
         this.name = name;
         this.color = color; // Color as string
+        this.team = ""
+    }
+
+    setTeam(team) {
+        this.team = team;
+        let camera = GameManager.instance.camera;
+        camera.position.z = Math.abs(camera.position.z) * (this.team === "RED" ? 1 : -1);
     }
 }

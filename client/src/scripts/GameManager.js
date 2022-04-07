@@ -4,11 +4,10 @@ import {
 } from "three/examples/jsm/controls/OrbitControls";
 import FigureFactor from "./classes/FigureFactor";
 import ArmyFigure from "./classes/figures/ArmyFigure";
+import {HighLightType} from "./enums/HighLightType";
+import Socket from "./Socket";
 import MapLand from "./classes/MapLand";
 import Player from "./classes/Player";
-import {
-    HighLightType
-} from "./enums/HighLightType";
 import MapCreator from "./MapCreator";
 import ModelsManager from "./ModelsManager";
 
@@ -78,6 +77,7 @@ export default class GameManager {
         window.addEventListener("resize", this.onWindowResize.bind(this));
         displayElement.addEventListener("mousedown", this.mouseClickInteration.bind(this));
         displayElement.addEventListener("mousemove", this.highlighting.bind(this));
+        new Socket("room");
     }
 
     update() {
@@ -137,23 +137,31 @@ export default class GameManager {
                     if (this.selectedFigure !== undefined && land.hightLightType !== HighLightType.NONE) {
                         this.makeAction(land)
                     } else {
-                        this.placeFigure(land);
+                        this.placeFigureAction(land);
                     }
                 }
             }
         }
     }
 
-    placeFigure(land) {
+    placeFigureAction(land) {
         if (this.selectedFigure != null) {
             this.selectedFigure.unHighLightMovePosition();
             this.selectedFigure = null;
         }
-        let figureFactory = new FigureFactor();
         if (this.selectFigureIdInUI == null) return;
-        let figure = figureFactory.createFigure(this.selectFigureIdInUI, land.mapPositionX, land.mapPositionY, this.selectFigureTypeInUI);
-        this.scene.add(figure);
+        let figure = this.placeFigure(this.selectFigureIdInUI, land.mapPositionX, land.mapPositionY, this.selectFigureTypeInUI, this.player.team);
+        Socket.instance.placeFigure(figure);
     }
+
+    placeFigure(figureID, x, y, figureType, who) {
+
+        let figureFactory = new FigureFactor();
+        let figure = figureFactory.createFigure(figureID, x, y, figureType, who);
+        this.scene.add(figure);
+        return figure;
+    }
+
 
     makeAction(land) {
         let x = land.mapPositionX;
@@ -162,12 +170,23 @@ export default class GameManager {
             this.selectedFigure.unHighLightMovePosition();
             let oldX = this.selectedFigure.mapPositionX;
             let oldY = this.selectedFigure.mapPositionY;
-            if (this.selectedFigure.move(x, y)) {
-                let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
-                oldLand.figure = null;
+            if (this.moveFigure(this.selectedFigure, x, y)) {
+                Socket.instance.moveFigure(oldX, oldY, x, y);
             }
+
             this.selectedFigure = null;
         }
+    }
+
+    moveFigure(figure, x, y) {
+        let oldX = figure.mapPositionX;
+        let oldY = figure.mapPositionY;
+        if (figure.move(x, y)) {
+            let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
+            oldLand.figure = null;
+            return true
+        }
+        return false
     }
 
     selectFigure(land) {
