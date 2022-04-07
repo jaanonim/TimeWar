@@ -29,17 +29,27 @@ module.exports = class Room {
     }
 
     placeFigure(player, figure) {
-        if(!this.isStartGame) return;
+        //TODO: make checking if this move is OK
+        this.sendToOpponent(player, "placeFigure", figure);
+    }
+
+    moveFigure(player, moveData) {
+        //TODO: make checking if this move is OK
+        this.sendToOpponent(player, "moveFigure", moveData);
+    }
+
+
+    sendToOpponent(player, endpoint, msg) {
+        if (!this.isStartGame) return;
         if (this.bluePlayer.id === player) {
-            this.redPlayer.emit("placeFigure", {
-                who:"BLUE",
-                figure
+            this.redPlayer.emit(endpoint, {
+                who: "BLUE",
+                msg: msg
             });
         } else {
-
-            this.bluePlayer.emit("placeFigure", {
+            this.bluePlayer.emit(endpoint, {
                 who: "RED",
-                figure
+                msg: msg
             });
         }
     }

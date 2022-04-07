@@ -155,12 +155,23 @@ export default class GameManager {
             this.selectedFigure.unHighLightMovePosition();
             let oldX = this.selectedFigure.mapPositionX;
             let oldY = this.selectedFigure.mapPositionY;
-            if (this.selectedFigure.move(x, y)) {
-                let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
-                oldLand.figure = null;
+            if (this.moveFigure(this.selectedFigure, x, y)) {
+                Socket.instance.moveFigure(oldX, oldY, x, y);
             }
+
             this.selectedFigure = null;
         }
+    }
+
+    moveFigure(figure, x, y) {
+        let oldX = figure.mapPositionX;
+        let oldY = figure.mapPositionY;
+        if (figure.move(x, y)) {
+            let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
+            oldLand.figure = null;
+            return true
+        }
+        return false
     }
 
     selectFigure(land) {

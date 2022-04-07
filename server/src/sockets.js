@@ -8,15 +8,17 @@ module.exports = {
 
         io.on("connection", (socket) => {
             let roomName = socket.handshake.query.room;
-            socket.join(roomName);
             let room = rooms.find(r => r.name === roomName);
             if (room == null) {
                 room = new Room(roomName);
                 rooms.push(room);
             }
             if (room.addPlayer(socket) == null) {
+                socket.disconnect();
                 return;
             }
+
+            socket.join(roomName);
 
             if (room.startGame()) {
                 console.log("START");
@@ -24,9 +26,11 @@ module.exports = {
                 room.bluePlayer.emit("startGame", {"team": "BLUE"});
             }
             socket.on("placeFigure", (figure) => {
-                console.log(JSON.stringify(figure, null, 5));
-                console.log(socket.id);
                 room.placeFigure(socket.id, figure);
+            });
+            socket.on("moveFigure", (figure) => {
+                console.log(figure);
+                room.moveFigure(socket.id, figure);
             });
 
             socket.on('disconnecting', () => {
