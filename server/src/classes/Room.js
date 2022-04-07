@@ -55,7 +55,6 @@ module.exports = class Room {
     }
 
     disconnectPlayer(player) {
-
         if (this.bluePlayer && this.bluePlayer.id === player) {
             this.bluePlayer = null;
             this.isStartGame = false;

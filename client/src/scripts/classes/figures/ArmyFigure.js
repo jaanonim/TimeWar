@@ -1,6 +1,3 @@
-import {
-    HighLightType
-} from "../../enums/HighLightType";
 import MapCreator from "../../MapCreator";
 import ModelsManager from "../../ModelsManager";
 import {HighLightType} from "../../enums/HighLightType";

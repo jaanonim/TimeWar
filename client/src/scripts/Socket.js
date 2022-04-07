@@ -25,7 +25,7 @@ export default class Socket {
         });
     }
 
-    moveFigure(oldX,oldY, x, y) {
+    moveFigure(oldX, oldY, x, y) {
         this.socket.emit("moveFigure", {
             figureX: oldX,
             figureY: oldY,
@@ -65,6 +65,4 @@ export default class Socket {
             console.log("disconnect");
         });
     }
-
-
 }
