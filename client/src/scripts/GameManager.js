@@ -9,6 +9,7 @@ import FigureFactor from "./classes/FigureFactor";
 import ModelsManager from "./ModelsManager";
 import ArmyFigure from "./classes/figures/ArmyFigure";
 import {HighLightType} from "./enums/HighLightType";
+import Socket from "./Socket";
 
 
 export default class GameManager {
@@ -60,6 +61,7 @@ export default class GameManager {
         window.addEventListener("resize", this.onWindowResize.bind(this));
         displayElement.addEventListener("mousedown", this.mouseClickInteration.bind(this));
         displayElement.addEventListener("mousemove", this.highlighting.bind(this));
+        new Socket("room");
     }
 
     update() {
@@ -120,24 +122,31 @@ export default class GameManager {
                     if (this.selectedFigure !== undefined && land.hightLightType !== HighLightType.NONE) {
                         this.makeAction(land)
                     } else {
-                        this.placeFigure(land);
+                        this.placeFigureAction(land);
                     }
                 }
             }
         }
     }
 
-    placeFigure(land) {
+    placeFigureAction(land) {
         if (this.selectedFigure != null) {
             this.selectedFigure.unHighLightMovePosition();
             this.selectedFigure = null;
         }
-        let figureFactory = new FigureFactor();
         if (this.selectFigureIdInUI == null) return;
-        let figure = figureFactory.createFigure(this.selectFigureIdInUI, land.mapPositionX, land.mapPositionY, this.selectFigureTypeInUI);
-        console.log(figure);
-        this.scene.add(figure);
+        let figure = this.placeFigure(this.selectFigureIdInUI, land.mapPositionX, land.mapPositionY, this.selectFigureTypeInUI, this.player.team);
+        Socket.instance.placeFigure(figure);
     }
+
+    placeFigure(figureID, x, y, figureType, who) {
+
+        let figureFactory = new FigureFactor();
+        let figure = figureFactory.createFigure(figureID, x, y, figureType, who);
+        this.scene.add(figure);
+        return figure;
+    }
+
 
     makeAction(land) {
         let x = land.mapPositionX;

@@ -1,5 +1,6 @@
 const app = require('./src/app');
 const http = require('http');
+const {initSockets} = require("./src/sockets");
 
 const normalizePort = (val) => {
     const port = parseInt(val, 10);
@@ -53,4 +54,5 @@ const server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-//TODO: add websockets
+
+initSockets(server);
