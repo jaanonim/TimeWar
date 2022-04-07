@@ -10,6 +10,7 @@ export default class Mountain extends MapLand {
         this.model.rotateY(Math.PI / 2 * Math.round(Math.random() * 4));
         this.model.material = this.model.material.clone();
         this.add(this.model);
+        this.defaultColor = 0xaaaaaa;
         this.unHighLight();
     }
 }
