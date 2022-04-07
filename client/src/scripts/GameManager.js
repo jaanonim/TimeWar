@@ -128,7 +128,6 @@ export default class GameManager {
             if (intersects.length > 0) {
                 console.log(intersects);
                 let intersectLand = intersects.find(obj => obj.object?.parent instanceof MapLand);
-                console.log(intersectLand);
                 if (intersectLand !== undefined) {
                     let land = intersectLand.object.parent;
                     //TODO: change to create selected object
@@ -207,7 +206,6 @@ export default class GameManager {
                 this.selectedFigure = figure;
             }
         }
-        console.log(land);
     }
 
 
