@@ -15,6 +15,7 @@ export default class MapLand extends THREE.Object3D {
         this.captured = null;
         this.figure = null;
         this.hightLightType = HighLightType.NONE;
+        this.model = null;
     }
 
     capture() {
@@ -30,13 +31,13 @@ export default class MapLand extends THREE.Object3D {
 
     unHighLight() {
         //TODO: After change to select graphics
-
+        if (this.model == null) return;
         if (this.hightLightType === HighLightType.MOVE) {
-            this.material.color.set(0x55ffaa)
+            this.model.material.color.set(0x3312ff)
         } else if (this.hightLightType === HighLightType.ATTACK) {
-            this.material.color.set(0xff5555)
+            this.model.material.color.set(0xff5555)
         } else {
-            this.material.color.set(0x555555)
+            this.model.material.color.set(0x55ffaa)
         }
     }
 }
