@@ -1,22 +1,15 @@
-import Button from "../Button/Button";
 import styles from "./FigurePlace.module.css";
 
-function FigurePlace({isSelected, figure, onClick}) {
-    return (
-        <div className={styles.wrapper}>
-            <Button
-                w="calc((20vw - 4rem) / 3)"
-                h="calc((20vw - 4rem) / 3)"
-                color={isSelected ? "var(--akcent)" : "var(--main)"}
-                hoverColor={
-                    isSelected ? "var(--akcent-dark)" : "var(--main-dark)"
-                }
-                onClick={() => onClick(figure.id)}
-            >
-                {figure.name}
-            </Button>
-        </div>
-    );
+function FigurePlace({ isSelected, figure, onClick }) {
+	return (
+		<div
+			className={styles.box + " " + (isSelected ? styles.selected : "")}
+			style={{
+				backgroundImage: `url(/img/thumbnails/${figure.image})`,
+			}}
+			onClick={() => onClick(figure.id)}
+		></div>
+	);
 }
 
 export default FigurePlace;

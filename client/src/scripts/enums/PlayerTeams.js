@@ -1,4 +1,4 @@
 export const PlayerTeams = {
-    RED: "RED",
-    BLUE: "BLUE"
+	RED: "RED",
+	BLUE: "BLUE",
 };

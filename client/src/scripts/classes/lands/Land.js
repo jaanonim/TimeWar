@@ -9,7 +9,7 @@ export default class Land extends MapLand {
 			console.error("Unknown model", modelName);
 			return;
 		}
-		this.model = ModelsManager.models[modelName].children[0].clone();
+		this.model = ModelsManager.getModel(modelName).children[0].clone();
 		this.model.scale.set(1, 1, 1);
 		this.model.rotateY((Math.PI / 2) * Math.round(Math.random() * 4));
 		this.model.material = this.model.material.clone();
