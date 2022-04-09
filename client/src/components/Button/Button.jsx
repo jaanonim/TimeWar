@@ -10,11 +10,12 @@ function Button({
 	h,
 	borderColor,
 	borderColorHover,
-	onClick
+	onClick,
+	disabled,
 }) {
 	return (
 		<div
-			className={styles.button}
+			className={!disabled ? styles.button : styles.buttonDisabled}
 			style={{
 				"--color": color || "var(--main)",
 				"--hover": hoverColor || "var(--main-dark)",
@@ -25,7 +26,7 @@ function Button({
 				"--borderColor": borderColor || "var(--text)",
 				"--borderColorHover": borderColorHover || "var(--text)",
 			}}
-			onClick={onClick}
+			onClick={!disabled ? onClick : null}
 		>
 			{children}
 		</div>
