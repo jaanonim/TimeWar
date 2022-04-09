@@ -28,6 +28,25 @@ export default class ModelsManager {
 		}
 	}
 
+	static processModel(object, src, textures) {
+		object.children[0].castShadow = true;
+		object.children[0].receiveShadow = true;
+		if (textures) {
+			let objs = { default: object };
+			textures.forEach((texture) => {
+				const model = object.clone();
+				model.children[0].material = model.children[0].material.clone();
+				model.children[0].material.map = new TextureLoader().load(
+					src + "_" + texture + ".png"
+				);
+				objs[texture] = model;
+			});
+			return objs;
+		} else {
+			return { default: object };
+		}
+	}
+
 	static loadModel(src, textures) {
 		return new Promise((resolve) => {
 			const loader = new OBJLoader();
@@ -37,24 +56,9 @@ export default class ModelsManager {
 				loader.load(
 					src + ".obj",
 					(object) => {
-						object.children[0].castShadow = true;
-						object.children[0].receiveShadow = true;
-						if (textures) {
-							let objs = { default: object };
-							textures.forEach((texture) => {
-								const model = object.clone();
-								model.children[0].material =
-									model.children[0].material.clone();
-								model.children[0].material.map =
-									new TextureLoader().load(
-										src + "_" + texture + ".png"
-									);
-								objs[texture] = model;
-							});
-							resolve(objs);
-						} else {
-							resolve({ default: object });
-						}
+						resolve(
+							ModelsManager.processModel(object, src, textures)
+						);
 					},
 					null,
 					(error) => {
