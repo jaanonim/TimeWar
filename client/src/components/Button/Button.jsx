@@ -26,7 +26,7 @@ function Button({
 				"--borderColor": borderColor || "var(--text)",
 				"--borderColorHover": borderColorHover || "var(--text)",
 			}}
-			onClick={!disabled ? onClick : () => {}}
+			onClick={!disabled ? onClick : null}
 		>
 			{children}
 		</div>
