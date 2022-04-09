@@ -3,6 +3,8 @@ import ModelsManager from "../../ModelsManager";
 import {HighLightType} from "../../enums/HighLightType";
 import {FigureTypes} from "../../enums/FigureTypes";
 import Figure from "../Figure";
+import GameManager from "../../GameManager";
+import {PlayerTeams} from "../../enums/PlayerTeams";
 
 export default class ArmyFigure extends Figure {
     constructor(who, positionX, positionY, figureId, name, image, description, capturingMask, lives,
@@ -19,7 +21,7 @@ export default class ArmyFigure extends Figure {
             return;
         }
         let model = ModelsManager.models[modelName].clone();
-        if(this.who === "RED")
+        if (this.who === PlayerTeams.RED)
             model.rotation.y = Math.PI;
         model.scale.set(0.5, 0.5, 0.5);
         this.add(model);
@@ -70,9 +72,20 @@ export default class ArmyFigure extends Figure {
     renew() {
         this.isMoved = false;
         this.isAttack = false;
+        this.unHighLightMovePosition();
     }
 
     highLightMovePosition() {
+        if(this.who !== GameManager.instance.player.team) return false;
+        if (this.isMoved) {
+            if (MapCreator.instance.mapObjects[this.mapPositionX] == null) return;
+            let object = MapCreator.instance.mapObjects[this.mapPositionX][this.mapPositionY];
+            if (object != null) {
+                object.hightLightType = HighLightType.MOVE;
+                object.unHighLight();
+            }
+            return;
+        }
         for (let x = 0; x < this.moveMask.length; x++) {
             for (let y = 0; y < this.moveMask[0].length; y++) {
                 let xPos = this.mapPositionX - (this.moveMask.length - 1) / 2 + x;

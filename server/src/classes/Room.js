@@ -4,6 +4,7 @@ module.exports = class Room {
         this.bluePlayer = null;
         this.redPlayer = null;
         this.isStartGame = false;
+        this.turn = "RED";
     }
 
     addPlayer(playerSocket) {
@@ -38,6 +39,15 @@ module.exports = class Room {
         this.sendToOpponent(player, "moveFigure", moveData);
     }
 
+
+    endTurn(player) {
+        if (this.bluePlayer.id === player) {
+            this.turn = "RED";
+        } else {
+            this.turn = "BLUE";
+        }
+        this.sendToOpponent(player, "changeTurn", this.turn);
+    }
 
     sendToOpponent(player, endpoint, msg) {
         if (!this.isStartGame) return;
