@@ -51,7 +51,7 @@ export default class ModelsManager {
 		return new Promise((resolve) => {
 			const loader = new OBJLoader();
 			const materialsLoader = new MTLLoader();
-			materialsLoader.load(src + ".mtl", function (materialsCreator) {
+			materialsLoader.load(src + ".mtl", (materialsCreator) => {
 				loader.setMaterials(materialsCreator);
 				loader.load(
 					src + ".obj",
