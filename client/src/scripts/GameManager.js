@@ -113,9 +113,9 @@ export default class GameManager {
             this.lastHighLight.unHighLight();
         this.lastHighLight = null;
         if (intersects.length > 0) {
-            let intersectLand = intersects.find(obj => obj.object instanceof MapLand);
+            let intersectLand = intersects.find(obj => obj.object?.parent instanceof MapLand);
             if (intersectLand !== undefined) {
-                this.lastHighLight = intersectLand.object;
+                this.lastHighLight = intersectLand.object.parent;
                 this.lastHighLight.highLight();
             }
         }
