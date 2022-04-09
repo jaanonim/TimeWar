@@ -27,7 +27,14 @@ export default class MapLand extends THREE.Object3D {
     }
 
     highLight() {
-        this.material.color.set(0x777777)
+        if (this.model == null) return;
+        if (this.hightLightType === HighLightType.MOVE) {
+            this.model.material.color.set(0x2201ee)
+        } else if (this.hightLightType === HighLightType.ATTACK) {
+            this.model.material.color.set(0xee4444)
+        } else {
+            this.model.material.color.set(0x0033ee)
+        }
     }
 
     unHighLight() {

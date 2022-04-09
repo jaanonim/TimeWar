@@ -10,6 +10,7 @@ import MapLand from "./classes/MapLand";
 import Player from "./classes/Player";
 import MapCreator from "./MapCreator";
 import ModelsManager from "./ModelsManager";
+import {PlayerTeams} from "./enums/PlayerTeams";
 
 
 export default class GameManager {
@@ -29,6 +30,10 @@ export default class GameManager {
         this.selectedFigure = null;
         this.selectFigureIdInUI = null;
         this.selectFigureTypeInUI = null;
+        this.turn = "";
+        this.figuries = [];
+        this.setTurnInfo = null;
+        this.setIsActiveNextTurnButton = null;
     }
 
     async initDisplay(displayElement) {
@@ -109,9 +114,9 @@ export default class GameManager {
             this.lastHighLight.unHighLight();
         this.lastHighLight = null;
         if (intersects.length > 0) {
-            let intersectLand = intersects.find(obj => obj.object instanceof MapLand);
+            let intersectLand = intersects.find(obj => obj.object?.parent instanceof MapLand);
             if (intersectLand !== undefined) {
-                this.lastHighLight = intersectLand.object;
+                this.lastHighLight = intersectLand.object.parent;
                 this.lastHighLight.highLight();
             }
         }
@@ -119,6 +124,7 @@ export default class GameManager {
 
     mouseClickInteration(event) {
         if (event.button === 0) {
+            if (this.turn !== this.player.team) return;
             const raycaster = new THREE.Raycaster();
             const mouseVector = new THREE.Vector2();
             mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -144,6 +150,18 @@ export default class GameManager {
         }
     }
 
+    endTurn() {
+        this.setTurn(this.player.team === PlayerTeams.RED ? PlayerTeams.BLUE : PlayerTeams.RED);
+        Socket.instance.endTurn();
+        this.figuries.forEach(figure => figure?.renew());
+    }
+
+    setTurn(turn) {
+        this.turn = turn;
+        this.setTurnInfo(this.player.team === turn ? "You Turn" : "Wait for Your Turn");
+        this.setIsActiveNextTurnButton(this.player.team === turn);
+    }
+
     placeFigureAction(land) {
         if (this.selectedFigure != null) {
             this.selectedFigure.unHighLightMovePosition();
@@ -158,6 +176,7 @@ export default class GameManager {
 
         let figureFactory = new FigureFactor();
         let figure = figureFactory.createFigure(figureID, x, y, figureType, who);
+        this.figuries.push(figure);
         this.scene.add(figure);
         return figure;
     }
@@ -201,6 +220,7 @@ export default class GameManager {
                 figure.unHighLightMovePosition();
                 this.selectedFigure = null;
             } else {
+                if (figure.who !== GameManager.instance.player.team) return;
                 figure.highLightMovePosition();
                 this.selectedFigure = figure;
             }

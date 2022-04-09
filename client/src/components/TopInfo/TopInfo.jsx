@@ -1,5 +1,6 @@
-import TurnTimer from "../TurnTimer";
+import TurnInfo from "../TurnInfo";
 import styles from "./TopInfo.module.css";
+import TurnTimer from "../TurnTimer";
 
 function TopInfo() {
 	return (
@@ -10,6 +11,7 @@ function TopInfo() {
 				<div className={styles.nickRight}>n2one</div>
 			</div>
 
+			<TurnInfo />
 			<TurnTimer />
 		</div>
 	);
