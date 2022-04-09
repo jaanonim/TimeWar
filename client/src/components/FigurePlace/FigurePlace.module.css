@@ -1,3 +1,25 @@
-.wrapper {
+.box {
 	font-size: 1rem;
+	width: calc((20vw - 4rem) / 3);
+	height: calc((20vw - 4rem) / 3);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	image-rendering: pixelated;
+	cursor: pointer;
+	background-color: var(--third-background);
+	border: var(--border-size) solid var(--main);
+}
+
+.box:hover {
+	background-color: var(--secend-background);
+	border: var(--border-size) solid var(--main-dark);
+}
+
+.selected {
+	border: var(--border-size) solid var(--akcent);
+}
+
+.selected:hover {
+	border: var(--border-size) solid var(--akcent-dark);
 }
