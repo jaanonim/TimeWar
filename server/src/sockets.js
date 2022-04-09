@@ -32,7 +32,7 @@ module.exports = {
                 console.log(figure);
                 room.moveFigure(socket.id, figure);
             });
-            socket.on("endTurn", ()=>{
+            socket.on("endTurn", () => {
                 room.endTurn(socket.id);
             });
 
