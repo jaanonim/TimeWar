@@ -1,13 +1,11 @@
+import Stats from "stats-js";
 import * as THREE from "three";
-import {
-    OrbitControls
-} from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import FigureFactor from "./classes/FigureFactor";
 import ArmyFigure from "./classes/figures/ArmyFigure";
-import {HighLightType} from "./enums/HighLightType";
-import Socket from "./Socket";
 import MapLand from "./classes/MapLand";
 import Player from "./classes/Player";
+import { HighLightType } from "./enums/HighLightType";
 import MapCreator from "./MapCreator";
 import ModelsManager from "./ModelsManager";
 import {PlayerTeams} from "./enums/PlayerTeams";
@@ -60,24 +58,31 @@ export default class GameManager {
         this.scene.add(light);
 
         const shadowSize = 100;
-        light.shadow.blurSamples = 1;
-        light.shadow.mapSize.width = 8192;
-        light.shadow.mapSize.height = 8192;
-        light.shadow.camera.near = 0.5;
-        light.shadow.camera.far = 100;
         light.shadow.camera.left = -shadowSize;
         light.shadow.camera.right = shadowSize;
         light.shadow.camera.top = shadowSize;
         light.shadow.camera.bottom = -shadowSize;
+        light.shadow.blurSamples = 1;
+        light.shadow.mapSize.width = 1024 * 64;
+        light.shadow.mapSize.height = 1024 * 64;
+        light.shadow.camera.near = 0.5;
+        light.shadow.camera.far = 100;
 
         //Helpers
-        this.cameraConrols = new OrbitControls(this.camera, this.renderer.domElement);
+        this.cameraConrols = new OrbitControls(
+          this.camera,
+          this.renderer.domElement
+        );
         this.camera.position.y = 25;
         this.camera.position.z = 35;
-        this.update();
-        const helper = new THREE.CameraHelper(light.shadow.camera);
-        this.scene.add(helper);
 
+        //Stats
+        this.stats = new Stats();
+        this.stats.showPanel(0);
+        document.body.appendChild(this.stats.dom);
+
+        this.update();
+      
         //Add Listener for resizing screen
         window.addEventListener("resize", this.onWindowResize.bind(this));
         displayElement.addEventListener("mousedown", this.mouseClickInteration.bind(this));
@@ -86,9 +91,11 @@ export default class GameManager {
     }
 
     update() {
-        requestAnimationFrame(this.update.bind(this));
-        this.cameraConrols.update();
-        this.renderer.render(this.scene, this.camera);
+      this.stats.begin();
+      this.cameraConrols.update();
+      this.renderer.render(this.scene, this.camera);
+      this.stats.end();
+      requestAnimationFrame(this.update.bind(this));
     }
 
     onWindowResize() {
@@ -226,6 +233,4 @@ export default class GameManager {
             }
         }
     }
-
-
 }
