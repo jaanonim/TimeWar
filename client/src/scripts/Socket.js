@@ -2,13 +2,16 @@ import {io} from "socket.io-client";
 import GameManager from "./GameManager";
 import MapCreator from "./MapCreator";
 
+const environment = process.env.NODE_ENV;
+const productionUrl = "/";
+const developmentUrl = "http://localhost:5000/";
 export default class Socket {
     static instance = null;
 
     constructor(room) {
         if (Socket.instance != null) return null;
         Socket.instance = this;
-        this.socket = io('ws://localhost:5000', {
+        this.socket = io(environment === "development" ? developmentUrl : productionUrl, {
             query: {
                 room: room
             }
