@@ -4,7 +4,7 @@ export default class FigureManager {
 		{
 			id: 1,
 			name: "Arachnodroid",
-			image: "Arachnoid.png",
+			image: "Arachnoid",
 			description: "Lorem ipsum",
 			lives: 10,
 			damage: 2,
@@ -31,7 +31,7 @@ export default class FigureManager {
 		{
 			id: 2,
 			name: "RaconBot",
-			image: "ReconBot.png",
+			image: "ReconBot",
 			description: "Lorem ipsum2",
 			lives: 6,
 			damage: 1,
