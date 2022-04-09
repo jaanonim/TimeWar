@@ -54,7 +54,6 @@ export default class GameManager {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         displayElement.innerHTML = "";
         displayElement.appendChild(this.renderer.domElement);
-        MapCreator.instance.createMap(this.scene);
 
         //light
         const light = new THREE.DirectionalLight(0xffffff, 4, 100);
@@ -99,6 +98,10 @@ export default class GameManager {
             this.highlighting.bind(this)
         );
         new Socket("room");
+    }
+
+    async startGame() {
+        MapCreator.instance.createMap(this.scene);
     }
 
     update() {

@@ -1,4 +1,5 @@
 import MapLandFactor from "./classes/MapLandFactor";
+import GameManager from "./GameManager";
 
 export default class MapCreator {
     static _instance = null;
@@ -28,6 +29,27 @@ export default class MapCreator {
         this.mapObjects = [];
         this.mapWidth = this.map.length * this.tileSize;
         this.mapHeight = this.map[0].length * this.tileSize;
+    }
+
+    setMap(map) {
+        this.map = map;
+    }
+
+    recreateMap(objectMap) {
+        console.log(this.mapObjects);
+        objectMap.forEach(row => {
+            row.forEach(figure => {
+                if (figure !== null) {
+                    GameManager.instance.placeFigure(
+                        figure.figureId,
+                        figure.mapPositionX,
+                        figure.mapPositionY,
+                        figure.figureType,
+                        figure.who);
+                }
+            })
+
+        })
     }
 
     createMap(scene) {

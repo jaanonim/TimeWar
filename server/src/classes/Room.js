@@ -1,3 +1,5 @@
+const Map = require("./Map");
+
 module.exports = class Room {
     constructor(name) {
         this.name = name;
@@ -5,6 +7,11 @@ module.exports = class Room {
         this.redPlayer = null;
         this.isStartGame = false;
         this.turn = "RED";
+        this.map = new Map();
+    }
+
+    async initMap() {
+        await this.map.loadMap("map1");
     }
 
     addPlayer(playerSocket) {
@@ -23,7 +30,7 @@ module.exports = class Room {
         return this.bluePlayer != null && this.redPlayer != null;
     }
 
-    startGame() {
+    async startGame() {
         if (!this.canStartGame()) return false;
         this.isStartGame = true;
         return true;
@@ -31,6 +38,8 @@ module.exports = class Room {
 
     placeFigure(player, figure) {
         //TODO: make checking if this move is OK
+        figure.who = this.redPlayer.id === player ? "RED" : "BLUE";
+        this.map.addFigure(figure);
         this.sendToOpponent(player, "placeFigure", figure);
     }
 
