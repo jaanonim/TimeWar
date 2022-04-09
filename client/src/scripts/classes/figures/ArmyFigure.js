@@ -4,6 +4,7 @@ import {HighLightType} from "../../enums/HighLightType";
 import {FigureTypes} from "../../enums/FigureTypes";
 import Figure from "../Figure";
 import GameManager from "../../GameManager";
+import {PlayerTeams} from "../../enums/PlayerTeams";
 
 export default class ArmyFigure extends Figure {
     constructor(who, positionX, positionY, figureId, name, image, description, capturingMask, lives,
@@ -20,7 +21,7 @@ export default class ArmyFigure extends Figure {
             return;
         }
         let model = ModelsManager.models[modelName].clone();
-        if (this.who === "RED")
+        if (this.who === PlayerTeams.RED)
             model.rotation.y = Math.PI;
         model.scale.set(0.5, 0.5, 0.5);
         this.add(model);

@@ -10,6 +10,7 @@ import MapLand from "./classes/MapLand";
 import Player from "./classes/Player";
 import MapCreator from "./MapCreator";
 import ModelsManager from "./ModelsManager";
+import {PlayerTeams} from "./enums/PlayerTeams";
 
 
 export default class GameManager {
@@ -123,7 +124,6 @@ export default class GameManager {
 
     mouseClickInteration(event) {
         if (event.button === 0) {
-            console.log(this.turn, this.player.team);
             if (this.turn !== this.player.team) return;
             const raycaster = new THREE.Raycaster();
             const mouseVector = new THREE.Vector2();
@@ -151,7 +151,7 @@ export default class GameManager {
     }
 
     endTurn() {
-        this.setTurn(this.player.team === "RED" ? "BLUE" : "RED");
+        this.setTurn(this.player.team === PlayerTeams.RED ? PlayerTeams.BLUE : PlayerTeams.RED);
         Socket.instance.endTurn();
         this.figuries.forEach(figure => figure?.renew());
     }
@@ -220,7 +220,7 @@ export default class GameManager {
                 figure.unHighLightMovePosition();
                 this.selectedFigure = null;
             } else {
-                if(figure.who !== GameManager.instance.player.team) return;
+                if (figure.who !== GameManager.instance.player.team) return;
                 figure.highLightMovePosition();
                 this.selectedFigure = figure;
             }
