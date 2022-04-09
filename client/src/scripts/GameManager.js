@@ -126,9 +126,9 @@ export default class GameManager {
             raycaster.setFromCamera(mouseVector, this.camera);
             const intersects = raycaster.intersectObjects(this.scene.children);
             if (intersects.length > 0) {
-                let intersectLand = intersects.find(obj => obj.object instanceof MapLand);
+                let intersectLand = intersects.find(obj => obj.object?.parent instanceof MapLand);
                 if (intersectLand !== undefined) {
-                    let land = intersectLand.object;
+                    let land = intersectLand.object.parent;
                     //TODO: change to create selected object
                     if (land.figure !== null) {
                         this.selectFigure(land);
