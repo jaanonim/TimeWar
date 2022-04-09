@@ -29,6 +29,8 @@ export default class GameManager {
         this.selectedFigure = null;
         this.selectFigureIdInUI = null;
         this.selectFigureTypeInUI = null;
+        this.turn = "";
+        this.figuries = [];
     }
 
     async initDisplay(displayElement) {
@@ -119,6 +121,8 @@ export default class GameManager {
 
     mouseClickInteration(event) {
         if (event.button === 0) {
+            console.log(this.turn, this.player.team);
+            if (this.turn !== this.player.team) return;
             const raycaster = new THREE.Raycaster();
             const mouseVector = new THREE.Vector2();
             mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -144,6 +148,12 @@ export default class GameManager {
         }
     }
 
+    endTurn() {
+        this.turn = this.player.team === "RED" ? "BLUE" : "RED";
+        Socket.instance.endTurn();
+        this.figuries.forEach(figure => figure?.renew());
+    }
+
     placeFigureAction(land) {
         if (this.selectedFigure != null) {
             this.selectedFigure.unHighLightMovePosition();
@@ -158,6 +168,7 @@ export default class GameManager {
 
         let figureFactory = new FigureFactor();
         let figure = figureFactory.createFigure(figureID, x, y, figureType, who);
+        this.figuries.push(figure);
         this.scene.add(figure);
         return figure;
     }

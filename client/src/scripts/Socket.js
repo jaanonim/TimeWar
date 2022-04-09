@@ -6,7 +6,7 @@ export default class Socket {
     static instance = null;
 
     constructor(room) {
-        if(Socket.instance != null) return null;
+        if (Socket.instance != null) return null;
         Socket.instance = this;
         this.socket = io('ws://localhost:5000', {
             query: {
@@ -35,6 +35,10 @@ export default class Socket {
         });
     }
 
+    endTurn() {
+        this.socket.emit("endTurn");
+    }
+
     setup() {
         this.socket.on("connect", () => {
             console.log("connect", this.socket.id);
@@ -60,6 +64,10 @@ export default class Socket {
         this.socket.on("startGame", (data) => {
             console.log("start", data);
             GameManager.instance.player.setTeam(data.team);
+            GameManager.instance.turn = data.turn;
+        });
+        this.socket.on("youTurn", () => {
+            GameManager.instance.turn = GameManager.instance.player.team;
         });
 
         this.socket.on("disconnect", () => {

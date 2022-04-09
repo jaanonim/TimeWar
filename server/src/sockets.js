@@ -22,8 +22,8 @@ module.exports = {
 
             if (room.startGame()) {
                 console.log("START");
-                room.redPlayer.emit("startGame", {"team": "RED"});
-                room.bluePlayer.emit("startGame", {"team": "BLUE"});
+                room.redPlayer.emit("startGame", {"team": "RED", "turn": room.turn});
+                room.bluePlayer.emit("startGame", {"team": "BLUE", "turn": room.turn});
             }
             socket.on("placeFigure", (figure) => {
                 room.placeFigure(socket.id, figure);
@@ -31,6 +31,9 @@ module.exports = {
             socket.on("moveFigure", (figure) => {
                 console.log(figure);
                 room.moveFigure(socket.id, figure);
+            });
+            socket.on("endTurn", ()=>{
+                room.endTurn(socket.id);
             });
 
             socket.on('disconnecting', () => {
