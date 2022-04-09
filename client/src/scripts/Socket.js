@@ -64,10 +64,10 @@ export default class Socket {
         this.socket.on("startGame", (data) => {
             console.log("start", data);
             GameManager.instance.player.setTeam(data.team);
-            GameManager.instance.turn = data.turn;
+            GameManager.instance.setTurn(data.turn);
         });
-        this.socket.on("youTurn", () => {
-            GameManager.instance.turn = GameManager.instance.player.team;
+        this.socket.on("changeTurn", (turn) => {
+            GameManager.instance.setTurn(turn.msg);
         });
 
         this.socket.on("disconnect", () => {

@@ -46,7 +46,7 @@ module.exports = class Room {
         } else {
             this.turn = "BLUE";
         }
-        this.sendToOpponent(player, "youTurn");
+        this.sendToOpponent(player, "changeTurn", this.turn);
     }
 
     sendToOpponent(player, endpoint, msg) {

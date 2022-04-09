@@ -31,6 +31,8 @@ export default class GameManager {
         this.selectFigureTypeInUI = null;
         this.turn = "";
         this.figuries = [];
+        this.setTurnInfo = null;
+        this.setIsActiveNextTurnButton = null;
     }
 
     async initDisplay(displayElement) {
@@ -149,9 +151,15 @@ export default class GameManager {
     }
 
     endTurn() {
-        this.turn = this.player.team === "RED" ? "BLUE" : "RED";
+        this.setTurn(this.player.team === "RED" ? "BLUE" : "RED");
         Socket.instance.endTurn();
         this.figuries.forEach(figure => figure?.renew());
+    }
+
+    setTurn(turn) {
+        this.turn = turn;
+        this.setTurnInfo(this.player.team === turn ? "You Turn" : "Wait for Your Turn");
+        this.setIsActiveNextTurnButton(this.player.team === turn);
     }
 
     placeFigureAction(land) {
@@ -212,6 +220,7 @@ export default class GameManager {
                 figure.unHighLightMovePosition();
                 this.selectedFigure = null;
             } else {
+                if(figure.who !== GameManager.instance.player.team) return;
                 figure.highLightMovePosition();
                 this.selectedFigure = figure;
             }
