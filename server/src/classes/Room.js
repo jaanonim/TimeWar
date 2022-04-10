@@ -1,4 +1,5 @@
 const Map = require("./Map");
+const Figures = require("./Figures");
 
 module.exports = class Room {
     constructor(name) {
@@ -8,10 +9,12 @@ module.exports = class Room {
         this.isStartGame = false;
         this.turn = "RED";
         this.map = new Map();
+        this.figures = new Figures();
     }
 
     async initMap() {
         await this.map.loadMap("map1");
+        await this.figures.loadArmy("Army");
     }
 
     addPlayer(playerSocket) {

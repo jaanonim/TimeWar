@@ -27,13 +27,15 @@ module.exports = {
                     "team": "RED",
                     "turn": room.turn,
                     mapStruct: room.map.mapStruct,
-                    mapObjects: room.map.mapObjects
+                    mapObjects: room.map.mapObjects,
+                    figures: room.figures.getFigures()
                 });
                 room.bluePlayer.emit("startGame", {
                     "team": "BLUE",
                     "turn": room.turn,
                     mapStruct: room.map.mapStruct,
-                    mapObjects: room.map.mapObjects
+                    mapObjects: room.map.mapObjects,
+                    figures: room.figures.getFigures()
                 });
             }
             socket.on("placeFigure", (figure) => {

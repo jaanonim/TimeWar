@@ -68,6 +68,7 @@ export default class Socket {
             console.log("start", data);
             GameManager.instance.player.setTeam(data.team);
             GameManager.instance.setTurn(data.turn);
+            GameManager.instance.loadFigures(data.figures);
             MapCreator.instance.setMap(data.mapStruct);
             await GameManager.instance.startGame();
             MapCreator.instance.recreateMap(data.mapObjects);

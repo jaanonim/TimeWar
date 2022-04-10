@@ -5,7 +5,7 @@ import ArmyFigure from "./figures/ArmyFigure";
 export default class FigureFactor {
 
     createArmy(figureId, x, y,who) {
-        let objData = FigureManager.landArmy.find(obj => obj.id === figureId);
+        let objData =  FigureManager.instance.getFigure(FigureTypes.ARMY,figureId);
         if (objData === undefined) {
             console.error("Unknown type");
             return;

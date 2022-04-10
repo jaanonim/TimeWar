@@ -1,61 +1,37 @@
+import {FigureTypes} from "./enums/FigureTypes";
+
 export default class FigureManager {
-    //TODO: Now its temporary in the future its load from server or json
-    static landArmy = [
-        {
-            id: 1,
-            name: "Arachnodroid",
-            image: "Arachnoid",
-            description: "Lorem ipsum",
-            lives: 10,
-            damage: 2,
-            isFlyable: false,
-            model: "arachnoid",
-            capturingMask: [
-                [0, 1, 0],
-                [1, 1, 1],
-                [0, 1, 0],
-            ],
-            attackMask: [
-                [1, 1, 1, 1, 1],
-                [1, 1, 0, 1, 1],
-                [1, 0, 0, 0, 1],
-                [1, 1, 0, 1, 1],
-                [1, 1, 1, 1, 1],
-            ],
-            moveMask: [
-                [0, 1, 0],
-                [1, 1, 1],
-                [0, 1, 0],
-            ],
-        },
-        {
-            id: 2,
-            name: "RaconBot",
-            image: "ReconBot",
-            description: "Lorem ipsum2",
-            lives: 6,
-            damage: 1,
-            isFlyable: false,
-            model: "reconBot",
-            capturingMask: [
-                [1, 1, 1],
-                [1, 1, 1],
-                [1, 1, 1],
-            ],
-            attackMask: [
-                [1, 1, 1],
-                [1, 0, 1],
-                [1, 1, 1],
-            ],
-            moveMask: [
-                [1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1],
-                [1, 1, 1, 1, 1, 1, 1],
-            ],
-        },
-    ];
+    static _instance = null;
+
+    static get instance() {
+        if (FigureManager._instance == null) {
+            FigureManager._instance = new FigureManager();
+        }
+        return FigureManager._instance;
+    }
+
+    constructor() {
+        this.figures = null;
+    }
+
+    getFigure(type, id) {
+        switch (type) {
+            case FigureTypes.ARMY:
+                return this.figures?.army?.find(figure => figure.id === id);
+            default:
+                console.error("Type not found");
+        }
+    }
+
+    getLandArmy() {
+        return this.figures.army.filter(figure => !figure.isFlyable);
+    }
+
+    getAirArmy() {
+        return this.figures.army.filter(figure => figure.isFlyable);
+    }
+
+    getBuildings() {
+        return this.figures.buildings.filter(figure => figure.isFlyable);
+    }
 }

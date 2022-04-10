@@ -10,6 +10,7 @@ import {PlayerTeams} from "./enums/PlayerTeams";
 import MapCreator from "./MapCreator";
 import ModelsManager from "./ModelsManager";
 import Socket from "./Socket";
+import FigureManager from "./FigureManager";
 
 export default class GameManager {
     static _instance = null;
@@ -32,6 +33,7 @@ export default class GameManager {
         this.figuries = [];
         this.setTurnInfo = null;
         this.setIsActiveNextTurnButton = null;
+        this.setFiguresOnMenu = null;
     }
 
     async initDisplay(displayElement) {
@@ -174,6 +176,13 @@ export default class GameManager {
                 }
             }
         }
+    }
+
+    loadFigures(figures) {
+        FigureManager.instance.figures = figures;
+        this.setFiguresOnMenu({
+            landArmy: FigureManager.instance.getLandArmy()
+        });
     }
 
     endTurn() {
