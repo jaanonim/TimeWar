@@ -1,4 +1,5 @@
 import MapLandFactor from "./classes/MapLandFactor";
+import GameManager from "./GameManager";
 
 export default class MapCreator {
     static _instance = null;
@@ -11,23 +12,33 @@ export default class MapCreator {
     }
 
     constructor() {
-        //TODO: change to get this from server
-        this.map = [
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [2, 2, 1, 2, 0, 0, 0, 1, 1, 1],
-            [2, 2, 2, 2, 1, 1, 0, 1, 1, 1],
-            [1, 2, 2, 2, 2, 1, 0, 1, 1, 1],
-            [1, 1, 1, 2, 2, 2, 0, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        ];
         this.tileSize = 3.2;
         this.mapObjects = [];
+        this.mapWidth = 0;
+        this.mapHeight = 0;
+    }
+
+    setMap(map) {
+        this.map = map;
         this.mapWidth = this.map.length * this.tileSize;
         this.mapHeight = this.map[0].length * this.tileSize;
+    }
+
+    recreateMap(objectMap) {
+        objectMap.forEach(row => {
+            row.forEach(figure => {
+                if (figure !== null) {
+                    let object = GameManager.instance.placeFigure(
+                        figure.figureId,
+                        figure.mapPositionX,
+                        figure.mapPositionY,
+                        figure.figureType,
+                        figure.who);
+                    object.isMoved = figure.isMoved;
+                }
+            })
+
+        })
     }
 
     createMap(scene) {
@@ -35,6 +46,19 @@ export default class MapCreator {
         let heightLength = this.map[0].length;
         let tileWidth = this.mapWidth / widthLength;
         let tileHeight = this.mapHeight / heightLength;
+        if (this.mapObjects.length !== 0) {
+            this.mapObjects.forEach(row => {
+                row.forEach(land => {
+                    if (land !== null) {
+                        if (land.figure !== null) {
+                            scene.remove(land.figure);
+                        }
+                        scene.remove(land);
+                    }
+                })
+
+            })
+        }
         this.mapObjects = [];
         let landFactory = new MapLandFactor();
         for (let x = 0; x < widthLength; x++) {

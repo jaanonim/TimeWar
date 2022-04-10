@@ -6,11 +6,12 @@ module.exports = {
     initSockets: (server) => {
         io = new Server(server);
 
-        io.on("connection", (socket) => {
+        io.on("connection", async (socket) => {
             let roomName = socket.handshake.query.room;
             let room = rooms.find(r => r.name === roomName);
             if (room == null) {
                 room = new Room(roomName);
+                await room.initMap();
                 rooms.push(room);
             }
             if (room.addPlayer(socket) == null) {
@@ -20,10 +21,22 @@ module.exports = {
 
             socket.join(roomName);
 
-            if (room.startGame()) {
+            if (await room.startGame()) {
                 console.log("START");
-                room.redPlayer.emit("startGame", {"team": "RED", "turn": room.turn});
-                room.bluePlayer.emit("startGame", {"team": "BLUE", "turn": room.turn});
+                room.redPlayer.emit("startGame", {
+                    "team": "RED",
+                    "turn": room.turn,
+                    mapStruct: room.map.mapStruct,
+                    mapObjects: room.map.mapObjects,
+                    figures: room.figures.getFigures()
+                });
+                room.bluePlayer.emit("startGame", {
+                    "team": "BLUE",
+                    "turn": room.turn,
+                    mapStruct: room.map.mapStruct,
+                    mapObjects: room.map.mapObjects,
+                    figures: room.figures.getFigures()
+                });
             }
             socket.on("placeFigure", (figure) => {
                 room.placeFigure(socket.id, figure);

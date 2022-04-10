@@ -10,6 +10,7 @@ import {PlayerTeams} from "./enums/PlayerTeams";
 import MapCreator from "./MapCreator";
 import ModelsManager from "./ModelsManager";
 import Socket from "./Socket";
+import FigureManager from "./FigureManager";
 
 export default class GameManager {
     static _instance = null;
@@ -32,6 +33,7 @@ export default class GameManager {
         this.figuries = [];
         this.setTurnInfo = null;
         this.setIsActiveNextTurnButton = null;
+        this.setFiguresOnMenu = null;
     }
 
     async initDisplay(displayElement) {
@@ -54,7 +56,6 @@ export default class GameManager {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         displayElement.innerHTML = "";
         displayElement.appendChild(this.renderer.domElement);
-        MapCreator.instance.createMap(this.scene);
 
         //light
         const light = new THREE.DirectionalLight(0xffffff, 4, 100);
@@ -99,6 +100,10 @@ export default class GameManager {
             this.highlighting.bind(this)
         );
         new Socket("room");
+    }
+
+    async startGame() {
+        MapCreator.instance.createMap(this.scene);
     }
 
     update() {
@@ -155,7 +160,6 @@ export default class GameManager {
                 );
                 if (intersectLand !== undefined) {
                     let land = intersectLand.object.parent;
-                    //TODO: change to create selected object
                     if (land.figure !== null) {
                         this.selectFigure(land);
                         return;
@@ -171,6 +175,15 @@ export default class GameManager {
                 }
             }
         }
+    }
+
+    loadFigures(figures) {
+        FigureManager.instance.figures = figures;
+        this.setFiguresOnMenu({
+            landArmy: FigureManager.instance.getLandArmy(),
+            airArmy: FigureManager.instance.getAirArmy(),
+            buildings: FigureManager.instance.getBuildings()
+        });
     }
 
     endTurn() {

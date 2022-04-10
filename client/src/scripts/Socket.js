@@ -64,10 +64,14 @@ export default class Socket {
                 data.msg.newY
             );
         });
-        this.socket.on("startGame", (data) => {
+        this.socket.on("startGame", async (data) => {
             console.log("start", data);
             GameManager.instance.player.setTeam(data.team);
             GameManager.instance.setTurn(data.turn);
+            GameManager.instance.loadFigures(data.figures);
+            MapCreator.instance.setMap(data.mapStruct);
+            await GameManager.instance.startGame();
+            MapCreator.instance.recreateMap(data.mapObjects);
         });
         this.socket.on("changeTurn", (turn) => {
             GameManager.instance.setTurn(turn.msg);
