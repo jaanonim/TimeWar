@@ -49,7 +49,6 @@ module.exports = {
 
             socket.on('disconnecting', () => {
                 room.disconnectPlayer(socket.id);
-                console.log(rooms);
                 console.log("bye ", socket.id)
 
             });

@@ -45,6 +45,7 @@ module.exports = class Room {
 
     moveFigure(player, moveData) {
         //TODO: make checking if this move is OK
+        this.map.moveFigure(moveData);
         this.sendToOpponent(player, "moveFigure", moveData);
     }
 
@@ -55,6 +56,7 @@ module.exports = class Room {
         } else {
             this.turn = "BLUE";
         }
+        this.map.figures.forEach(figure => figure.isMoved = false);
         this.sendToOpponent(player, "changeTurn", this.turn);
     }
 

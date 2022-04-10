@@ -4,6 +4,7 @@ module.exports = class Room {
     constructor() {
         this.mapStruct = [];
         this.mapObjects = [];
+        this.figures = [];
     }
 
     async loadMap(name) {
@@ -16,8 +17,9 @@ module.exports = class Room {
     }
 
     addFigure(figure) {
-        console.log(figure);
         this.mapObjects[figure.mapPositionX][figure.mapPositionY] = figure;
+        this.figures.isMoved = false;
+        this.figures.push(figure);
     }
 
     /*
@@ -27,7 +29,14 @@ module.exports = class Room {
             newY: y
     * */
     moveFigure(figureMoveData) {
-        this.mapObjects[figureMoveData.figureX][figureMoveData.figureY] = this.mapObjects[figureMoveData.newX][figureMoveData.newY];
+        console.log(figureMoveData);
+        let figure = this.mapObjects[figureMoveData.figureX][figureMoveData.figureY];
+        figure.mapPositionX = figureMoveData.newX;
+        figure.mapPositionY = figureMoveData.newY;
+        figure.isMoved = true;
+        this.mapObjects[figureMoveData.newX][figureMoveData.newY] = figure;
+
         this.mapObjects[figureMoveData.figureX][figureMoveData.figureY] = null;
+        console.log(this.mapObjects);
     }
 };
