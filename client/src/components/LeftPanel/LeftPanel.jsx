@@ -10,6 +10,8 @@ function LeftPanel() {
     const [figures, setFigures] = useState(null);
 
     let landArmy = figures ? figures.landArmy : [];
+    let airArmy = figures ? figures.airArmy : [];
+    let buildings = figures ? figures.buildings : [];
     GameManager.instance.onSelectFigureInUI(
         selectedFigureId,
         selectedFigureType

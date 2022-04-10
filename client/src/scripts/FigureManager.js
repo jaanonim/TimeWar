@@ -32,6 +32,6 @@ export default class FigureManager {
     }
 
     getBuildings() {
-        return this.figures.buildings.filter(figure => figure.isFlyable);
+        return this.figures.buildings;
     }
 }

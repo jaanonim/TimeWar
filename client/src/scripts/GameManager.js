@@ -160,7 +160,6 @@ export default class GameManager {
                 );
                 if (intersectLand !== undefined) {
                     let land = intersectLand.object.parent;
-                    //TODO: change to create selected object
                     if (land.figure !== null) {
                         this.selectFigure(land);
                         return;
@@ -181,7 +180,9 @@ export default class GameManager {
     loadFigures(figures) {
         FigureManager.instance.figures = figures;
         this.setFiguresOnMenu({
-            landArmy: FigureManager.instance.getLandArmy()
+            landArmy: FigureManager.instance.getLandArmy(),
+            airArmy: FigureManager.instance.getAirArmy(),
+            buildings: FigureManager.instance.getBuildings()
         });
     }
 

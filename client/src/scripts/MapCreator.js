@@ -12,7 +12,6 @@ export default class MapCreator {
     }
 
     constructor() {
-        //TODO: change to get this from server
         this.tileSize = 3.2;
         this.mapObjects = [];
         this.mapWidth = 0;
