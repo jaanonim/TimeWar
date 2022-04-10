@@ -25,7 +25,6 @@ export default class MapCreator {
     }
 
     recreateMap(objectMap) {
-        console.log(this.mapObjects);
         objectMap.forEach(row => {
             row.forEach(figure => {
                 if (figure !== null) {

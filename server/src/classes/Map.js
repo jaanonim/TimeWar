@@ -21,13 +21,6 @@ module.exports = class Room {
         this.figures.isMoved = false;
         this.figures.push(figure);
     }
-
-    /*
-    *       figureX: oldX,
-            figureY: oldY,
-            newX: x,
-            newY: y
-    * */
     moveFigure(figureMoveData) {
         console.log(figureMoveData);
         let figure = this.mapObjects[figureMoveData.figureX][figureMoveData.figureY];
