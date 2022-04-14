@@ -75,6 +75,7 @@ export default class Socket {
             MapCreator.instance.recreateMap(data.mapObjects);
         });
         this.socket.on("endGame", (data) => {
+            //TODO: MAKE END GAME PANEL
             console.log("WIN", data.who);
             setTimeout(()=>{
                 location.reload()
