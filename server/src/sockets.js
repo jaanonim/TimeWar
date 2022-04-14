@@ -23,19 +23,21 @@ module.exports = {
 
             if (await room.startGame()) {
                 console.log("START");
-                room.redPlayer.emit("startGame", {
+                room.redPlayer.socket.emit("startGame", {
                     "team": "RED",
                     "turn": room.turn,
                     mapStruct: room.map.mapStruct,
                     mapObjects: room.map.mapObjects,
-                    figures: room.figures.getFigures()
+                    figures: room.figures.getFigures(),
+                    winTarget: room.winTarget
                 });
-                room.bluePlayer.emit("startGame", {
+                room.bluePlayer.socket.emit("startGame", {
                     "team": "BLUE",
                     "turn": room.turn,
                     mapStruct: room.map.mapStruct,
                     mapObjects: room.map.mapObjects,
-                    figures: room.figures.getFigures()
+                    figures: room.figures.getFigures(),
+                    winTarget: room.winTarget
                 });
             }
             socket.on("placeFigure", (figure) => {

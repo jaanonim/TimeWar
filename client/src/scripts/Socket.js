@@ -69,9 +69,16 @@ export default class Socket {
             GameManager.instance.player.setTeam(data.team);
             GameManager.instance.setTurn(data.turn);
             GameManager.instance.loadFigures(data.figures);
+            GameManager.instance.winTarget = data.winTarget;
             MapCreator.instance.setMap(data.mapStruct);
             await GameManager.instance.startGame();
             MapCreator.instance.recreateMap(data.mapObjects);
+        });
+        this.socket.on("endGame", (data) => {
+            console.log("WIN", data.who);
+            setTimeout(()=>{
+                location.reload()
+            },3000)
         });
         this.socket.on("changeTurn", (turn) => {
             GameManager.instance.setTurn(turn.msg);

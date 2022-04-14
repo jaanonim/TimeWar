@@ -34,6 +34,8 @@ export default class GameManager {
         this.setTurnInfo = null;
         this.setIsActiveNextTurnButton = null;
         this.setFiguresOnMenu = null;
+        this.setWinTargetBar = null;
+        this.winTarget = 0;
     }
 
     async initDisplay(displayElement) {
@@ -278,4 +280,9 @@ export default class GameManager {
             }
         }
     }
+
+    changeWinTargetBar() {
+        this.setWinTargetBar(this.player.winProgress, this.winTarget);
+    }
+
 }

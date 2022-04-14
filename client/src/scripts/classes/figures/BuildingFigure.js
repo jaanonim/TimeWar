@@ -42,4 +42,9 @@ export default class BuildingFigure extends Figure {
         model.scale.set(scale, scale, scale);
         this.add(model);
     }
+
+    renew() {
+        super.renew();
+        this.isAttack = false;
+    }
 }
