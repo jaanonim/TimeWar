@@ -13,7 +13,7 @@ export default class FigureFactor {
             return;
         }
         return new ArmyFigure(who, x, y, objData.id, objData.name, objData.image, objData.description, objData.capturingMask, objData.lives,
-            objData.model,objData.scale, objData.attackMask, objData.moveMask, objData.damage, objData.isFlyable);
+            objData.model, objData.scale, objData.attackMask, objData.moveMask, objData.damage, objData.isFlyable);
 
     }
 
@@ -23,12 +23,12 @@ export default class FigureFactor {
             console.error("Unknown type");
             return;
         }
-
+        console.log(objData);
         if (figureId === 1) {
-            return new ResearchLab(who, x, y, objData.id, objData.name, objData.image, objData.description, objData.capturingMask, objData.model,objData.scale,)
+            return new ResearchLab(who, x, y, objData.id, objData.name, objData.image, objData.description, objData.capturingMask, objData.model, objData.scale)
         }
         return new BuildingFigure(who, x, y, objData.id, objData.name, objData.image, objData.description, objData.capturingMask, objData.lives,
-            objData.model,objData.scale,);
+            objData.model, objData.scale);
 
     }
 

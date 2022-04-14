@@ -15,9 +15,27 @@ module.exports = class Room {
     async initMap() {
         await this.map.loadMap("map1");
         await this.figures.loadArmy("Army");
-        await this.figures.loadBuildings("Buildings")
+        await this.figures.loadBuildings("Buildings");
+        this.placeStartBuildings();
     }
-
+    placeStartBuildings(){
+        let width = this.map.mapStruct.length;
+        let height = this.map.mapStruct[0].length;
+        this.map.addFigure({
+            who:"BLUE",
+            figureId:1,
+            figureType: 2,
+            mapPositionX: Math.floor(width/2),
+            mapPositionY: 0,
+        });
+        this.map.addFigure({
+            who:"RED",
+            figureId: 1,
+            figureType: 2,
+            mapPositionX: Math.floor(width/2),
+            mapPositionY: height-1,
+        });
+    }
     addPlayer(playerSocket) {
         if (this.bluePlayer == null) {
             this.bluePlayer = playerSocket;
