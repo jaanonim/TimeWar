@@ -15,6 +15,7 @@ module.exports = class Room {
     async initMap() {
         await this.map.loadMap("map1");
         await this.figures.loadArmy("Army");
+        await this.figures.loadBuildings("Buildings")
     }
 
     addPlayer(playerSocket) {

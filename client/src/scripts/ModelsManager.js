@@ -14,6 +14,14 @@ export default class ModelsManager {
             "models/Figures/ReconBot/ReconBot",
             ["red", "blue"]
         );
+        this.models.factory = await this.loadModel(
+            "models/Buildings/Factory/Factory",
+            ["red", "blue"]
+        );
+        this.models.lab = await this.loadModel(
+            "models/Buildings/Lab/Lab",
+            ["red", "blue"]
+        );
         this.models.land = await this.loadModel("models/Land/Land/Land");
         this.models.mountain = await this.loadModel(
             "models/Land/Mountain/Mountain"

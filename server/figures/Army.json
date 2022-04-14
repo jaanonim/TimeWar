@@ -8,11 +8,7 @@
     "damage": 2,
     "isFlyable": false,
     "model": "arachnoid",
-    "capturingMask": [
-      [0, 1, 0],
-      [1, 1, 1],
-      [0, 1, 0]
-    ],
+    "scale": 0.5,
     "attackMask": [
       [1, 1, 1, 1, 1],
       [1, 1, 0, 1, 1],
@@ -35,11 +31,7 @@
     "damage": 1,
     "isFlyable": false,
     "model": "reconBot",
-    "capturingMask": [
-      [1, 1, 1],
-      [1, 1, 1],
-      [1, 1, 1]
-    ],
+    "scale": 0.5,
     "attackMask": [
       [1, 1, 1],
       [1, 0, 1],

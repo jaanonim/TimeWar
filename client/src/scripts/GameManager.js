@@ -182,7 +182,7 @@ export default class GameManager {
         this.setFiguresOnMenu({
             landArmy: FigureManager.instance.getLandArmy(),
             airArmy: FigureManager.instance.getAirArmy(),
-            buildings: FigureManager.instance.getBuildings()
+            buildings: FigureManager.instance.getBuildings()?.filter(building => building.display)
         });
     }
 
