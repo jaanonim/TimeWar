@@ -18,6 +18,8 @@ export default class FigureManager {
         switch (type) {
             case FigureTypes.ARMY:
                 return this.figures?.army?.find(figure => figure.id === id);
+            case FigureTypes.BUILDING:
+                return this.figures?.buildings?.find(figure => figure.id === id);
             default:
                 console.error("Type not found");
         }

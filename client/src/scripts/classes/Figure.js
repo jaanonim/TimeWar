@@ -53,7 +53,7 @@ export default class Figure extends THREE.Object3D {
 
         }
     }
-
+    renew(){}
     canBuy() {
     }
 

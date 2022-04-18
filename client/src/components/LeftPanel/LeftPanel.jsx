@@ -34,6 +34,23 @@ function LeftPanel() {
                 value={2}
                 max={3}
             />
+
+            <FiguresPlaceSection
+                name="Buildings"
+                figures={buildings}
+                select={
+                    selectedFigureType === FigureTypes.BUILDING
+                        ? selectedFigureId
+                        : -1
+                }
+                selecting={(newId) => {
+                    setSelectedFigureId(newId);
+                    setSelectedFigureType(FigureTypes.BUILDING);
+                }}
+                value={2}
+                max={3}
+            />
+
         </div>
     );
 }

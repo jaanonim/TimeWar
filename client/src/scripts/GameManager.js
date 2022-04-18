@@ -34,6 +34,8 @@ export default class GameManager {
         this.setTurnInfo = null;
         this.setIsActiveNextTurnButton = null;
         this.setFiguresOnMenu = null;
+        this.setWinTargetBar = null;
+        this.winTarget = 0;
     }
 
     async initDisplay(displayElement) {
@@ -182,7 +184,7 @@ export default class GameManager {
         this.setFiguresOnMenu({
             landArmy: FigureManager.instance.getLandArmy(),
             airArmy: FigureManager.instance.getAirArmy(),
-            buildings: FigureManager.instance.getBuildings()
+            buildings: FigureManager.instance.getBuildings()?.filter(building => building.display)
         });
     }
 
@@ -278,4 +280,9 @@ export default class GameManager {
             }
         }
     }
+
+    changeWinTargetBar() {
+        this.setWinTargetBar(this.player.winProgress, this.winTarget);
+    }
+
 }

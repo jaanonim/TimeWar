@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Research Lab",
+    "image": "Lab",
+    "description": "Lorem ipsum",
+    "lives": -1,
+    "model": "lab",
+    "scale": 1,
+    "display": false,
+    "capturingMask": [
+      [0, 1, 0],
+      [1, 1, 1],
+      [0, 1, 0]
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Factory",
+    "image": "Factory",
+    "description": "Lorem ipsum2",
+    "lives": 10,
+    "model": "factory",
+    "scale": 1,
+    "display": true,
+    "capturingMask": [
+      [1, 1, 1],
+      [1, 1, 1],
+      [1, 1, 1]
+    ]
+  }
+]
