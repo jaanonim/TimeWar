@@ -1,4 +1,4 @@
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import GameManager from "./GameManager";
 import MapCreator from "./MapCreator";
 
@@ -11,11 +11,14 @@ export default class Socket {
     constructor(room) {
         if (Socket.instance != null) return null;
         Socket.instance = this;
-        this.socket = io(environment === "development" ? developmentUrl : productionUrl, {
-            query: {
-                room: room
+        this.socket = io(
+            environment === "development" ? developmentUrl : productionUrl,
+            {
+                query: {
+                    room: room,
+                },
             }
-        });
+        );
         this.room = room;
         this.setup();
     }
@@ -34,7 +37,7 @@ export default class Socket {
             figureX: oldX,
             figureY: oldY,
             newX: x,
-            newY: y
+            newY: y,
         });
     }
 
@@ -47,17 +50,19 @@ export default class Socket {
             console.log("connect", this.socket.id);
         });
         this.socket.on("placeFigure", (data) => {
-            console.log(data);
             GameManager.instance.placeFigure(
-                data.msg.figureId,
+                data.who,
                 data.msg.mapPositionX,
                 data.msg.mapPositionY,
-                data.msg.figureType,
-                data.who);
+                data.msg.figureId,
+                data.msg.figureType
+            );
         });
         this.socket.on("moveFigure", (data) => {
-            console.log(MapCreator.instance.mapObjects, MapCreator.instance.mapObjects[data.msg.figureX][data.msg.figureY], data.msg.figureX, data.msg.figureY);
-            let figure = MapCreator.instance.mapObjects[data.msg.figureX][data.msg.figureY].figure;
+            let figure =
+                MapCreator.instance.mapObjects[data.msg.figureX][
+                    data.msg.figureY
+                ].figure;
             GameManager.instance.moveFigure(
                 figure,
                 data.msg.newX,
@@ -65,7 +70,6 @@ export default class Socket {
             );
         });
         this.socket.on("startGame", async (data) => {
-            console.log("start", data);
             GameManager.instance.player.setTeam(data.team);
             GameManager.instance.setTurn(data.turn);
             GameManager.instance.loadFigures(data.figures);
@@ -76,10 +80,10 @@ export default class Socket {
         });
         this.socket.on("endGame", (data) => {
             //TODO: MAKE END GAME PANEL
-            console.log("WIN", data.who);
-            setTimeout(()=>{
-                location.reload()
-            },3000)
+            alert("WIN" + data.who);
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
         });
         this.socket.on("changeTurn", (turn) => {
             GameManager.instance.setTurn(turn.msg);

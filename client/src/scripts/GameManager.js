@@ -1,16 +1,16 @@
 import Stats from "stats-js";
 import * as THREE from "three";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import FigureFactor from "./classes/FigureFactor";
 import ArmyFigure from "./classes/figures/ArmyFigure";
 import MapLand from "./classes/MapLand";
 import Player from "./classes/Player";
-import {HighLightType} from "./enums/HighLightType";
-import {PlayerTeams} from "./enums/PlayerTeams";
+import { HighLightType } from "./enums/HighLightType";
+import { PlayerTeams } from "./enums/PlayerTeams";
+import FigureManager from "./FigureManager";
 import MapCreator from "./MapCreator";
 import ModelsManager from "./ModelsManager";
 import Socket from "./Socket";
-import FigureManager from "./FigureManager";
 
 export default class GameManager {
     static _instance = null;
@@ -60,7 +60,7 @@ export default class GameManager {
         displayElement.appendChild(this.renderer.domElement);
 
         //light
-        const light = new THREE.DirectionalLight(0xffffff, 4, 100);
+        const light = new THREE.DirectionalLight(0xffffff, 3, 100);
         light.position.set(10, 20, 10);
         light.castShadow = true;
         this.scene.add(light);
@@ -75,6 +75,10 @@ export default class GameManager {
         light.shadow.mapSize.height = 1024 * 64;
         light.shadow.camera.near = 0.5;
         light.shadow.camera.far = 100;
+
+        const light2 = new THREE.DirectionalLight(0xffffff, 1, 100);
+        light2.position.set(-10, -20, -10);
+        this.scene.add(light2);
 
         //Helpers
         this.cameraConrols = new OrbitControls(
@@ -142,7 +146,8 @@ export default class GameManager {
             );
             if (intersectLand !== undefined) {
                 this.lastHighLight = intersectLand.object.parent;
-                this.lastHighLight.highLight();
+                if (this.turn === this.player.team)
+                    this.lastHighLight.highLight();
             }
         }
     }
@@ -184,7 +189,9 @@ export default class GameManager {
         this.setFiguresOnMenu({
             landArmy: FigureManager.instance.getLandArmy(),
             airArmy: FigureManager.instance.getAirArmy(),
-            buildings: FigureManager.instance.getBuildings()?.filter(building => building.display)
+            buildings: FigureManager.instance
+                .getBuildings()
+                ?.filter((building) => building.display),
         });
     }
 
@@ -213,23 +220,23 @@ export default class GameManager {
         }
         if (this.selectFigureIdInUI == null) return;
         let figure = this.placeFigure(
-            this.selectFigureIdInUI,
+            this.player.team,
             land.mapPositionX,
             land.mapPositionY,
-            this.selectFigureTypeInUI,
-            this.player.team
+            this.selectFigureIdInUI,
+            this.selectFigureTypeInUI
         );
         Socket.instance.placeFigure(figure);
     }
 
-    placeFigure(figureID, x, y, figureType, who) {
+    placeFigure(who, x, y, figureID, figureType) {
         let figureFactory = new FigureFactor();
         let figure = figureFactory.createFigure(
-            figureID,
+            who,
             x,
             y,
-            figureType,
-            who
+            figureID,
+            figureType
         );
         this.figuries.push(figure);
         this.scene.add(figure);
@@ -284,5 +291,4 @@ export default class GameManager {
     changeWinTargetBar() {
         this.setWinTargetBar(this.player.winProgress, this.winTarget);
     }
-
 }

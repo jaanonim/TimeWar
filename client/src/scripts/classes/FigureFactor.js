@@ -1,43 +1,43 @@
-import {FigureTypes} from "../enums/FigureTypes";
+import { FigureTypes } from "../enums/FigureTypes";
 import FigureManager from "../FigureManager";
 import ArmyFigure from "./figures/ArmyFigure";
-import ResearchLab from "./figures/ResearchLab";
 import BuildingFigure from "./figures/BuildingFigure";
+import ResearchLab from "./figures/ResearchLab";
 
 export default class FigureFactor {
-
-    createArmy(figureId, x, y, who) {
-        let objData = FigureManager.instance.getFigure(FigureTypes.ARMY, figureId);
+    createArmy(who, x, y, figureId) {
+        let objData = FigureManager.instance.getFigure(
+            FigureTypes.ARMY,
+            figureId
+        );
         if (objData === undefined) {
-            console.error("Unknown type");
+            console.error("Unknown type 2");
             return;
         }
-        return new ArmyFigure(who, x, y, objData.id, objData.name, objData.image, objData.description, objData.capturingMask, objData.lives,
-            objData.model, objData.scale, objData.attackMask, objData.moveMask, objData.damage, objData.isFlyable);
-
+        return new ArmyFigure(who, x, y, objData);
     }
 
-    createBuilding(figureId, x, y, who) {
-        let objData = FigureManager.instance.getFigure(FigureTypes.BUILDING, figureId);
+    createBuilding(who, x, y, figureId) {
+        let objData = FigureManager.instance.getFigure(
+            FigureTypes.BUILDING,
+            figureId
+        );
         if (objData === undefined) {
-            console.error("Unknown type");
+            console.error("Unknown type 1");
             return;
         }
-        console.log(objData);
         if (figureId === 1) {
-            return new ResearchLab(who, x, y, objData.id, objData.name, objData.image, objData.description, objData.capturingMask, objData.model, objData.scale)
+            return new ResearchLab(who, x, y, objData);
         }
-        return new BuildingFigure(who, x, y, objData.id, objData.name, objData.image, objData.description, objData.capturingMask, objData.lives,
-            objData.model, objData.scale);
-
+        return new BuildingFigure(who, x, y, objData);
     }
 
-    createFigure(figureId, x, y, typeFigure, who) {
+    createFigure(who, x, y, figureId, typeFigure) {
         switch (typeFigure) {
             case FigureTypes.ARMY:
-                return this.createArmy(figureId, x, y, who);
+                return this.createArmy(who, x, y, figureId);
             case FigureTypes.BUILDING:
-                return this.createBuilding(figureId, x, y, who);
+                return this.createBuilding(who, x, y, figureId);
             default:
                 console.error("Unknown type " + typeFigure);
         }

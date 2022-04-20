@@ -57,15 +57,15 @@ module.exports = class Room {
     }
 
     win(player) {
-        let win = this.redPlayer.socket.id === player.socket.id ? "RED" : "BLUE";
+        let win =
+            this.redPlayer.socket.id === player.socket.id ? "RED" : "BLUE";
 
         this.redPlayer.socket.emit("endGame", {
-            who:win
+            who: win,
         });
         this.bluePlayer.socket.emit("endGame", {
-            who:win
+            who: win,
         });
-
     }
 
     async startGame() {
@@ -87,7 +87,6 @@ module.exports = class Room {
         this.sendToOpponent(player, "moveFigure", moveData);
     }
 
-
     endTurn(player) {
         if (this.bluePlayer.socket.id === player) {
             this.bluePlayer.addResearchPoint();
@@ -96,7 +95,7 @@ module.exports = class Room {
             this.redPlayer.addResearchPoint();
             this.turn = "BLUE";
         }
-        this.map.figures.forEach(figure => figure.isMoved = false);
+        this.map.figures.forEach((figure) => (figure.isMoved = false));
         this.sendToOpponent(player, "changeTurn", this.turn);
     }
 
@@ -105,12 +104,12 @@ module.exports = class Room {
         if (this.bluePlayer.socket.id === player) {
             this.redPlayer.socket.emit(endpoint, {
                 who: "BLUE",
-                msg: msg
+                msg: msg,
             });
         } else {
             this.bluePlayer.socket.emit(endpoint, {
                 who: "RED",
-                msg: msg
+                msg: msg,
             });
         }
     }
@@ -128,5 +127,4 @@ module.exports = class Room {
         }
         return false;
     }
-
 };

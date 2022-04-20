@@ -1,59 +1,18 @@
-import {FigureTypes} from "../../enums/FigureTypes";
-import {HighLightType} from "../../enums/HighLightType";
-import {PlayerTeams} from "../../enums/PlayerTeams";
+import { FigureTypes } from "../../enums/FigureTypes";
+import { HighLightType } from "../../enums/HighLightType";
 import GameManager from "../../GameManager";
 import MapCreator from "../../MapCreator";
-import ModelsManager from "../../ModelsManager";
 import Figure from "../Figure";
 
 export default class ArmyFigure extends Figure {
-    constructor(
-        who,
-        positionX,
-        positionY,
-        figureId,
-        name,
-        image,
-        description,
-        capturingMask,
-        lives,
-        modelName,
-        scale,
-        attackMask,
-        moveMask,
-        damage,
-        isFlyable,
-    ) {
-        super(
-            who,
-            positionX,
-            positionY,
-            figureId,
-            FigureTypes.ARMY,
-            name,
-            image,
-            description,
-            capturingMask,
-            lives
-        );
-        this.isMoved = false;
+    constructor(who, positionX, positionY, data) {
+        super(who, positionX, positionY, FigureTypes.ARMY, data);
+        this.isMoved = true;
         this.isAttack = false;
-        this.attackMask = attackMask;
-        this.moveMask = moveMask;
-        this.damage = damage;
-        this.isFlyable = isFlyable;
-        if (ModelsManager.models[modelName] === undefined) {
-            console.error("Unknown model", modelName);
-            return;
-        }
-        let model = ModelsManager.getModel(
-            modelName,
-            this.who.toLowerCase()
-        ).clone();
-        if (this.who === PlayerTeams.RED) model.rotation.y = Math.PI;
-        model.scale.set(scale, scale, scale);
-        this.add(model);
-        console.log(this.who);
+        this.attackMask = data.attackMask;
+        this.moveMask = data.moveMask;
+        this.damage = data.damage;
+        this.isFlyable = data.isFlyable;
     }
 
     move(x, y) {
@@ -123,7 +82,7 @@ export default class ArmyFigure extends Figure {
             let object =
                 MapCreator.instance.mapObjects[this.mapPositionX][
                     this.mapPositionY
-                    ];
+                ];
             if (object != null) {
                 object.hightLightType = HighLightType.MOVE;
                 object.unHighLight();

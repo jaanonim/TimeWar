@@ -1,50 +1,38 @@
+import { FigureTypes } from "../../enums/FigureTypes";
 import Figure from "../Figure";
-import {FigureTypes} from "../../enums/FigureTypes";
-import ModelsManager from "../../ModelsManager";
-import {PlayerTeams} from "../../enums/PlayerTeams";
 
 export default class BuildingFigure extends Figure {
-    constructor(
-        who,
-        positionX,
-        positionY,
-        figureId,
-        name,
-        image,
-        description,
-        capturingMask,
-        lives,
-        modelName,
-        scale
-    ) {
-        super(
-            who,
-            positionX,
-            positionY,
-            figureId,
-            FigureTypes.BUILDING,
-            name,
-            image,
-            description,
-            capturingMask,
-            lives
-        );
+    constructor(who, positionX, positionY, data) {
+        super(who, positionX, positionY, FigureTypes.BUILDING, data);
         this.isAttack = false;
-        if (ModelsManager.models[modelName] === undefined) {
-            console.error("Unknown model", modelName);
-            return;
-        }
-        let model = ModelsManager.getModel(
-            modelName,
-            this.who.toLowerCase()
-        ).clone();
-        if (this.who === PlayerTeams.RED) model.rotation.y = Math.PI;
-        model.scale.set(scale, scale, scale);
-        this.add(model);
+        this.capturingMask = data.capturingMask;
     }
 
     renew() {
         super.renew();
         this.isAttack = false;
+    }
+
+    capture() {
+        let map = MapCreator.instance.mapObjects;
+        let maskWidth = this.capturingMask.length;
+        let maskHeight = this.capturingMask[0].length;
+        for (let x = 0; x < maskWidth; x++) {
+            for (let y = 0; y < maskHeight; y++) {
+                let mapPosX = x - maskWidth / 2;
+                let mapPosY = y - maskHeight / 2;
+                if (
+                    mapPosX < 0 ||
+                    mapPosX >= map.length ||
+                    mapPosY < 0 ||
+                    mapPosY > map[0].length
+                ) {
+                    break;
+                }
+                if (this.capturingMask[x][y]) {
+                    map[mapPosX][mapPosY].capture();
+                }
+            }
+        }
     }
 }
