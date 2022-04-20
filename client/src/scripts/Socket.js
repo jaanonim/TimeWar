@@ -80,7 +80,7 @@ export default class Socket {
         });
         this.socket.on("endGame", (data) => {
             //TODO: MAKE END GAME PANEL
-            alert("WIN", data.who);
+            alert("WIN" + data.who);
             setTimeout(() => {
                 location.reload();
             }, 3000);

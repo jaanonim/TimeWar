@@ -15,7 +15,6 @@ export default class Figure extends THREE.Object3D {
         this.name = data.name;
         this.image = data.image;
         this.description = data.description;
-        this.capturingMask = data.capturingMask;
         this.lives = data.lives;
         this.price = data.price;
         this.place(positionX, positionY);
@@ -73,29 +72,7 @@ export default class Figure extends THREE.Object3D {
         this.lives -= damage;
     }
 
-    capture() {
-        let map = MapCreator.instance.mapObjects;
-        let maskWidth = this.capturingMask.length;
-        let maskHeight = this.capturingMask[0].length;
-        for (let x = 0; x < maskWidth; x++) {
-            for (let y = 0; y < maskHeight; y++) {
-                let mapPosX = x - maskWidth / 2;
-                let mapPosY = y - maskHeight / 2;
-                if (
-                    mapPosX < 0 ||
-                    mapPosX >= map.length ||
-                    mapPosY < 0 ||
-                    mapPosY > map[0].length
-                ) {
-                    break;
-                }
-                if (this.capturingMask[x][y]) {
-                    map[mapPosX][mapPosY].capture();
-                }
-            }
-        }
-    }
-
+    capture() {}
     renew() {}
     canBuy() {}
     buy() {}
