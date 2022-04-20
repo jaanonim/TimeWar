@@ -1,4 +1,4 @@
-const {Server} = require("socket.io");
+const { Server } = require("socket.io");
 const Room = require("./classes/Room");
 let io = null;
 let rooms = [];
@@ -8,7 +8,7 @@ module.exports = {
 
         io.on("connection", async (socket) => {
             let roomName = socket.handshake.query.room;
-            let room = rooms.find(r => r.name === roomName);
+            let room = rooms.find((r) => r.name === roomName);
             if (room == null) {
                 room = new Room(roomName);
                 await room.initMap();
@@ -22,22 +22,22 @@ module.exports = {
             socket.join(roomName);
 
             if (await room.startGame()) {
-                console.log("START");
+                console.log("game started");
                 room.redPlayer.socket.emit("startGame", {
-                    "team": "RED",
-                    "turn": room.turn,
+                    team: "RED",
+                    turn: room.turn,
                     mapStruct: room.map.mapStruct,
                     mapObjects: room.map.mapObjects,
                     figures: room.figures.getFigures(),
-                    winTarget: room.winTarget
+                    winTarget: room.winTarget,
                 });
                 room.bluePlayer.socket.emit("startGame", {
-                    "team": "BLUE",
-                    "turn": room.turn,
+                    team: "BLUE",
+                    turn: room.turn,
                     mapStruct: room.map.mapStruct,
                     mapObjects: room.map.mapObjects,
                     figures: room.figures.getFigures(),
-                    winTarget: room.winTarget
+                    winTarget: room.winTarget,
                 });
             }
             socket.on("placeFigure", (figure) => {
@@ -51,12 +51,10 @@ module.exports = {
                 room.endTurn(socket.id);
             });
 
-            socket.on('disconnecting', () => {
+            socket.on("disconnecting", () => {
                 room.disconnectPlayer(socket.id);
-                console.log("bye ", socket.id)
-
+                console.log("disconnecting ", socket.id);
             });
         });
-
-    }
+    },
 };

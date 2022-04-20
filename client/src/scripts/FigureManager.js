@@ -1,4 +1,4 @@
-import {FigureTypes} from "./enums/FigureTypes";
+import { FigureTypes } from "./enums/FigureTypes";
 
 export default class FigureManager {
     static _instance = null;
@@ -17,20 +17,22 @@ export default class FigureManager {
     getFigure(type, id) {
         switch (type) {
             case FigureTypes.ARMY:
-                return this.figures?.army?.find(figure => figure.id === id);
+                return this.figures?.army?.find((figure) => figure.id === id);
             case FigureTypes.BUILDING:
-                return this.figures?.buildings?.find(figure => figure.id === id);
+                return this.figures?.buildings?.find(
+                    (figure) => figure.id === id
+                );
             default:
                 console.error("Type not found");
         }
     }
 
     getLandArmy() {
-        return this.figures.army.filter(figure => !figure.isFlyable);
+        return this.figures.army.filter((figure) => !figure.isFlyable);
     }
 
     getAirArmy() {
-        return this.figures.army.filter(figure => figure.isFlyable);
+        return this.figures.army.filter((figure) => figure.isFlyable);
     }
 
     getBuildings() {

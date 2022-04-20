@@ -25,20 +25,20 @@ export default class MapCreator {
     }
 
     recreateMap(objectMap) {
-        objectMap.forEach(row => {
-            row.forEach(figure => {
+        objectMap.forEach((row) => {
+            row.forEach((figure) => {
                 if (figure !== null) {
                     let object = GameManager.instance.placeFigure(
-                        figure.figureId,
+                        figure.who,
                         figure.mapPositionX,
                         figure.mapPositionY,
-                        figure.figureType,
-                        figure.who);
+                        figure.figureId,
+                        figure.figureType
+                    );
                     object.isMoved = figure.isMoved;
                 }
-            })
-
-        })
+            });
+        });
     }
 
     createMap(scene) {
@@ -47,17 +47,16 @@ export default class MapCreator {
         let tileWidth = this.mapWidth / widthLength;
         let tileHeight = this.mapHeight / heightLength;
         if (this.mapObjects.length !== 0) {
-            this.mapObjects.forEach(row => {
-                row.forEach(land => {
+            this.mapObjects.forEach((row) => {
+                row.forEach((land) => {
                     if (land !== null) {
                         if (land.figure !== null) {
                             scene.remove(land.figure);
                         }
                         scene.remove(land);
                     }
-                })
-
-            })
+                });
+            });
         }
         this.mapObjects = [];
         let landFactory = new MapLandFactor();
@@ -66,10 +65,17 @@ export default class MapCreator {
             for (let y = 0; y < heightLength; y++) {
                 let xPos = (x - widthLength / 2) * tileWidth + tileWidth / 2;
                 let yPos = (y - heightLength / 2) * tileHeight + tileHeight / 2;
-                let tile = landFactory.createTile(xPos, yPos, x, y, tileWidth, tileHeight, this.map[x][y]);
+                let tile = landFactory.createTile(
+                    xPos,
+                    yPos,
+                    x,
+                    y,
+                    tileWidth,
+                    tileHeight,
+                    this.map[x][y]
+                );
                 this.mapObjects[x][y] = tile;
-                if (tile != null)
-                    scene.add(tile);
+                if (tile != null) scene.add(tile);
             }
         }
     }

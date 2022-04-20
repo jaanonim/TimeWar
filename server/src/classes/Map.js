@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+const fs = require("fs").promises;
 
 module.exports = class Room {
     constructor() {
@@ -12,7 +12,7 @@ module.exports = class Room {
         this.mapObjects = [];
         this.mapStruct.forEach((row, i) => {
             this.mapObjects[i] = [];
-            row.forEach((cell, j) => this.mapObjects[i][j] = null)
+            row.forEach((cell, j) => (this.mapObjects[i][j] = null));
         });
     }
 
@@ -22,14 +22,13 @@ module.exports = class Room {
         this.figures.push(figure);
     }
     moveFigure(figureMoveData) {
-        console.log(figureMoveData);
-        let figure = this.mapObjects[figureMoveData.figureX][figureMoveData.figureY];
+        let figure =
+            this.mapObjects[figureMoveData.figureX][figureMoveData.figureY];
         figure.mapPositionX = figureMoveData.newX;
         figure.mapPositionY = figureMoveData.newY;
         figure.isMoved = true;
         this.mapObjects[figureMoveData.newX][figureMoveData.newY] = figure;
 
         this.mapObjects[figureMoveData.figureX][figureMoveData.figureY] = null;
-        console.log(this.mapObjects);
     }
 };

@@ -1,19 +1,9 @@
-import BuildingFigure from "./BuildingFigure";
 import GameManager from "../../GameManager";
+import BuildingFigure from "./BuildingFigure";
 
 export default class ResearchLab extends BuildingFigure {
-    constructor(
-        who,
-        positionX,
-        positionY,
-        figureId,
-        name,
-        image,
-        description,
-        capturingMask,
-        modelName,
-        scale) {
-        super(who, positionX, positionY, figureId, name, image, description, capturingMask, -1, modelName, scale)
+    constructor(who, positionX, positionY, data) {
+        super(who, positionX, positionY, data);
     }
 
     renew() {
@@ -21,5 +11,4 @@ export default class ResearchLab extends BuildingFigure {
             GameManager.instance.player.increaseWinProgress();
         super.renew();
     }
-
 }

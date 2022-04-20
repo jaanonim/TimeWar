@@ -1,6 +1,6 @@
-import {TextureLoader} from "three";
-import {MTLLoader} from "three/examples/jsm/loaders/MTLLoader";
-import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
+import { TextureLoader } from "three";
+import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 
 export default class ModelsManager {
     static models = {};
@@ -18,10 +18,10 @@ export default class ModelsManager {
             "models/Buildings/Factory/Factory",
             ["red", "blue"]
         );
-        this.models.lab = await this.loadModel(
-            "models/Buildings/Lab/Lab",
-            ["red", "blue"]
-        );
+        this.models.lab = await this.loadModel("models/Buildings/Lab/Lab", [
+            "red",
+            "blue",
+        ]);
         this.models.land = await this.loadModel("models/Land/Land/Land");
         this.models.mountain = await this.loadModel(
             "models/Land/Mountain/Mountain"
@@ -40,7 +40,7 @@ export default class ModelsManager {
         object.children[0].castShadow = true;
         object.children[0].receiveShadow = true;
         if (textures) {
-            let objs = {default: object};
+            let objs = { default: object };
             textures.forEach((texture) => {
                 const model = object.clone();
                 model.children[0].material = model.children[0].material.clone();
@@ -51,7 +51,7 @@ export default class ModelsManager {
             });
             return objs;
         } else {
-            return {default: object};
+            return { default: object };
         }
     }
 
@@ -70,7 +70,7 @@ export default class ModelsManager {
                     },
                     null,
                     (error) => {
-                        console.log("An error happened", error);
+                        console.error("An error happened", error);
                     }
                 );
             });
