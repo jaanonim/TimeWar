@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { PlayerTeams } from "../enums/PlayerTeams";
 import MapCreator from "../MapCreator";
 import ModelsManager from "../ModelsManager";
-import { getRandomElement, getRandomVector3 } from "../utilities/random";
+import { getRandomElement, getRandomVector3 } from "../utilities/Random";
 
 export default class Figure extends THREE.Object3D {
     constructor(who, positionX, positionY, type, data) {
