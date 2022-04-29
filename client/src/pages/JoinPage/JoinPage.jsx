@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Modal from "../../components/Modal";
+import useToast from "../../hooks/useToast";
 import styles from "./JoinPage.module.css";
 
 function JoinPage() {
   const [join, setJoin] = useState(false);
   const [create, setCreate] = useState(false);
+  const toast = useToast();
   const joinBtn = useRef(null);
 
   return (
@@ -98,7 +100,7 @@ function JoinPage() {
                 value={"123456"}
                 onClick={(e) => {
                   navigator.clipboard.writeText(e.target.value);
-                  //TODO: add toast
+                  toast({ message: `Copied to clipboard`, dismissTime: 1000 });
                 }}
               />
               <p>Waiting for opponent to join room...</p>
