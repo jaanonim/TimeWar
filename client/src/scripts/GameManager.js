@@ -1,12 +1,12 @@
 import Stats from "stats-js";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import FigureFactor from "./classes/FigureFactor";
 import ArmyFigure from "./classes/figures/ArmyFigure";
 import MapLand from "./classes/MapLand";
 import Player from "./classes/Player";
-import { HighLightType } from "./enums/HighLightType";
-import { PlayerTeams } from "./enums/PlayerTeams";
+import {HighLightType} from "./enums/HighLightType";
+import {PlayerTeams} from "./enums/PlayerTeams";
 import FigureManager from "./FigureManager";
 import MapCreator from "./MapCreator";
 import ModelsManager from "./ModelsManager";
@@ -27,6 +27,7 @@ export default class GameManager {
         this.player = new Player("Player", "blue");
         this.lastHighLight = null;
         this.selectedFigure = null;
+        this.attackOption = false;
         this.selectFigureIdInUI = null;
         this.selectFigureTypeInUI = null;
         this.turn = "";
@@ -99,7 +100,15 @@ export default class GameManager {
         window.addEventListener("resize", this.onWindowResize.bind(this));
         displayElement.addEventListener(
             "mousedown",
-            this.mouseClickInteration.bind(this)
+            this.mouseClickInteract.bind(this)
+        );
+        window.addEventListener(
+            "keydown",
+            this.keyDownInteract.bind(this)
+        );
+        window.addEventListener(
+            "keyup",
+            this.keyUpInteract.bind(this)
         );
         displayElement.addEventListener(
             "mousemove",
@@ -152,7 +161,27 @@ export default class GameManager {
         }
     }
 
-    mouseClickInteration(event) {
+    keyDownInteract(event) {
+        if (event.key === 'a') {
+            if (!this.attackOption && this.selectedFigure !== null) {
+                this.selectedFigure.unHighLightMovePosition();
+                this.selectedFigure.highLightAttackPosition();
+            }
+            this.attackOption = true;
+        }
+    }
+
+    keyUpInteract(event) {
+        if (event.key === 'a') {
+            if (this.attackOption && this.selectedFigure !== null) {
+                this.selectedFigure.unHighLightAttackPosition();
+                this.selectedFigure.highLightMovePosition();
+            }
+            this.attackOption = false;
+        }
+    }
+
+    mouseClickInteract(event) {
         if (event.button === 0) {
             if (this.turn !== this.player.team) return;
             const raycaster = new THREE.Raycaster();
@@ -167,8 +196,8 @@ export default class GameManager {
                 );
                 if (intersectLand !== undefined) {
                     let land = intersectLand.object.parent;
-                    if (land.figure !== null) {
-                        this.selectFigure(land);
+                    if (land.figure !== null && !this.attackOption) {
+                        this.selectFigure(land.figure);
                         return;
                     }
                     if (
@@ -246,15 +275,26 @@ export default class GameManager {
     makeAction(land) {
         let x = land.mapPositionX;
         let y = land.mapPositionY;
-        if (this.selectedFigure.canMove(x, y)) {
-            this.selectedFigure.unHighLightMovePosition();
-            let oldX = this.selectedFigure.mapPositionX;
-            let oldY = this.selectedFigure.mapPositionY;
-            if (this.moveFigure(this.selectedFigure, x, y)) {
-                Socket.instance.moveFigure(oldX, oldY, x, y);
+        if (this.attackOption) {
+            if (this.selectedFigure.canAttack(x, y)) {
+                this.selectedFigure.unHighLightAttackPosition();
+                let oldX = this.selectedFigure.mapPositionX;
+                let oldY = this.selectedFigure.mapPositionY;
+                if (this.selectedFigure.attack(x, y)) {
+                    Socket.instance.attackFigure(oldX, oldY, x, y);
+                }
+                this.selectedFigure = null;
             }
-
-            this.selectedFigure = null;
+        } else {
+            if (this.selectedFigure.canMove(x, y)) {
+                this.selectedFigure.unHighLightMovePosition();
+                let oldX = this.selectedFigure.mapPositionX;
+                let oldY = this.selectedFigure.mapPositionY;
+                if (this.moveFigure(this.selectedFigure, x, y)) {
+                    Socket.instance.moveFigure(oldX, oldY, x, y);
+                }
+                this.selectedFigure = null;
+            }
         }
     }
 
@@ -269,8 +309,7 @@ export default class GameManager {
         return false;
     }
 
-    selectFigure(land) {
-        let figure = land.figure;
+    selectFigure(figure) {
         if (this.selectedFigure !== null) {
             if (this.selectedFigure instanceof ArmyFigure) {
                 this.selectedFigure.unHighLightMovePosition();
@@ -278,14 +317,27 @@ export default class GameManager {
         }
         if (figure instanceof ArmyFigure) {
             if (figure === this.selectedFigure) {
-                figure.unHighLightMovePosition();
+                if (this.attackOption) {
+                    figure.unHighLightAttackPosition();
+                } else {
+                    figure.unHighLightMovePosition();
+                }
                 this.selectedFigure = null;
             } else {
                 if (figure.who !== GameManager.instance.player.team) return;
-                figure.highLightMovePosition();
+                if (this.attackOption) {
+                    figure.highLightAttackPosition();
+                } else {
+                    figure.highLightMovePosition();
+                }
                 this.selectedFigure = figure;
             }
         }
+    }
+
+    removeFigure(x, y) {
+        this.scene.remove(MapCreator.instance.mapObjects[x][y].figure);
+        MapCreator.instance.mapObjects[x][y].figure = null;
     }
 
     changeWinTargetBar() {

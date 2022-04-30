@@ -18,7 +18,8 @@ module.exports = class Room {
 
     addFigure(figure) {
         this.mapObjects[figure.mapPositionX][figure.mapPositionY] = figure;
-        this.figures.isMoved = false;
+        this.figures.isMoved = true;
+        this.figures.isAttack = true;
         this.figures.push(figure);
     }
     moveFigure(figureMoveData) {

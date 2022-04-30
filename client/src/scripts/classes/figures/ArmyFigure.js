@@ -8,7 +8,7 @@ export default class ArmyFigure extends Figure {
     constructor(who, positionX, positionY, data) {
         super(who, positionX, positionY, FigureTypes.ARMY, data);
         this.isMoved = true;
-        this.isAttack = false;
+        this.isAttack = true;
         this.attackMask = data.attackMask;
         this.moveMask = data.moveMask;
         this.damage = data.damage;
@@ -56,8 +56,8 @@ export default class ArmyFigure extends Figure {
         let relY = y - this.mapPositionY;
         let attackMaskWidth = this.attackMask.length;
         let attackMaskHeight = this.attackMask[0].length;
-        let maskX = relX - Math.floor(attackMaskWidth / 2);
-        let maskY = relY - Math.floor(attackMaskHeight / 2);
+        let maskX = relX + Math.floor(attackMaskWidth / 2);
+        let maskY = relY + Math.floor(attackMaskHeight / 2);
         if (
             maskX < 0 ||
             maskX >= attackMaskWidth ||
@@ -72,6 +72,57 @@ export default class ArmyFigure extends Figure {
         this.isMoved = false;
         this.isAttack = false;
         this.unHighLightMovePosition();
+    }
+    highLightAttackPosition() {
+        if (this.who !== GameManager.instance.player.team) return false;
+        if (this.isAttack) {
+            if (MapCreator.instance.mapObjects[this.mapPositionX] == null)
+                return;
+            let object =
+                MapCreator.instance.mapObjects[this.mapPositionX][
+                    this.mapPositionY
+                    ];
+            if (object != null) {
+                object.hightLightType = HighLightType.MOVE;
+                object.unHighLight();
+            }
+            return;
+        }
+        for (let x = 0; x < this.attackMask.length; x++) {
+            for (let y = 0; y < this.attackMask[0].length; y++) {
+                let xPos =
+                    this.mapPositionX - (this.attackMask.length - 1) / 2 + x;
+                let yPos =
+                    this.mapPositionY - (this.attackMask[0].length - 1) / 2 + y;
+                if (MapCreator.instance.mapObjects[xPos] == null) break;
+                let object = MapCreator.instance.mapObjects[xPos][yPos];
+                if (object != null) {
+                    if (this.attackMask[x][y]) {
+                        object.hightLightType = HighLightType.ATTACK;
+                        object.unHighLight();
+                    }
+                }
+            }
+        }
+    }
+
+    unHighLightAttackPosition() {
+        for (let x = 0; x < this.attackMask.length; x++) {
+            for (let y = 0; y < this.attackMask[0].length; y++) {
+                let xPos =
+                    this.mapPositionX - (this.attackMask.length - 1) / 2 + x;
+                let yPos =
+                    this.mapPositionY - (this.attackMask[0].length - 1) / 2 + y;
+                if (MapCreator.instance.mapObjects[xPos] == null) break;
+                let object = MapCreator.instance.mapObjects[xPos][yPos];
+                if (object != null) {
+                    if (this.attackMask[x][y]) {
+                        object.hightLightType = HighLightType.NONE;
+                        object.unHighLight();
+                    }
+                }
+            }
+        }
     }
 
     highLightMovePosition() {

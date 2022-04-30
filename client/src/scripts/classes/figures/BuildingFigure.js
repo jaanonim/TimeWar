@@ -4,13 +4,12 @@ import Figure from "../Figure";
 export default class BuildingFigure extends Figure {
     constructor(who, positionX, positionY, data) {
         super(who, positionX, positionY, FigureTypes.BUILDING, data);
-        this.isAttack = false;
         this.capturingMask = data.capturingMask;
     }
 
     renew() {
         super.renew();
-        this.isAttack = false;
+        this.takeDamage = false;
     }
 
     capture() {
