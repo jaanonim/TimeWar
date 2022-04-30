@@ -1,0 +1,49 @@
+.box {
+  width: var(--w);
+  height: var(--h);
+  border: var(--border-size) solid var(--borderColor);
+
+  -webkit-box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
+  -moz-box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
+  box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
+  background-color: var(--color);
+  padding: 0 1rem;
+}
+
+.box::before {
+  content: ">";
+}
+
+.box::after {
+  content: "<";
+}
+
+.input {
+  border: 0;
+  width: calc(100% - 2rem);
+  height: 100%;
+  font-size: 2rem;
+  padding: 10px;
+  display: inline-block;
+  text-decoration: none;
+  background-color: var(--color);
+  color: var(--text);
+  letter-spacing: 2px;
+}
+
+.input::placeholder {
+  color: var(--text);
+  opacity: 0.5;
+  text-transform: none;
+}
+
+.input:focus,
+.box:focus-within {
+  outline: none;
+  background-color: var(--hover);
+}
+
+.box:hover,
+.box:hover .input {
+  background-color: var(--hover);
+}

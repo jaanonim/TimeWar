@@ -1,0 +1,33 @@
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: -1;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.box {
+  width: 30vw;
+  padding: 1rem;
+  background-color: var(--secend-background);
+  -webkit-box-shadow: var(--shadow-size) var(--shadow-size) 0px 0px
+    var(--shadow-color);
+  -moz-box-shadow: var(--shadow-size) var(--shadow-size) 0px 0px
+    var(--shadow-color);
+  box-shadow: var(--shadow-size) var(--shadow-size) 0px 0px var(--shadow-color);
+}
