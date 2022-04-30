@@ -1,4 +1,4 @@
-import { io } from "socket.io-client";
+import {io} from "socket.io-client";
 import GameManager from "./GameManager";
 import MapCreator from "./MapCreator";
 
@@ -32,6 +32,15 @@ export default class Socket {
         });
     }
 
+    attackFigure(oldX, oldY, x, y) {
+        this.socket.emit("attackFigure", {
+            figureX: oldX,
+            figureY: oldY,
+            x: x,
+            y: y,
+        });
+    }
+
     moveFigure(oldX, oldY, x, y) {
         this.socket.emit("moveFigure", {
             figureX: oldX,
@@ -62,12 +71,19 @@ export default class Socket {
             let figure =
                 MapCreator.instance.mapObjects[data.msg.figureX][
                     data.msg.figureY
-                ].figure;
+                    ].figure;
             GameManager.instance.moveFigure(
                 figure,
                 data.msg.newX,
                 data.msg.newY
             );
+        });
+        this.socket.on("attackFigure", (data) => {
+            let figure =
+                MapCreator.instance.mapObjects[data.msg.figureX][
+                    data.msg.figureY
+                    ].figure;
+            figure.attack(data.msg.x, data.msg.y);
         });
         this.socket.on("startGame", async (data) => {
             GameManager.instance.player.setTeam(data.team);

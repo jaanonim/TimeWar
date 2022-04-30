@@ -24,14 +24,14 @@ module.exports = class Room {
     placeStartBuildings() {
         let width = this.map.mapStruct.length;
         let height = this.map.mapStruct[0].length;
-        this.map.addFigure({
+        this.map.addFigure(this.figures.getFigure(1, 2), {
             who: "BLUE",
             figureId: 1,
             figureType: 2,
             mapPositionX: Math.floor(width / 2),
             mapPositionY: 0,
         });
-        this.map.addFigure({
+        this.map.addFigure(this.figures.getFigure(1, 2), {
             who: "RED",
             figureId: 1,
             figureType: 2,
@@ -77,7 +77,8 @@ module.exports = class Room {
     placeFigure(player, figure) {
         //TODO: make checking if this move is OK
         figure.who = this.redPlayer.socket.id === player ? "RED" : "BLUE";
-        this.map.addFigure(figure);
+        let obj = this.figures.getFigure(figure.figureId, figure.figureType);
+        this.map.addFigure(obj, figure);
         this.sendToOpponent(player, "placeFigure", figure);
     }
 
@@ -85,6 +86,12 @@ module.exports = class Room {
         //TODO: make checking if this move is OK
         this.map.moveFigure(moveData);
         this.sendToOpponent(player, "moveFigure", moveData);
+    }
+
+    attackFigure(player, moveData) {
+        //TODO: make checking if this move is OK
+        this.map.attackFigure(moveData);
+        this.sendToOpponent(player, "attackFigure", moveData);
     }
 
     endTurn(player) {
@@ -95,7 +102,11 @@ module.exports = class Room {
             this.redPlayer.addResearchPoint();
             this.turn = "BLUE";
         }
-        this.map.figures.forEach((figure) => (figure.isMoved = false));
+        this.map.figures.forEach((figure) => {
+            figure.isMoved = false;
+            figure.takeDamage = false;
+            figure.isAttack = false;
+        });
         this.sendToOpponent(player, "changeTurn", this.turn);
     }
 

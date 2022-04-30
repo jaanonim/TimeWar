@@ -16,11 +16,17 @@ module.exports = class Room {
         });
     }
 
-    addFigure(figure) {
-        this.mapObjects[figure.mapPositionX][figure.mapPositionY] = figure;
-        this.figures.isMoved = false;
-        this.figures.push(figure);
+    addFigure(figureObject, figure) {
+        let fig = {
+            ...figureObject,
+            ...figure
+        };
+        this.mapObjects[figure.mapPositionX][figure.mapPositionY] = fig;
+        fig.isMoved = true;
+        fig.isAttack = true;
+        this.figures.push(fig);
     }
+
     moveFigure(figureMoveData) {
         let figure =
             this.mapObjects[figureMoveData.figureX][figureMoveData.figureY];
@@ -30,5 +36,21 @@ module.exports = class Room {
         this.mapObjects[figureMoveData.newX][figureMoveData.newY] = figure;
 
         this.mapObjects[figureMoveData.figureX][figureMoveData.figureY] = null;
+    }
+
+    attackFigure(figureMoveData) {
+        let figure1 =
+            this.mapObjects[figureMoveData.figureX][figureMoveData.figureY];
+        let figure2 =
+            this.mapObjects[figureMoveData.x][figureMoveData.y];
+
+        figure1.isAttack = true;
+
+        figure2.lives -= figure1.damage;
+        figure2.takeDamage = true;
+        console.log(figure2, figure1.damage);
+        if (figure2.lives <= 0) {
+            this.mapObjects[figureMoveData.x][figureMoveData.y] = null;
+        }
     }
 };

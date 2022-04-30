@@ -36,6 +36,7 @@ export default class MapCreator {
                         figure.figureType
                     );
                     object.isMoved = figure.isMoved;
+                    object.isAttack = figure.isAttack;
                 }
             });
         });

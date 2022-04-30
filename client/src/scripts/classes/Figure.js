@@ -1,8 +1,9 @@
 import * as THREE from "three";
-import { PlayerTeams } from "../enums/PlayerTeams";
+import {PlayerTeams} from "../enums/PlayerTeams";
 import MapCreator from "../MapCreator";
 import ModelsManager from "../ModelsManager";
-import { getRandomElement, getRandomVector3 } from "../utilities/Random";
+import {getRandomElement, getRandomVector3} from "../utilities/Random";
+import GameManager from "../GameManager";
 
 export default class Figure extends THREE.Object3D {
     constructor(who, positionX, positionY, type, data) {
@@ -17,6 +18,7 @@ export default class Figure extends THREE.Object3D {
         this.description = data.description;
         this.lives = data.lives;
         this.price = data.price;
+        this.takeDamage = false;
         this.place(positionX, positionY);
         this.setupModel(data);
     }
@@ -36,7 +38,7 @@ export default class Figure extends THREE.Object3D {
         this.model.scale.set(data.scale, data.scale, data.scale);
 
         if (data.offset && data.offset.length > 0) {
-            if (data.offset.length == 2) {
+            if (data.offset.length === 2) {
                 this.model.position = getRandomVector3(
                     data.offset[0],
                     data.offset[1]
@@ -56,7 +58,8 @@ export default class Figure extends THREE.Object3D {
         this.add(this.model);
     }
 
-    update() {}
+    update() {
+    }
 
     place(x, y) {
         this.mapPositionX = x;
@@ -70,10 +73,22 @@ export default class Figure extends THREE.Object3D {
 
     makeDamage(damage) {
         this.lives -= damage;
+        this.takeDamage = true;
+        if (this.lives <= 0) {
+            console.log("DIED");
+            GameManager.instance.removeFigure(this.mapPositionX, this.mapPositionY);
+        }
     }
 
-    capture() {}
-    renew() {}
-    canBuy() {}
-    buy() {}
+    capture() {
+    }
+
+    renew() {
+    }
+
+    canBuy() {
+    }
+
+    buy() {
+    }
 }
