@@ -44,8 +44,10 @@ module.exports = {
                 room.placeFigure(socket.id, figure);
             });
             socket.on("moveFigure", (figure) => {
-                console.log(figure);
                 room.moveFigure(socket.id, figure);
+            });
+            socket.on("attackFigure", (figure) => {
+                room.attackFigure(socket.id, figure);
             });
             socket.on("endTurn", () => {
                 room.endTurn(socket.id);

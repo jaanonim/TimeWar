@@ -36,8 +36,8 @@ export default class Socket {
         this.socket.emit("attackFigure", {
             figureX: oldX,
             figureY: oldY,
-            newX: x,
-            newY: y,
+            x: x,
+            y: y,
         });
     }
 
@@ -83,7 +83,7 @@ export default class Socket {
                 MapCreator.instance.mapObjects[data.msg.figureX][
                     data.msg.figureY
                     ].figure;
-            figure.attack(data.msg.newX, data.msg.newY);
+            figure.attack(data.msg.x, data.msg.y);
         });
         this.socket.on("startGame", async (data) => {
             GameManager.instance.player.setTeam(data.team);
