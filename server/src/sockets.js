@@ -4,7 +4,12 @@ let io = null;
 let rooms = [];
 module.exports = {
     initSockets: (server) => {
-        io = new Server(server);
+        io = new Server(server, {
+            cors: {
+                origin: "*",
+                methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+            },
+        });
 
         io.on("connection", async (socket) => {
             let roomName = socket.handshake.query.room;
