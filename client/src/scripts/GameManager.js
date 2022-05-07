@@ -1,17 +1,15 @@
-import Stats from "stats-js";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import FigureFactor from "./classes/FigureFactor";
 import ArmyFigure from "./classes/figures/ArmyFigure";
 import MapLand from "./classes/MapLand";
 import Player from "./classes/Player";
-import { HighLightType } from "./enums/HighLightType";
-import { PlayerTeams } from "./enums/PlayerTeams";
+import {HighLightType} from "./enums/HighLightType";
+import {PlayerTeams} from "./enums/PlayerTeams";
 import FigureManager from "./FigureManager";
-import LabelsManager from "./LabelsManager";
 import MapCreator from "./MapCreator";
-import ModelsManager from "./ModelsManager";
 import Socket from "./Socket";
+import {SceneManager} from "./managers/SceneManager";
+import ModelsManager from "./ModelsManager";
 
 export default class GameManager {
     static _instance = null;
@@ -42,65 +40,9 @@ export default class GameManager {
 
     async initDisplay(displayElement) {
         await ModelsManager.loadModels();
-
-        //Initialization Scene
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-        );
-        this.renderer = new THREE.WebGLRenderer({
-            antialias: true,
-        });
-        this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFShadowMap;
-
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        displayElement.innerHTML = "";
-        displayElement.appendChild(this.renderer.domElement);
-
-        LabelsManager.instance.initDisplay(displayElement);
-
-        //light
-        const light = new THREE.DirectionalLight(0xffffff, 3, 100);
-        light.position.set(10, 20, 10);
-        light.castShadow = true;
-        this.scene.add(light);
-
-        const shadowSize = 100;
-        light.shadow.camera.left = -shadowSize;
-        light.shadow.camera.right = shadowSize;
-        light.shadow.camera.top = shadowSize;
-        light.shadow.camera.bottom = -shadowSize;
-        light.shadow.blurSamples = 1;
-        light.shadow.mapSize.width = 1024 * 64;
-        light.shadow.mapSize.height = 1024 * 64;
-        light.shadow.camera.near = 0.5;
-        light.shadow.camera.far = 100;
-
-        const light2 = new THREE.DirectionalLight(0xffffff, 1, 100);
-        light2.position.set(-10, -20, -10);
-        this.scene.add(light2);
-
-        //Helpers
-        this.cameraConrols = new OrbitControls(
-            this.camera,
-            this.renderer.domElement
-        );
-        this.camera.position.y = 25;
-        this.camera.position.z = 35;
-
-        //Stats
-        this.stats = new Stats();
-        this.stats.showPanel(0);
-        document.body.appendChild(this.stats.dom);
+        this.sceneManager = await (new SceneManager(displayElement));
 
         this.update();
-
-        //Add Listener for resizing screen
-        window.addEventListener("resize", this.onWindowResize.bind(this));
         displayElement.addEventListener(
             "mousedown",
             this.mouseClickInteract.bind(this)
@@ -115,24 +57,12 @@ export default class GameManager {
     }
 
     async startGame() {
-        MapCreator.instance.createMap(this.scene);
+        MapCreator.instance.createMap(this.sceneManager.scene);
     }
 
     update() {
-        this.stats.begin();
-        this.cameraConrols.update();
-        this.scene.children.forEach((child) => {
-            if (child.update !== undefined) child.update();
-        });
-        this.renderer.render(this.scene, this.camera);
-        this.stats.end();
+        this.sceneManager.update();
         requestAnimationFrame(this.update.bind(this));
-    }
-
-    onWindowResize() {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
     onSelectFigureInUI(newId, type) {
@@ -145,8 +75,8 @@ export default class GameManager {
         const mouseVector = new THREE.Vector2();
         mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        raycaster.setFromCamera(mouseVector, this.camera);
-        const intersects = raycaster.intersectObjects(this.scene.children);
+        raycaster.setFromCamera(mouseVector, this.sceneManager.camera);
+        const intersects = raycaster.intersectObjects(this.sceneManager.scene.children);
         if (this.lastHighLight !== null) this.lastHighLight.unHighLight();
         this.lastHighLight = null;
         if (intersects.length > 0) {
@@ -188,8 +118,8 @@ export default class GameManager {
             const mouseVector = new THREE.Vector2();
             mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
-            raycaster.setFromCamera(mouseVector, this.camera);
-            const intersects = raycaster.intersectObjects(this.scene.children);
+            raycaster.setFromCamera(mouseVector, this.sceneManager.camera);
+            const intersects = raycaster.intersectObjects(this.sceneManager.scene.children);
             if (intersects.length > 0) {
                 let intersectLand = intersects.find(
                     (obj) => obj.object?.parent instanceof MapLand
@@ -268,7 +198,7 @@ export default class GameManager {
             figureType
         );
         this.figuries.push(figure);
-        this.scene.add(figure);
+        this.sceneManager.scene.add(figure);
         return figure;
     }
 
@@ -336,7 +266,7 @@ export default class GameManager {
     }
 
     removeFigure(x, y) {
-        this.scene.remove(MapCreator.instance.mapObjects[x][y].figure);
+        this.sceneManager.scene.remove(MapCreator.instance.mapObjects[x][y].figure);
         MapCreator.instance.mapObjects[x][y].figure = null;
     }
 

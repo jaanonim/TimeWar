@@ -10,7 +10,7 @@ export default class Player {
 
     setTeam(team) {
         this.team = team;
-        let camera = GameManager.instance.camera;
+        let camera = GameManager.instance.sceneManager.camera;
         camera.position.z = Math.abs(camera.position.z) * (this.team === "RED" ? 1 : -1);
     }
 
