@@ -1,8 +1,8 @@
 import {useState} from "react";
 import {FigureTypes} from "../../scripts/enums/FigureTypes";
-import GameManager from "../../scripts/GameManager";
 import FiguresPlaceSection from "../FiguresPlaceSection";
 import styles from "./LeftPanel.module.css";
+import {UiHandlers} from "../../scripts/managers/UiHandlers";
 
 function LeftPanel() {
     const [selectedFigureId, setSelectedFigureId] = useState(null);
@@ -12,11 +12,11 @@ function LeftPanel() {
     let landArmy = figures ? figures.landArmy : [];
     let airArmy = figures ? figures.airArmy : [];
     let buildings = figures ? figures.buildings : [];
-    GameManager.instance.onSelectFigureInUI(
+    UiHandlers.instance.onSelectFigureInUI(
         selectedFigureId,
         selectedFigureType
     );
-    GameManager.instance.setFiguresOnMenu = setFigures;
+    UiHandlers.instance.setFiguresOnMenu = setFigures;
     return (
         <div className={`${styles.ui} ${styles.placementPanel}`}>
             <FiguresPlaceSection

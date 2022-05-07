@@ -10,6 +10,7 @@ import MapCreator from "./MapCreator";
 import Socket from "./Socket";
 import {SceneManager} from "./managers/SceneManager";
 import ModelsManager from "./ModelsManager";
+import {UiHandlers} from "./managers/UiHandlers";
 
 export default class GameManager {
     static _instance = null;
@@ -31,10 +32,6 @@ export default class GameManager {
         this.selectFigureTypeInUI = null;
         this.turn = "";
         this.figuries = [];
-        this.setTurnInfo = null;
-        this.setIsActiveNextTurnButton = null;
-        this.setFiguresOnMenu = null;
-        this.setWinTargetBar = null;
         this.winTarget = 0;
     }
 
@@ -63,11 +60,6 @@ export default class GameManager {
     update() {
         this.sceneManager.update();
         requestAnimationFrame(this.update.bind(this));
-    }
-
-    onSelectFigureInUI(newId, type) {
-        this.selectFigureIdInUI = newId;
-        this.selectFigureTypeInUI = type;
     }
 
     highlighting(event) {
@@ -145,7 +137,7 @@ export default class GameManager {
 
     loadFigures(figures) {
         FigureManager.instance.figures = figures;
-        this.setFiguresOnMenu({
+        UiHandlers.instance.setFiguresOnMenu({
             landArmy: FigureManager.instance.getLandArmy(),
             airArmy: FigureManager.instance.getAirArmy(),
             buildings: FigureManager.instance
@@ -166,10 +158,10 @@ export default class GameManager {
 
     setTurn(turn) {
         this.turn = turn;
-        this.setTurnInfo(
+        UiHandlers.instance.setTurnInfo(
             this.player.team === turn ? "You Turn" : "Wait for Your Turn"
         );
-        this.setIsActiveNextTurnButton(this.player.team === turn);
+        UiHandlers.instance.setIsActiveNextTurnButton(this.player.team === turn);
     }
 
     placeFigureAction(land) {
@@ -271,6 +263,6 @@ export default class GameManager {
     }
 
     changeWinTargetBar() {
-        this.setWinTargetBar(this.player.winProgress, this.winTarget);
+        UiHandlers.instance.setWinTargetBar(this.player.winProgress, this.winTarget);
     }
 }
