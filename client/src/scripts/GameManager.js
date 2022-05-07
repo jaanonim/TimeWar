@@ -1,13 +1,14 @@
 import Stats from "stats-js";
 import * as THREE from "three";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import FigureFactor from "./classes/FigureFactor";
 import ArmyFigure from "./classes/figures/ArmyFigure";
 import MapLand from "./classes/MapLand";
 import Player from "./classes/Player";
-import {HighLightType} from "./enums/HighLightType";
-import {PlayerTeams} from "./enums/PlayerTeams";
+import { HighLightType } from "./enums/HighLightType";
+import { PlayerTeams } from "./enums/PlayerTeams";
 import FigureManager from "./FigureManager";
+import LabelsManager from "./LabelsManager";
 import MapCreator from "./MapCreator";
 import ModelsManager from "./ModelsManager";
 import Socket from "./Socket";
@@ -60,6 +61,8 @@ export default class GameManager {
         displayElement.innerHTML = "";
         displayElement.appendChild(this.renderer.domElement);
 
+        LabelsManager.instance.initDisplay(displayElement);
+
         //light
         const light = new THREE.DirectionalLight(0xffffff, 3, 100);
         light.position.set(10, 20, 10);
@@ -92,7 +95,7 @@ export default class GameManager {
         //Stats
         this.stats = new Stats();
         this.stats.showPanel(0);
-        //document.body.appendChild(this.stats.dom);
+        document.body.appendChild(this.stats.dom);
 
         this.update();
 
@@ -102,14 +105,8 @@ export default class GameManager {
             "mousedown",
             this.mouseClickInteract.bind(this)
         );
-        window.addEventListener(
-            "keydown",
-            this.keyDownInteract.bind(this)
-        );
-        window.addEventListener(
-            "keyup",
-            this.keyUpInteract.bind(this)
-        );
+        window.addEventListener("keydown", this.keyDownInteract.bind(this));
+        window.addEventListener("keyup", this.keyUpInteract.bind(this));
         displayElement.addEventListener(
             "mousemove",
             this.highlighting.bind(this)
@@ -124,6 +121,9 @@ export default class GameManager {
     update() {
         this.stats.begin();
         this.cameraConrols.update();
+        this.scene.children.forEach((child) => {
+            if (child.update !== undefined) child.update();
+        });
         this.renderer.render(this.scene, this.camera);
         this.stats.end();
         requestAnimationFrame(this.update.bind(this));
@@ -162,7 +162,7 @@ export default class GameManager {
     }
 
     keyDownInteract(event) {
-        if (event.key === 'a') {
+        if (event.key === "a") {
             if (!this.attackOption && this.selectedFigure !== null) {
                 this.selectedFigure.unHighLightMovePosition();
                 this.selectedFigure.highLightAttackPosition();
@@ -172,7 +172,7 @@ export default class GameManager {
     }
 
     keyUpInteract(event) {
-        if (event.key === 'a') {
+        if (event.key === "a") {
             if (this.attackOption && this.selectedFigure !== null) {
                 this.selectedFigure.unHighLightAttackPosition();
                 this.selectedFigure.highLightMovePosition();
