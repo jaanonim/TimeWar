@@ -1,9 +1,10 @@
 import * as THREE from "three";
-import {PlayerTeams} from "../enums/PlayerTeams";
+import { PlayerTeams } from "../enums/PlayerTeams";
+import GameManager from "../GameManager";
 import MapCreator from "../MapCreator";
 import ModelsManager from "../ModelsManager";
-import {getRandomElement, getRandomVector3} from "../utilities/Random";
-import GameManager from "../GameManager";
+import { getRandomElement, getRandomVector3 } from "../utilities/Random";
+import FigureLabel from "./FigureLabel";
 
 export default class Figure extends THREE.Object3D {
     constructor(who, positionX, positionY, type, data) {
@@ -17,6 +18,7 @@ export default class Figure extends THREE.Object3D {
         this.image = data.image;
         this.description = data.description;
         this.lives = data.lives;
+        this.maxLives = data.maxLives;
         this.price = data.price;
         this.takeDamage = false;
         this.place(positionX, positionY);
@@ -56,9 +58,29 @@ export default class Figure extends THREE.Object3D {
 
         this.model.material = this.model.material.clone();
         this.add(this.model);
+
+        this.lable = new FigureLabel(this);
+        this.lable.hide();
     }
 
+    // TODO: hook up with game manager to be called when mouse is entering figure
+    onHoverEnter() {
+        this.lable.show();
+    }
+
+    // TODO: hook up with game manager to be called when mouse is exiting figure
+    onHoverExit() {
+        this.lable.hide();
+    }
+
+    // TODO: hook up with game manager ...
+    onRigthClick() {}
+
+    // TODO: hook up with game manager ...
+    onLeftClick() {}
+
     update() {
+        this.lable.update();
     }
 
     place(x, y) {
@@ -76,19 +98,18 @@ export default class Figure extends THREE.Object3D {
         this.takeDamage = true;
         if (this.lives <= 0) {
             console.log("DIED");
-            GameManager.instance.removeFigure(this.mapPositionX, this.mapPositionY);
+            GameManager.instance.removeFigure(
+                this.mapPositionX,
+                this.mapPositionY
+            );
         }
     }
 
-    capture() {
-    }
+    capture() {}
 
-    renew() {
-    }
+    renew() {}
 
-    canBuy() {
-    }
+    canBuy() {}
 
-    buy() {
-    }
+    buy() {}
 }

@@ -4,8 +4,8 @@ function Modal({ children, backgroundClick, show = true }) {
   if (show)
     return (
       <div className={styles.modal}>
-        <div class={styles.background} onClick={backgroundClick}></div>
-        <div class={styles.box}>{children}</div>
+        <div className={styles.background} onClick={backgroundClick}></div>
+        <div className={styles.box}>{children}</div>
       </div>
     );
   else return <></>;
