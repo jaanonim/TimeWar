@@ -13,10 +13,15 @@ export class UiHandlers {
     constructor() {
         this.setFiguresOnMenu = null;
         this.setIsActiveNextTurnButton = null;
+        this.setWinTargetBar = null;
     }
 
     onSelectFigureInUI(newId, type) {
         GameManager.instance.selectFigureIdInUI = newId;
         GameManager.instance.selectFigureTypeInUI = type;
+    }
+
+    changeWinTargetBar() {
+        UiHandlers.instance.setWinTargetBar(GameManager.instance.player.winProgress, GameManager.instance.winTarget);
     }
 }

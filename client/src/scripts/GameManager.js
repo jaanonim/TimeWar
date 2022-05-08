@@ -261,8 +261,4 @@ export default class GameManager {
         this.sceneManager.scene.remove(MapCreator.instance.mapObjects[x][y].figure);
         MapCreator.instance.mapObjects[x][y].figure = null;
     }
-
-    changeWinTargetBar() {
-        UiHandlers.instance.setWinTargetBar(this.player.winProgress, this.winTarget);
-    }
 }

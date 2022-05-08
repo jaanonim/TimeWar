@@ -1,4 +1,5 @@
 import GameManager from "../GameManager";
+import {UiHandlers} from "../managers/UiHandlers";
 
 export default class Player {
     constructor(name, color) {
@@ -16,6 +17,6 @@ export default class Player {
 
     increaseWinProgress() {
         this.winProgress++;
-        GameManager.instance.changeWinTargetBar();
+        UiHandlers.instance.changeWinTargetBar();
     }
 }
