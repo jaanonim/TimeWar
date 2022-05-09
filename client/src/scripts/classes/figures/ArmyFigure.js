@@ -1,8 +1,9 @@
-import { FigureTypes } from "../../enums/FigureTypes";
-import { HighLightType } from "../../enums/HighLightType";
+import {FigureTypes} from "../../enums/FigureTypes";
+import {HighLightType} from "../../enums/HighLightType";
 import GameManager from "../../GameManager";
 import MapCreator from "../../MapCreator";
 import Figure from "../Figure";
+import Socket from "../../Socket";
 
 export default class ArmyFigure extends Figure {
     constructor(who, positionX, positionY, data) {
@@ -17,9 +18,13 @@ export default class ArmyFigure extends Figure {
 
     move(x, y) {
         //TODO: path finding and animation
+        let oldX = this.mapPositionX;
+        let oldY = this.mapPositionY;
         if (this.isMoved) return false;
         if (!this.place(x, y)) return false;
         this.isMoved = true;
+        let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
+        oldLand.figure = null;
         return true;
     }
 
@@ -51,6 +56,41 @@ export default class ArmyFigure extends Figure {
         return true;
     }
 
+    select() {
+        this.highLightMovePosition();
+    }
+
+    unselect() {
+        this.unHighLightMovePosition();
+    }
+
+    makeAction(event, land) {
+        let x = land.mapPositionX;
+        let y = land.mapPositionY;
+        let gm = GameManager.instance;
+        if (gm.attackOption) {
+            if (this.canAttack(x, y)) {
+                this.unselect();
+                let myX = this.mapPositionX;
+                let myY = this.mapPositionY;
+                if (this.attack(x, y)) {
+                    Socket.instance.attackFigure(myX, myY, x, y);
+                }
+                gm.selectedFigure = null;
+            }
+        } else {
+            if (this.canMove(x, y)) {
+                this.unselect();
+                let myX = this.mapPositionX;
+                let myY = this.mapPositionY;
+                if (this.move(x, y)) {
+                    Socket.instance.moveFigure(myX, myY, x, y);
+                }
+                gm.selectedFigure = null;
+            }
+        }
+    }
+
     canAttack(x, y) {
         let relX = x - this.mapPositionX;
         let relY = y - this.mapPositionY;
@@ -73,6 +113,7 @@ export default class ArmyFigure extends Figure {
         this.isAttack = false;
         this.unHighLightMovePosition();
     }
+
     highLightAttackPosition() {
         if (this.who !== GameManager.instance.player.team) return false;
         if (this.isAttack) {
@@ -133,7 +174,7 @@ export default class ArmyFigure extends Figure {
             let object =
                 MapCreator.instance.mapObjects[this.mapPositionX][
                     this.mapPositionY
-                ];
+                    ];
             if (object != null) {
                 object.hightLightType = HighLightType.MOVE;
                 object.unHighLight();

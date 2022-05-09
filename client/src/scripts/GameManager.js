@@ -1,9 +1,6 @@
-import * as THREE from "three";
 import FigureFactor from "./classes/FigureFactor";
 import ArmyFigure from "./classes/figures/ArmyFigure";
-import MapLand from "./classes/MapLand";
 import Player from "./classes/Player";
-import {HighLightType} from "./enums/HighLightType";
 import {PlayerTeams} from "./enums/PlayerTeams";
 import FigureManager from "./FigureManager";
 import MapCreator from "./MapCreator";
@@ -11,6 +8,7 @@ import Socket from "./Socket";
 import {SceneManager} from "./managers/SceneManager";
 import ModelsManager from "./ModelsManager";
 import {UiHandlers} from "./managers/UiHandlers";
+import {MouseKeyboardManager} from "./managers/MouseKeyboardManager";
 
 export default class GameManager {
     static _instance = null;
@@ -25,31 +23,22 @@ export default class GameManager {
     constructor() {
         //TODO: Change to create player on start game
         this.player = new Player("Player", "blue");
-        this.lastHighLight = null;
-        this.selectedFigure = null;
         this.attackOption = false;
-        this.selectFigureIdInUI = null;
-        this.selectFigureTypeInUI = null;
         this.turn = "";
         this.figuries = [];
         this.winTarget = 0;
+
+        this.lastHighLight = null;
+        this.selectedFigure = null;
+        this.selectFigureIdInUI = null;
+        this.selectFigureTypeInUI = null;
     }
 
     async initDisplay(displayElement) {
         await ModelsManager.loadModels();
         this.sceneManager = await (new SceneManager(displayElement));
-
+        this.mouseKeyboardManager = new MouseKeyboardManager(displayElement);
         this.update();
-        displayElement.addEventListener(
-            "mousedown",
-            this.mouseClickInteract.bind(this)
-        );
-        window.addEventListener("keydown", this.keyDownInteract.bind(this));
-        window.addEventListener("keyup", this.keyUpInteract.bind(this));
-        displayElement.addEventListener(
-            "mousemove",
-            this.highlighting.bind(this)
-        );
         new Socket("room");
     }
 
@@ -60,27 +49,6 @@ export default class GameManager {
     update() {
         this.sceneManager.update();
         requestAnimationFrame(this.update.bind(this));
-    }
-
-    highlighting(event) {
-        const raycaster = new THREE.Raycaster();
-        const mouseVector = new THREE.Vector2();
-        mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        raycaster.setFromCamera(mouseVector, this.sceneManager.camera);
-        const intersects = raycaster.intersectObjects(this.sceneManager.scene.children);
-        if (this.lastHighLight !== null) this.lastHighLight.unHighLight();
-        this.lastHighLight = null;
-        if (intersects.length > 0) {
-            let intersectLand = intersects.find(
-                (obj) => obj.object?.parent instanceof MapLand
-            );
-            if (intersectLand !== undefined) {
-                this.lastHighLight = intersectLand.object.parent;
-                if (this.turn === this.player.team)
-                    this.lastHighLight.highLight();
-            }
-        }
     }
 
     keyDownInteract(event) {
@@ -100,38 +68,6 @@ export default class GameManager {
                 this.selectedFigure.highLightMovePosition();
             }
             this.attackOption = false;
-        }
-    }
-
-    mouseClickInteract(event) {
-        if (event.button === 0) {
-            if (this.turn !== this.player.team) return;
-            const raycaster = new THREE.Raycaster();
-            const mouseVector = new THREE.Vector2();
-            mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
-            raycaster.setFromCamera(mouseVector, this.sceneManager.camera);
-            const intersects = raycaster.intersectObjects(this.sceneManager.scene.children);
-            if (intersects.length > 0) {
-                let intersectLand = intersects.find(
-                    (obj) => obj.object?.parent instanceof MapLand
-                );
-                if (intersectLand !== undefined) {
-                    let land = intersectLand.object.parent;
-                    if (land.figure !== null && !this.attackOption) {
-                        this.selectFigure(land.figure);
-                        return;
-                    }
-                    if (
-                        this.selectedFigure !== undefined &&
-                        land.hightLightType !== HighLightType.NONE
-                    ) {
-                        this.makeAction(land);
-                    } else {
-                        this.placeFigureAction(land);
-                    }
-                }
-            }
         }
     }
 
@@ -192,43 +128,6 @@ export default class GameManager {
         this.figuries.push(figure);
         this.sceneManager.scene.add(figure);
         return figure;
-    }
-
-    makeAction(land) {
-        let x = land.mapPositionX;
-        let y = land.mapPositionY;
-        if (this.attackOption) {
-            if (this.selectedFigure.canAttack(x, y)) {
-                this.selectedFigure.unHighLightAttackPosition();
-                let oldX = this.selectedFigure.mapPositionX;
-                let oldY = this.selectedFigure.mapPositionY;
-                if (this.selectedFigure.attack(x, y)) {
-                    Socket.instance.attackFigure(oldX, oldY, x, y);
-                }
-                this.selectedFigure = null;
-            }
-        } else {
-            if (this.selectedFigure.canMove(x, y)) {
-                this.selectedFigure.unHighLightMovePosition();
-                let oldX = this.selectedFigure.mapPositionX;
-                let oldY = this.selectedFigure.mapPositionY;
-                if (this.moveFigure(this.selectedFigure, x, y)) {
-                    Socket.instance.moveFigure(oldX, oldY, x, y);
-                }
-                this.selectedFigure = null;
-            }
-        }
-    }
-
-    moveFigure(figure, x, y) {
-        let oldX = figure.mapPositionX;
-        let oldY = figure.mapPositionY;
-        if (figure.move(x, y)) {
-            let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
-            oldLand.figure = null;
-            return true;
-        }
-        return false;
     }
 
     selectFigure(figure) {

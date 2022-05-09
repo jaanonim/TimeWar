@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { PlayerTeams } from "../enums/PlayerTeams";
+import {PlayerTeams} from "../enums/PlayerTeams";
 import GameManager from "../GameManager";
 import MapCreator from "../MapCreator";
 import ModelsManager from "../ModelsManager";
-import { getRandomElement, getRandomVector3 } from "../utilities/Random";
+import {getRandomElement, getRandomVector3} from "../utilities/Random";
 import FigureLabel from "./FigureLabel";
 
 export default class Figure extends THREE.Object3D {
@@ -63,21 +63,63 @@ export default class Figure extends THREE.Object3D {
         this.lable.hide();
     }
 
-    // TODO: hook up with game manager to be called when mouse is entering figure
-    onHoverEnter() {
+    onHoverEnter(event) {
         this.lable.show();
     }
 
-    // TODO: hook up with game manager to be called when mouse is exiting figure
-    onHoverExit() {
+    onHoverExit(event) {
         this.lable.hide();
     }
 
-    // TODO: hook up with game manager ...
-    onRigthClick() {}
+    onRightClick(event) {
 
-    // TODO: hook up with game manager ...
-    onLeftClick() {}
+    }
+
+    onLeftClick(event) {
+        let gm = GameManager.instance;
+        if (gm.selectedFigure === this) {
+            gm.selectedFigure.unselect();
+            gm.selectedFigure = null;
+        } else {
+            if (gm.selectedFigure != null) {
+                gm.selectedFigure.unselect();
+            }
+            gm.selectedFigure = this;
+            this.select();
+        }
+        // let x = this.mapPositionX;
+        // let y = this.mapPositionY;
+        // if (gm.attackOption) {
+        //     if (this.selectedFigure.canAttack(x, y)) {
+        //         this.selectedFigure.unHighLightAttackPosition();
+        //         let oldX = this.selectedFigure.mapPositionX;
+        //         let oldY = this.selectedFigure.mapPositionY;
+        //         if (this.selectedFigure.attack(x, y)) {
+        //             Socket.instance.attackFigure(oldX, oldY, x, y);
+        //         }
+        //         this.selectedFigure = null;
+        //     }
+        // } else {
+        //     if (this.selectedFigure.canMove(x, y)) {
+        //         this.selectedFigure.unHighLightMovePosition();
+        //         let oldX = this.selectedFigure.mapPositionX;
+        //         let oldY = this.selectedFigure.mapPositionY;
+        //         if (this.moveFigure(this.selectedFigure, x, y)) {
+        //             Socket.instance.moveFigure(oldX, oldY, x, y);
+        //         }
+        //         this.selectedFigure = null;
+        //     }
+        // }
+    }
+
+    select() {
+    }
+
+    unselect() {
+    }
+
+    makeAction(event, land) {
+    }
 
     update() {
         this.lable.update();
@@ -105,11 +147,15 @@ export default class Figure extends THREE.Object3D {
         }
     }
 
-    capture() {}
+    capture() {
+    }
 
-    renew() {}
+    renew() {
+    }
 
-    canBuy() {}
+    canBuy() {
+    }
 
-    buy() {}
+    buy() {
+    }
 }
