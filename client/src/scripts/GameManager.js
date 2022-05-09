@@ -109,7 +109,9 @@ export default class GameManager {
     }
 
     removeFigure(x, y) {
-        this.sceneManager.scene.remove(MapCreator.instance.mapObjects[x][y].figure);
+        let figure = MapCreator.instance.mapObjects[x][y].figure;
+        figure.onDestroy();
+        this.sceneManager.scene.remove(figure);
         MapCreator.instance.mapObjects[x][y].figure = null;
     }
 }

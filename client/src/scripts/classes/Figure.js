@@ -87,29 +87,10 @@ export default class Figure extends THREE.Object3D {
             gm.selectedFigure = this;
             this.select();
         }
-        // let x = this.mapPositionX;
-        // let y = this.mapPositionY;
-        // if (gm.attackOption) {
-        //     if (this.selectedFigure.canAttack(x, y)) {
-        //         this.selectedFigure.unHighLightAttackPosition();
-        //         let oldX = this.selectedFigure.mapPositionX;
-        //         let oldY = this.selectedFigure.mapPositionY;
-        //         if (this.selectedFigure.attack(x, y)) {
-        //             Socket.instance.attackFigure(oldX, oldY, x, y);
-        //         }
-        //         this.selectedFigure = null;
-        //     }
-        // } else {
-        //     if (this.selectedFigure.canMove(x, y)) {
-        //         this.selectedFigure.unHighLightMovePosition();
-        //         let oldX = this.selectedFigure.mapPositionX;
-        //         let oldY = this.selectedFigure.mapPositionY;
-        //         if (this.moveFigure(this.selectedFigure, x, y)) {
-        //             Socket.instance.moveFigure(oldX, oldY, x, y);
-        //         }
-        //         this.selectedFigure = null;
-        //     }
-        // }
+    }
+
+    onDestroy() {
+        console.log("DIED", this.name);
     }
 
     select() {
@@ -139,7 +120,6 @@ export default class Figure extends THREE.Object3D {
         this.lives -= damage;
         this.takeDamage = true;
         if (this.lives <= 0) {
-            console.log("DIED");
             GameManager.instance.removeFigure(
                 this.mapPositionX,
                 this.mapPositionY
