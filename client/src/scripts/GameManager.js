@@ -1,5 +1,4 @@
 import FigureFactor from "./classes/FigureFactor";
-import ArmyFigure from "./classes/figures/ArmyFigure";
 import Player from "./classes/Player";
 import {PlayerTeams} from "./enums/PlayerTeams";
 import FigureManager from "./FigureManager";
@@ -107,32 +106,6 @@ export default class GameManager {
         this.figuries.push(figure);
         this.sceneManager.scene.add(figure);
         return figure;
-    }
-
-    selectFigure(figure) {
-        if (this.selectedFigure !== null) {
-            if (this.selectedFigure instanceof ArmyFigure) {
-                this.selectedFigure.unHighLightMovePosition();
-            }
-        }
-        if (figure instanceof ArmyFigure) {
-            if (figure === this.selectedFigure) {
-                if (this.attackOption) {
-                    figure.unHighLightAttackPosition();
-                } else {
-                    figure.unHighLightMovePosition();
-                }
-                this.selectedFigure = null;
-            } else {
-                if (figure.who !== GameManager.instance.player.team) return;
-                if (this.attackOption) {
-                    figure.highLightAttackPosition();
-                } else {
-                    figure.highLightMovePosition();
-                }
-                this.selectedFigure = figure;
-            }
-        }
     }
 
     removeFigure(x, y) {

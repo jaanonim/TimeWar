@@ -60,15 +60,16 @@ export default class MapLand extends THREE.Object3D {
     }
 
     onLeftClick(event) {
-        if (this.figure !== null) {
+        let gm = GameManager.instance;
+        if (this.figure !== null && !gm.attackOption) {
             this.figure.onLeftClick(event);
             return;
         }
 
-        if (GameManager.instance.selectedFigure != null && this.hightLightType !== HighLightType.NONE) {
-            GameManager.instance.selectedFigure.makeAction(event, this);
+        if (gm.selectedFigure != null && this.hightLightType !== HighLightType.NONE) {
+            gm.selectedFigure.makeAction(event, this);
         } else {
-            GameManager.instance.placeFigureAction(this);
+            gm.placeFigureAction(this);
         }
     }
 }
