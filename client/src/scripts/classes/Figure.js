@@ -63,34 +63,8 @@ export default class Figure extends THREE.Object3D {
         this.lable.hide();
     }
 
-    onHoverEnter(event) {
-        this.lable.show();
-    }
-
-    onHoverExit(event) {
-        this.lable.hide();
-    }
-
-    onRightClick(event) {
-
-    }
-
-    onLeftClick(event) {
-        let gm = GameManager.instance;
-        if (gm.selectedFigure === this) {
-            gm.selectedFigure.unselect();
-            gm.selectedFigure = null;
-        } else {
-            if (gm.selectedFigure != null) {
-                gm.selectedFigure.unselect();
-            }
-            gm.selectedFigure = this;
-            this.select();
-        }
-    }
-
-    onDestroy() {
-        console.log("DIED", this.name);
+    update() {
+        this.lable.update();
     }
 
     select() {
@@ -100,10 +74,6 @@ export default class Figure extends THREE.Object3D {
     }
 
     makeAction(event, land) {
-    }
-
-    update() {
-        this.lable.update();
     }
 
     place(x, y) {
@@ -138,4 +108,36 @@ export default class Figure extends THREE.Object3D {
 
     buy() {
     }
+
+    //HOOKS
+    onHoverEnter(event) {
+        this.lable.show();
+    }
+
+    onHoverExit(event) {
+        this.lable.hide();
+    }
+
+    onRightClick(event) {
+
+    }
+
+    onLeftClick(event) {
+        let gm = GameManager.instance;
+        if (gm.selectedFigure === this) {
+            gm.selectedFigure.unselect();
+            gm.selectedFigure = null;
+        } else {
+            if (gm.selectedFigure != null) {
+                gm.selectedFigure.unselect();
+            }
+            gm.selectedFigure = this;
+            this.select();
+        }
+    }
+
+    onDestroy() {
+        console.log("DIED", this.name);
+    }
+
 }

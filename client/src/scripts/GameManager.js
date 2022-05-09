@@ -49,15 +49,12 @@ export default class GameManager {
         requestAnimationFrame(this.update.bind(this));
     }
 
-    loadFigures(figures) {
-        FigureManager.instance.figures = figures;
-        UiHandlers.instance.setFiguresOnMenu({
-            landArmy: FigureManager.instance.getLandArmy(),
-            airArmy: FigureManager.instance.getAirArmy(),
-            buildings: FigureManager.instance
-                .getBuildings()
-                ?.filter((building) => building.display),
-        });
+    setTurn(turn) {
+        this.turn = turn;
+        UiHandlers.instance.setTurnInfo(
+            this.player.team === turn ? "You Turn" : "Wait for Your Turn"
+        );
+        UiHandlers.instance.setIsActiveNextTurnButton(this.player.team === turn);
     }
 
     endTurn() {
@@ -70,12 +67,15 @@ export default class GameManager {
         this.figuries.forEach((figure) => figure?.renew());
     }
 
-    setTurn(turn) {
-        this.turn = turn;
-        UiHandlers.instance.setTurnInfo(
-            this.player.team === turn ? "You Turn" : "Wait for Your Turn"
-        );
-        UiHandlers.instance.setIsActiveNextTurnButton(this.player.team === turn);
+    loadFigures(figures) {
+        FigureManager.instance.figures = figures;
+        UiHandlers.instance.setFiguresOnMenu({
+            landArmy: FigureManager.instance.getLandArmy(),
+            airArmy: FigureManager.instance.getAirArmy(),
+            buildings: FigureManager.instance
+                .getBuildings()
+                ?.filter((building) => building.display),
+        });
     }
 
     placeFigureAction(land) {

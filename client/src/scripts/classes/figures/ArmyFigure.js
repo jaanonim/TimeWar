@@ -56,6 +56,23 @@ export default class ArmyFigure extends Figure {
         return true;
     }
 
+    canAttack(x, y) {
+        let relX = x - this.mapPositionX;
+        let relY = y - this.mapPositionY;
+        let attackMaskWidth = this.attackMask.length;
+        let attackMaskHeight = this.attackMask[0].length;
+        let maskX = relX + Math.floor(attackMaskWidth / 2);
+        let maskY = relY + Math.floor(attackMaskHeight / 2);
+        if (
+            maskX < 0 ||
+            maskX >= attackMaskWidth ||
+            maskY < 0 ||
+            maskY >= attackMaskHeight
+        )
+            return false;
+        return this.attackMask[maskX][maskY];
+    }
+
     select() {
         let gm = GameManager.instance;
         if (gm.attackOption) {
@@ -95,23 +112,6 @@ export default class ArmyFigure extends Figure {
                 gm.selectedFigure = null;
             }
         }
-    }
-
-    canAttack(x, y) {
-        let relX = x - this.mapPositionX;
-        let relY = y - this.mapPositionY;
-        let attackMaskWidth = this.attackMask.length;
-        let attackMaskHeight = this.attackMask[0].length;
-        let maskX = relX + Math.floor(attackMaskWidth / 2);
-        let maskY = relY + Math.floor(attackMaskHeight / 2);
-        if (
-            maskX < 0 ||
-            maskX >= attackMaskWidth ||
-            maskY < 0 ||
-            maskY >= attackMaskHeight
-        )
-            return false;
-        return this.attackMask[maskX][maskY];
     }
 
     renew() {

@@ -12,6 +12,37 @@ export class SceneManager {
         });
     }
 
+    async initDisplay(displayElement) {
+        //Initialization Scene
+        this.scene = new THREE.Scene();
+        this.renderer = new THREE.WebGLRenderer({
+            antialias: true,
+        });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        displayElement.innerHTML = "";
+        displayElement.appendChild(this.renderer.domElement);
+
+        await LabelsManager.instance.initDisplay(displayElement);
+
+        //Light
+        const light = new THREE.DirectionalLight(0xffffff, 3, 100);
+        light.position.set(10, 20, 10);
+        light.castShadow = true;
+        this.scene.add(light);
+
+        const light2 = new THREE.DirectionalLight(0xffffff, 1, 100);
+        light2.position.set(-10, -20, -10);
+        this.scene.add(light2);
+
+        //Inits
+        this.initCamera();
+        this.initHelpers();
+        this.initShadows(light);
+
+        //Add Listener for resizing screen
+        window.addEventListener("resize", this.onWindowResize.bind(this));
+    }
+
     initCamera() {
         this.camera = new THREE.PerspectiveCamera(
             75,
@@ -50,37 +81,6 @@ export class SceneManager {
         light.shadow.mapSize.height = 1024 * 64;
         light.shadow.camera.near = 0.5;
         light.shadow.camera.far = 100;
-    }
-
-    async initDisplay(displayElement) {
-        //Initialization Scene
-        this.scene = new THREE.Scene();
-        this.renderer = new THREE.WebGLRenderer({
-            antialias: true,
-        });
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        displayElement.innerHTML = "";
-        displayElement.appendChild(this.renderer.domElement);
-
-        await LabelsManager.instance.initDisplay(displayElement);
-
-        //Light
-        const light = new THREE.DirectionalLight(0xffffff, 3, 100);
-        light.position.set(10, 20, 10);
-        light.castShadow = true;
-        this.scene.add(light);
-
-        const light2 = new THREE.DirectionalLight(0xffffff, 1, 100);
-        light2.position.set(-10, -20, -10);
-        this.scene.add(light2);
-
-        //Inits
-        this.initCamera();
-        this.initHelpers();
-        this.initShadows(light);
-
-        //Add Listener for resizing screen
-        window.addEventListener("resize", this.onWindowResize.bind(this));
     }
 
     update() {

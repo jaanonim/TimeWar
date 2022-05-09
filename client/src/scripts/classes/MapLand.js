@@ -48,7 +48,7 @@ export default class MapLand extends THREE.Object3D {
             this.model.material.color.set(this.defaultColor)
         }
     }
-
+    //HOOKS
     onHoverEnter(event) {
     }
 
