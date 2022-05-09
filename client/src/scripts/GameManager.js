@@ -28,7 +28,6 @@ export default class GameManager {
         this.figuries = [];
         this.winTarget = 0;
 
-        this.lastHighLight = null;
         this.selectedFigure = null;
         this.selectFigureIdInUI = null;
         this.selectFigureTypeInUI = null;
@@ -49,26 +48,6 @@ export default class GameManager {
     update() {
         this.sceneManager.update();
         requestAnimationFrame(this.update.bind(this));
-    }
-
-    keyDownInteract(event) {
-        if (event.key === "a") {
-            if (!this.attackOption && this.selectedFigure !== null) {
-                this.selectedFigure.unHighLightMovePosition();
-                this.selectedFigure.highLightAttackPosition();
-            }
-            this.attackOption = true;
-        }
-    }
-
-    keyUpInteract(event) {
-        if (event.key === "a") {
-            if (this.attackOption && this.selectedFigure !== null) {
-                this.selectedFigure.unHighLightAttackPosition();
-                this.selectedFigure.highLightMovePosition();
-            }
-            this.attackOption = false;
-        }
     }
 
     loadFigures(figures) {

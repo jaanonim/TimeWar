@@ -10,12 +10,36 @@ export class MouseKeyboardManager {
             "mousedown",
             this.mouseClickInteract.bind(this)
         );
-        // window.addEventListener("keydown", this.keyDownInteract.bind(this));
-        // window.addEventListener("keyup", this.keyUpInteract.bind(this));
+        window.addEventListener("keydown", this.keyDownInteract.bind(this));
+        window.addEventListener("keyup", this.keyUpInteract.bind(this));
         displayElement.addEventListener(
             "mousemove",
             this.highlighting.bind(this)
         );
+    }
+
+    keyDownInteract(event) {
+        let gm = GameManager.instance;
+        if (event.key === "a") {
+            if (!gm.attackOption && gm.selectedFigure !== null) {
+                gm.selectedFigure.unselect();
+                gm.attackOption = true;
+                gm.selectedFigure.select();
+            }
+            gm.attackOption = true;
+        }
+    }
+
+    keyUpInteract(event) {
+        let gm = GameManager.instance;
+        if (event.key === "a") {
+            if (gm.attackOption && gm.selectedFigure !== null) {
+                gm.selectedFigure.unselect();
+                gm.attackOption = false;
+                gm.selectedFigure.select();
+            }
+            gm.attackOption = false;
+        }
     }
 
     highlighting(event) {

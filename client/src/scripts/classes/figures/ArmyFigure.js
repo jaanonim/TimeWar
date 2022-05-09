@@ -57,11 +57,17 @@ export default class ArmyFigure extends Figure {
     }
 
     select() {
-        this.highLightMovePosition();
+        let gm = GameManager.instance;
+        if (gm.attackOption) {
+            this.highLightAttackPosition()
+        } else {
+            this.highLightMovePosition();
+        }
     }
 
     unselect() {
         this.unHighLightMovePosition();
+        this.unHighLightAttackPosition();
     }
 
     makeAction(event, land) {
