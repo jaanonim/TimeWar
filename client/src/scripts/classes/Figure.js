@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { PlayerTeams } from "../enums/PlayerTeams";
+import {PlayerTeams} from "../enums/PlayerTeams";
 import GameManager from "../GameManager";
 import MapCreator from "../MapCreator";
 import ModelsManager from "../ModelsManager";
-import { getRandomElement, getRandomVector3 } from "../utilities/Random";
+import {getRandomElement, getRandomVector3} from "../utilities/Random";
 import FigureLabel from "./FigureLabel";
 
 export default class Figure extends THREE.Object3D {
@@ -63,24 +63,17 @@ export default class Figure extends THREE.Object3D {
         this.lable.hide();
     }
 
-    // TODO: hook up with game manager to be called when mouse is entering figure
-    onHoverEnter() {
-        this.lable.show();
-    }
-
-    // TODO: hook up with game manager to be called when mouse is exiting figure
-    onHoverExit() {
-        this.lable.hide();
-    }
-
-    // TODO: hook up with game manager ...
-    onRigthClick() {}
-
-    // TODO: hook up with game manager ...
-    onLeftClick() {}
-
     update() {
         this.lable.update();
+    }
+
+    select() {
+    }
+
+    unselect() {
+    }
+
+    makeAction(event, land) {
     }
 
     place(x, y) {
@@ -97,7 +90,6 @@ export default class Figure extends THREE.Object3D {
         this.lives -= damage;
         this.takeDamage = true;
         if (this.lives <= 0) {
-            console.log("DIED");
             GameManager.instance.removeFigure(
                 this.mapPositionX,
                 this.mapPositionY
@@ -105,11 +97,47 @@ export default class Figure extends THREE.Object3D {
         }
     }
 
-    capture() {}
+    capture() {
+    }
 
-    renew() {}
+    renew() {
+    }
 
-    canBuy() {}
+    canBuy() {
+    }
 
-    buy() {}
+    buy() {
+    }
+
+    //HOOKS
+    onHoverEnter(event) {
+        this.lable.show();
+    }
+
+    onHoverExit(event) {
+        this.lable.hide();
+    }
+
+    onRightClick(event) {
+
+    }
+
+    onLeftClick(event) {
+        let gm = GameManager.instance;
+        if (gm.selectedFigure === this) {
+            gm.selectedFigure.unselect();
+            gm.selectedFigure = null;
+        } else {
+            if (gm.selectedFigure != null) {
+                gm.selectedFigure.unselect();
+            }
+            gm.selectedFigure = this;
+            this.select();
+        }
+    }
+
+    onDestroy() {
+        console.log("DIED", this.name);
+    }
+
 }
