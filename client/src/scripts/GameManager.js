@@ -4,7 +4,7 @@ import {PlayerTeams} from "./enums/PlayerTeams";
 import FigureManager from "./FigureManager";
 import MapCreator from "./MapCreator";
 import Socket from "./Socket";
-import {SceneManager} from "./managers/SceneManager";
+import {SceneInitializator} from "./managers/SceneInitializator";
 import ModelsManager from "./ModelsManager";
 import {UiHandlers} from "./managers/UiHandlers";
 import {MouseKeyboardManager} from "./managers/MouseKeyboardManager";
@@ -34,7 +34,7 @@ export default class GameManager {
 
     async initDisplay(displayElement) {
         await ModelsManager.loadModels();
-        this.sceneManager = await (new SceneManager(displayElement));
+        this.sceneManager = await (new SceneInitializator(displayElement));
         this.mouseKeyboardManager = new MouseKeyboardManager(displayElement);
         this.update();
         new Socket("room");
@@ -51,10 +51,7 @@ export default class GameManager {
 
     setTurn(turn) {
         this.turn = turn;
-        UiHandlers.instance.setTurnInfo(
-            this.player.team === turn ? "You Turn" : "Wait for Your Turn"
-        );
-        UiHandlers.instance.setIsActiveNextTurnButton(this.player.team === turn);
+        UiHandlers.instance.changeTurnText(this.turn);
     }
 
     endTurn() {

@@ -1,5 +1,8 @@
 import GameManager from "../GameManager";
 
+const yourTurnText = "You Turn";
+const waitingTurnText = "Wait for Your Turn";
+
 export class UiHandlers {
     static _instance = null;
 
@@ -23,5 +26,12 @@ export class UiHandlers {
 
     changeWinTargetBar() {
         UiHandlers.instance.setWinTargetBar(GameManager.instance.player.winProgress, GameManager.instance.winTarget);
+    }
+
+    changeTurnText(turn) {
+        UiHandlers.instance.setTurnInfo(
+            GameManager.instance.player.team === turn ? yourTurnText : waitingTurnText
+        );
+        UiHandlers.instance.setIsActiveNextTurnButton(GameManager.instance.player.team === turn);
     }
 }

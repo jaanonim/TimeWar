@@ -3,7 +3,7 @@ import LabelsManager from "../LabelsManager";
 import Stats from "stats-js";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
-export class SceneManager {
+export class SceneInitializator {
 
     constructor(displayElement) {
         return new Promise(async (resolve) => {
@@ -21,7 +21,7 @@ export class SceneManager {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         displayElement.innerHTML = "";
         displayElement.appendChild(this.renderer.domElement);
-
+        //TODO: FOR YOU, JAANONIM
         await LabelsManager.instance.initDisplay(displayElement);
 
         //Light
