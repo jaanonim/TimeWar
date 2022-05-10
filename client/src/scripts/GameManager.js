@@ -1,15 +1,16 @@
 import Stats from "stats-js";
 import * as THREE from "three";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import FigureFactor from "./classes/FigureFactor";
 import ArmyFigure from "./classes/figures/ArmyFigure";
 import MapLand from "./classes/MapLand";
 import Player from "./classes/Player";
-import {HighLightType} from "./enums/HighLightType";
-import {PlayerTeams} from "./enums/PlayerTeams";
+import { HighLightType } from "./enums/HighLightType";
+import { PlayerTeams } from "./enums/PlayerTeams";
 import FigureManager from "./FigureManager";
 import MapCreator from "./MapCreator";
 import ModelsManager from "./ModelsManager";
+import createParticles from "./particles";
 import Socket from "./Socket";
 
 export default class GameManager {
@@ -92,7 +93,12 @@ export default class GameManager {
         //Stats
         this.stats = new Stats();
         this.stats.showPanel(0);
-        //document.body.appendChild(this.stats.dom);
+        document.body.appendChild(this.stats.dom);
+
+        this.nebula = await createParticles(THREE, {
+            scene: this.scene,
+            camera: this.camera,
+        });
 
         this.update();
 
@@ -102,14 +108,8 @@ export default class GameManager {
             "mousedown",
             this.mouseClickInteract.bind(this)
         );
-        window.addEventListener(
-            "keydown",
-            this.keyDownInteract.bind(this)
-        );
-        window.addEventListener(
-            "keyup",
-            this.keyUpInteract.bind(this)
-        );
+        window.addEventListener("keydown", this.keyDownInteract.bind(this));
+        window.addEventListener("keyup", this.keyUpInteract.bind(this));
         displayElement.addEventListener(
             "mousemove",
             this.highlighting.bind(this)
@@ -124,6 +124,7 @@ export default class GameManager {
     update() {
         this.stats.begin();
         this.cameraConrols.update();
+        if (this.nebula) this.nebula.update();
         this.renderer.render(this.scene, this.camera);
         this.stats.end();
         requestAnimationFrame(this.update.bind(this));
@@ -162,7 +163,7 @@ export default class GameManager {
     }
 
     keyDownInteract(event) {
-        if (event.key === 'a') {
+        if (event.key === "a") {
             if (!this.attackOption && this.selectedFigure !== null) {
                 this.selectedFigure.unHighLightMovePosition();
                 this.selectedFigure.highLightAttackPosition();
@@ -172,7 +173,7 @@ export default class GameManager {
     }
 
     keyUpInteract(event) {
-        if (event.key === 'a') {
+        if (event.key === "a") {
             if (this.attackOption && this.selectedFigure !== null) {
                 this.selectedFigure.unHighLightAttackPosition();
                 this.selectedFigure.highLightMovePosition();
@@ -344,3 +345,5 @@ export default class GameManager {
         this.setWinTargetBar(this.player.winProgress, this.winTarget);
     }
 }
+
+export const instance = GameManager.instance;
