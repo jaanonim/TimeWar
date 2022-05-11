@@ -3,6 +3,7 @@ import Player from "./classes/Player";
 import {PlayerTeams} from "./enums/PlayerTeams";
 import FigureManager from "./FigureManager";
 import MapCreator from "./MapCreator";
+import createParticles from "./particles";
 import Socket from "./Socket";
 import {SceneInitializator} from "./managers/SceneInitializator";
 import ModelsManager from "./ModelsManager";
@@ -37,6 +38,7 @@ export default class GameManager {
         this.sceneManager = await (new SceneInitializator(displayElement));
         this.mouseKeyboardManager = new MouseKeyboardManager(displayElement);
         this.update();
+
         new Socket("room");
     }
 
@@ -52,6 +54,7 @@ export default class GameManager {
     setTurn(turn) {
         this.turn = turn;
         UiHandlers.instance.changeTurnText(this.turn);
+
     }
 
     endTurn() {
@@ -112,3 +115,5 @@ export default class GameManager {
         MapCreator.instance.mapObjects[x][y].figure = null;
     }
 }
+
+export const instance = GameManager.instance;
