@@ -72,11 +72,8 @@ export default class Socket {
                 MapCreator.instance.mapObjects[data.msg.figureX][
                     data.msg.figureY
                     ].figure;
-            GameManager.instance.moveFigure(
-                figure,
-                data.msg.newX,
-                data.msg.newY
-            );
+            figure.move(data.msg.newX, data.msg.newY);
+
         });
         this.socket.on("attackFigure", (data) => {
             let figure =

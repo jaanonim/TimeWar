@@ -48,4 +48,28 @@ export default class MapLand extends THREE.Object3D {
             this.model.material.color.set(this.defaultColor)
         }
     }
+    //HOOKS
+    onHoverEnter(event) {
+    }
+
+    onHoverExit(event) {
+    }
+
+    onRightClick(event) {
+
+    }
+
+    onLeftClick(event) {
+        let gm = GameManager.instance;
+        if (this.figure !== null && !gm.attackOption) {
+            this.figure.onLeftClick(event);
+            return;
+        }
+
+        if (gm.selectedFigure != null && this.hightLightType !== HighLightType.NONE) {
+            gm.selectedFigure.makeAction(event, this);
+        } else {
+            gm.placeFigureAction(this);
+        }
+    }
 }
