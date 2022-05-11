@@ -1,20 +1,40 @@
+.health {
+  padding: 0.1rem 0 0.1rem 0.1rem;
+
+  background-color: var(--background);
+}
+
 .container {
-	margin: 0.75rem;
-	padding: 0.25rem 0 0.25rem 0.25rem;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	background-color: var(--background);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
-.block {
-	width: 1rem;
-	height: 1rem;
-	background-color: var(--main);
-	margin: 0 0.25rem 0 0;
+.normal {
+  margin: 0.75rem;
+  padding: 0.25rem 0 0.25rem 0.25rem;
+
+  background-color: var(--background);
 }
 
-.active {
-	background-color: var(--akcent);
+.health > .block {
+  width: 0.5rem;
+  height: 0.5rem;
+  margin: 0 0.1rem 0 0;
+  background-color: var(--secend-background);
+}
+.health > .active {
+  background-color: var(--color);
+}
+
+.normal > .block {
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--main);
+  margin: 0 0.25rem 0 0;
+}
+
+.normal > .active {
+  background-color: var(--akcent);
 }

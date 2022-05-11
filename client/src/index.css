@@ -61,6 +61,7 @@ input {
   left: 0;
   top: 0;
   color: white;
+  z-index: 0;
 }
 
 .label {

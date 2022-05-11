@@ -53,4 +53,9 @@ export default class Label {
 
         this.labelDom.render(this.getComponent());
     }
+
+    destroy() {
+        this.visible = false;
+        this.labelDom.destroy();
+    }
 }

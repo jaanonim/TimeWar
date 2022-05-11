@@ -1,11 +1,18 @@
 import * as THREE from "three";
-import {
-    HighLightType
-} from "../enums/HighLightType";
+import { HighLightType } from "../enums/HighLightType";
 import GameManager from "../GameManager";
 
 export default class MapLand extends THREE.Object3D {
-    constructor(x, y, mapPositionX, mapPositionY, width, height, geometry, material) {
+    constructor(
+        x,
+        y,
+        mapPositionX,
+        mapPositionY,
+        width,
+        height,
+        geometry,
+        material
+    ) {
         super(geometry, material);
         this.mapPositionX = mapPositionX;
         this.mapPositionY = mapPositionY;
@@ -22,18 +29,20 @@ export default class MapLand extends THREE.Object3D {
     capture() {
         //TODO: think about what happen when 2 player want capture 1 place
         if (this.captured == null) {
-            this.captured = GameManager.instance.player
+            this.captured = GameManager.instance.player;
         }
     }
 
     highLight() {
+        if (GameManager.instance.turn !== GameManager.instance.player.team)
+            return;
         if (this.model == null) return;
         if (this.hightLightType === HighLightType.MOVE) {
-            this.model.material.color.set(0x2201ee)
+            this.model.material.color.set(0x2201ee);
         } else if (this.hightLightType === HighLightType.ATTACK) {
-            this.model.material.color.set(0xee4444)
+            this.model.material.color.set(0xee4444);
         } else {
-            this.model.material.color.set(0x0033ee)
+            this.model.material.color.set(0x0033ee);
         }
     }
 
@@ -41,23 +50,19 @@ export default class MapLand extends THREE.Object3D {
         //TODO: After change to select graphics
         if (this.model == null) return;
         if (this.hightLightType === HighLightType.MOVE) {
-            this.model.material.color.set(0x3312ff)
+            this.model.material.color.set(0x3312ff);
         } else if (this.hightLightType === HighLightType.ATTACK) {
-            this.model.material.color.set(0xff5555)
+            this.model.material.color.set(0xff5555);
         } else {
-            this.model.material.color.set(this.defaultColor)
+            this.model.material.color.set(this.defaultColor);
         }
     }
     //HOOKS
-    onHoverEnter(event) {
-    }
+    onHoverEnter(event) {}
 
-    onHoverExit(event) {
-    }
+    onHoverExit(event) {}
 
-    onRightClick(event) {
-
-    }
+    onRightClick(event) {}
 
     onLeftClick(event) {
         let gm = GameManager.instance;
@@ -66,7 +71,10 @@ export default class MapLand extends THREE.Object3D {
             return;
         }
 
-        if (gm.selectedFigure != null && this.hightLightType !== HighLightType.NONE) {
+        if (
+            gm.selectedFigure != null &&
+            this.hightLightType !== HighLightType.NONE
+        ) {
             gm.selectedFigure.makeAction(event, this);
         } else {
             gm.placeFigureAction(this);

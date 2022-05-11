@@ -34,4 +34,8 @@ class DomLabel {
     render(jsx) {
         ReactDOM.render(jsx, this.domElement);
     }
+
+    destroy() {
+        this.domElement.remove();
+    }
 }
