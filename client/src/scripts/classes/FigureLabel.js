@@ -5,7 +5,6 @@ export default class FigureLabel extends Label {
     constructor(figure) {
         super();
         this.figure = figure;
-        console.log(this.figure.name, this.figure);
         this.setComponent(() =>
             LabelComponent({
                 name: this.figure.name,

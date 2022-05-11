@@ -1,6 +1,6 @@
 import { Vector3 } from "three";
 import GameManager from "../GameManager";
-import LabelsManager from "../LabelsManager";
+import LabelsManager from "../managers/LabelsManager";
 
 export default class Label {
     constructor() {

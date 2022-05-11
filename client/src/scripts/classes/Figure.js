@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { PlayerTeams } from "../enums/PlayerTeams";
 import GameManager from "../GameManager";
+import ModelsManager from "../managers/ModelsManager";
 import MapCreator from "../MapCreator";
-import ModelsManager from "../ModelsManager";
 import { getRandomElement, getRandomVector3 } from "../utilities/Random";
 import FigureLabel from "./FigureLabel";
 
