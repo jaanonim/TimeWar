@@ -50,8 +50,10 @@ export default async (three, { scene, camera }) => {
             material: new THREE.MeshLambertMaterial({ color: "#00ffcc" }),
         }),
     });
-
-    return system
-        .addEmitter(cubeEmitter)
-        .addRenderer(new MeshRenderer(scene, THREE));
+    const renderer = new MeshRenderer(scene, THREE);
+    return {
+        system: system.addEmitter(cubeEmitter).addRenderer(renderer),
+        renderer,
+        emitter: cubeEmitter,
+    };
 };

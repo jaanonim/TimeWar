@@ -1,10 +1,10 @@
-import * as THREE from "three";
-import LabelsManager from "../LabelsManager";
 import Stats from "stats-js";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import LabelsManager from "../LabelsManager";
+import createParticles from "../particles";
 
 export class SceneInitializator {
-
     constructor(displayElement) {
         return new Promise(async (resolve) => {
             await this.initDisplay(displayElement);
@@ -39,6 +39,16 @@ export class SceneInitializator {
         this.initHelpers();
         this.initShadows(light);
 
+        const { system, renderer, emitter } = await createParticles(THREE, {
+            scene: this.scene,
+            camera: this.camera,
+        });
+        this.nebula = system;
+        this.emitter = emitter;
+        setTimeout(() => {
+            system.destroy();
+        }, 1000);
+
         //Add Listener for resizing screen
         window.addEventListener("resize", this.onWindowResize.bind(this));
     }
@@ -52,7 +62,6 @@ export class SceneInitializator {
         );
         this.camera.position.y = 25;
         this.camera.position.z = 35;
-
     }
 
     initHelpers() {
@@ -86,6 +95,7 @@ export class SceneInitializator {
     update() {
         this.stats.begin();
         this.cameraConrols.update();
+        if (this.nebula) this.nebula.update();
         this.scene.children.forEach((child) => {
             if (child.update !== undefined) child.update();
         });

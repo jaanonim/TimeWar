@@ -1,14 +1,13 @@
 import FigureFactor from "./classes/FigureFactor";
 import Player from "./classes/Player";
-import {PlayerTeams} from "./enums/PlayerTeams";
+import { PlayerTeams } from "./enums/PlayerTeams";
 import FigureManager from "./FigureManager";
+import { MouseKeyboardManager } from "./managers/MouseKeyboardManager";
+import { SceneInitializator } from "./managers/SceneInitializator";
+import { UiHandlers } from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
-import createParticles from "./particles";
-import Socket from "./Socket";
-import {SceneInitializator} from "./managers/SceneInitializator";
 import ModelsManager from "./ModelsManager";
-import {UiHandlers} from "./managers/UiHandlers";
-import {MouseKeyboardManager} from "./managers/MouseKeyboardManager";
+import Socket from "./Socket";
 
 export default class GameManager {
     static _instance = null;
@@ -35,7 +34,7 @@ export default class GameManager {
 
     async initDisplay(displayElement) {
         await ModelsManager.loadModels();
-        this.sceneManager = await (new SceneInitializator(displayElement));
+        this.sceneManager = await new SceneInitializator(displayElement);
         this.mouseKeyboardManager = new MouseKeyboardManager(displayElement);
         this.update();
 
@@ -54,7 +53,6 @@ export default class GameManager {
     setTurn(turn) {
         this.turn = turn;
         UiHandlers.instance.changeTurnText(this.turn);
-
     }
 
     endTurn() {
