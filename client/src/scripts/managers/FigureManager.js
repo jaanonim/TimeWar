@@ -1,4 +1,4 @@
-import { FigureTypes } from "./enums/FigureTypes";
+import { FigureTypes } from "../enums/FigureTypes";
 
 export default class FigureManager {
     static _instance = null;

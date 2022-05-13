@@ -50,7 +50,9 @@ export class MouseKeyboardManager {
         mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouseVector, gm.sceneManager.camera);
-        const intersects = raycaster.intersectObjects(gm.sceneManager.scene.children);
+        const intersects = raycaster.intersectObjects(
+            gm.sceneManager.scene.children
+        );
         if (intersects.length > 0) {
             let intersectLand = intersects.find(
                 (obj) => obj.object?.parent instanceof MapLand
@@ -76,7 +78,9 @@ export class MouseKeyboardManager {
         mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouseVector, gm.sceneManager.camera);
-        const intersects = raycaster.intersectObjects(gm.sceneManager.scene.children);
+        const intersects = raycaster.intersectObjects(
+            gm.sceneManager.scene.children
+        );
         if (intersects.length > 0) {
             let intersectLand = intersects.find(
                 (obj) => obj.object?.parent instanceof MapLand
@@ -89,11 +93,9 @@ export class MouseKeyboardManager {
                         this.lastHighlightingObject.figure?.onHoverExit(event);
                     }
                     this.lastHighlightingObject = obj;
-                    if (gm.turn === gm.player.team) {
-                        this.lastHighlightingObject.highLight();
-                        if (this.lastHighlightingObject.figure != null)
-                            this.lastHighlightingObject.figure?.onHoverEnter(event);
-                    }
+                    this.lastHighlightingObject.highLight();
+                    if (this.lastHighlightingObject.figure != null)
+                        this.lastHighlightingObject.figure?.onHoverEnter(event);
                 }
             }
         }

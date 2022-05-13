@@ -1,4 +1,4 @@
-import ModelsManager from "../../ModelsManager";
+import ModelsManager from "../../managers/ModelsManager";
 import MapLand from "../MapLand";
 
 export default class Land extends MapLand {

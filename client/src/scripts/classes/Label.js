@@ -1,6 +1,6 @@
 import { Vector3 } from "three";
 import GameManager from "../GameManager";
-import LabelsManager from "../LabelsManager";
+import LabelsManager from "../managers/LabelsManager";
 
 export default class Label {
     constructor() {
@@ -52,5 +52,10 @@ export default class Label {
         else this.labelDom.domElement.style.display = "none";
 
         this.labelDom.render(this.getComponent());
+    }
+
+    destroy() {
+        this.visible = false;
+        this.labelDom.destroy();
     }
 }

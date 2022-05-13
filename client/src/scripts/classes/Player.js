@@ -1,5 +1,5 @@
 import GameManager from "../GameManager";
-import {UiHandlers} from "../managers/UiHandlers";
+import { UiHandlers } from "../managers/UiHandlers";
 
 export default class Player {
     constructor(name, color) {
@@ -12,7 +12,8 @@ export default class Player {
     setTeam(team) {
         this.team = team;
         let camera = GameManager.instance.sceneManager.camera;
-        camera.position.z = Math.abs(camera.position.z) * (this.team === "RED" ? 1 : -1);
+        camera.position.z =
+            Math.abs(camera.position.z) * (this.team === "RED" ? 1 : -1);
     }
 
     increaseWinProgress() {

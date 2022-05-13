@@ -5,12 +5,18 @@ export default class LabelsManager {
 
     static get instance() {
         if (LabelsManager._instance == null) {
-            LabelsManager._instance = new LabelsManager();
+            new LabelsManager();
         }
         return LabelsManager._instance;
     }
 
-    constructor() {}
+    constructor(displayElement) {
+        return new Promise(async (resolve) => {
+            await this.initDisplay(displayElement);
+            LabelsManager._instance = this;
+            resolve(this);
+        });
+    }
 
     async initDisplay(displayElement) {
         this.domElement = document.createElement("div");
@@ -33,5 +39,9 @@ class DomLabel {
 
     render(jsx) {
         ReactDOM.render(jsx, this.domElement);
+    }
+
+    destroy() {
+        this.domElement.remove();
     }
 }

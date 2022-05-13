@@ -1,10 +1,8 @@
-import * as THREE from "three";
-import LabelsManager from "../LabelsManager";
 import Stats from "stats-js";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 export class SceneInitializator {
-
     constructor(displayElement) {
         return new Promise(async (resolve) => {
             await this.initDisplay(displayElement);
@@ -21,8 +19,6 @@ export class SceneInitializator {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         displayElement.innerHTML = "";
         displayElement.appendChild(this.renderer.domElement);
-        //TODO: FOR YOU, JAANONIM
-        await LabelsManager.instance.initDisplay(displayElement);
 
         //Light
         const light = new THREE.DirectionalLight(0xffffff, 3, 100);
@@ -52,7 +48,6 @@ export class SceneInitializator {
         );
         this.camera.position.y = 25;
         this.camera.position.z = 35;
-
     }
 
     initHelpers() {
