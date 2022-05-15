@@ -2,9 +2,9 @@ import { default as React } from "react";
 import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
 
-const GamePage = React.lazy(() => import("./pages/GamePage"));
-const MainPage = React.lazy(() => import("./pages/MainPage"));
-const JoinPage = React.lazy(() => import("./pages/JoinPage"));
+const GamePage = React.lazy(() => import("./pages/GamePage/index.js"));
+const MainPage = React.lazy(() => import("./pages/MainPage/index.js"));
+const JoinPage = React.lazy(() => import("./pages/JoinPage/index.js"));
 
 function App() {
   return (
