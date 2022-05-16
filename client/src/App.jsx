@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading"; /*
 import GamePage from "./pages/GamePage";
 import JoinPage from "./pages/JoinPage";*/
-import MainPage from "./pages/MainPage";
+import { MainPage } from "./pages/MainPage";
 import Test from "./pages/Taaaa";
 
 /*
