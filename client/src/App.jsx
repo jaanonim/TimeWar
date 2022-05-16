@@ -4,7 +4,7 @@ import Loading from "./components/Loading"; /*
 import GamePage from "./pages/GamePage";
 import JoinPage from "./pages/JoinPage";*/
 import Test from "./pages/EeePage";
-import MainPage from "./pages/MainPage";
+import m from "./pages/MainPage";
 
 /*
 const GamePage = React.lazy(() => import("./pages/GamePage"));
@@ -13,6 +13,7 @@ const JoinPage = React.lazy(() => import("./pages/JoinPage"));
 */
 
 function App() {
+  console.log(m);
   return <Test></Test>;
   return (
     <Routes>
