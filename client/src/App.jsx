@@ -5,12 +5,11 @@ import Loading from "./components/Loading";
 import GamePage from "./pages/GamePage";
 import JoinPage from "./pages/JoinPage";
 import MainPage from "./pages/MainPage";
+*/
 
-/*
 const GamePage = React.lazy(() => import("./pages/GamePage"));
 const MainPage = React.lazy(() => import("./pages/MainPage"));
 const JoinPage = React.lazy(() => import("./pages/JoinPage"));
-*/
 
 function App() {
   return <Loading />;
