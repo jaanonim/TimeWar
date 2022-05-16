@@ -1,7 +1,7 @@
 import { default as React } from "react";
 import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
-import GamePage from "./pages/GamePage/index";
+import GamePage from "./pages/GamePage/index.js";
 import JoinPage from "./pages/JoinPage";
 import MainPage from "./pages/MainPage";
 
