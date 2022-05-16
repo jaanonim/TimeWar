@@ -8,7 +8,7 @@
         "build": "npm run build -w client",
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "npm run start -w server",
-        "deploy": "git push https://git.heroku.com/time-war.git main"
+        "deploy": "git push heroku main"
     },
     "workspaces": [
         "server",
