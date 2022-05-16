@@ -1,1 +1,1 @@
-export default { ok: 1 };
+export { default } from "./Taaaa";

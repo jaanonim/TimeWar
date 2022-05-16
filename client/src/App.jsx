@@ -1,7 +1,7 @@
 import { default as React } from "react";
 import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
-import test from "./pages/Taaaa";
+import Test from "./pages/Taaaa";
 
 /*
 import GamePage from "./pages/GamePage";
@@ -14,8 +14,7 @@ const JoinPage = React.lazy(() => import("./pages/JoinPage"));
 */
 
 function App() {
-  console.log(test);
-  return <></>;
+  return <Test></Test>;
   return (
     <Routes>
       <Route
