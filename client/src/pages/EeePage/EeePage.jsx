@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
-import styles from "./MainPage.module.css";
+import styles from "./EeePage.module.css";
 
 function MainPage() {
   return (
