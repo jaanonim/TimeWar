@@ -7,15 +7,21 @@
         "dev": "concurrently \"npm -w server run dev\" \"npm -w client run dev\"",
         "build": "npm run build -w client",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "npm run start -w server"
+        "start": "npm run start -w server",
+        "deploy": "git push heroku main"
     },
     "workspaces": [
         "server",
         "client"
     ],
+    "private": true,
     "author": "",
     "license": "ISC",
     "devDependencies": {
         "concurrently": "^7.0.0"
+    },
+    "engines": {
+        "node": "16.15.0",
+        "npm": "8.5.5"
     }
 }
