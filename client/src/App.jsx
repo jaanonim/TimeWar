@@ -1,7 +1,7 @@
 import { default as React } from "react";
 import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
-import test from "./pages/Taaaa/test";
+import test from "./pages/Taaaa";
 
 /*
 import GamePage from "./pages/GamePage";
