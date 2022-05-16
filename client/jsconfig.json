@@ -1,8 +1,0 @@
-{
-    "compilerOptions": {
-        "module": "es6",
-        "target": "es2019",
-        "jsx": "react",
-        "baseUrl": ".",
-    }
-}
