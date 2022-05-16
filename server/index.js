@@ -1,6 +1,6 @@
-const app = require("./src/App");
+const app = require("./src/app");
 const http = require("http");
-const { initSockets } = require("./src/Sockets");
+const { initSockets } = require("./src/sockets");
 
 const normalizePort = (val) => {
     const port = parseInt(val, 10);
