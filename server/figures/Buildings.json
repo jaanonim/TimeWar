@@ -8,13 +8,13 @@
     "maxLives": -1,
     "model": "lab",
     "scale": 1,
+    "price": 0,
     "display": false,
     "capturingMask": [
       [0, 1, 0],
       [1, 1, 1],
       [0, 1, 0]
     ],
-    "price": 0,
     "offset": [
       {
         "x": 0,
@@ -33,7 +33,7 @@
     "model": "factory",
     "scale": 1,
     "display": true,
-    "price": 0,
+    "price": 10,
     "capturingMask": [
       [1, 1, 1],
       [1, 1, 1],

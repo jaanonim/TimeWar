@@ -4,6 +4,7 @@ import GameManager from "../../GameManager";
 import MapCreator from "../../MapCreator";
 import Figure from "../Figure";
 import Socket from "../../Socket";
+import {SupplyTypes} from "../../enums/SupplyTypes";
 
 export default class ArmyFigure extends Figure {
     constructor(who, positionX, positionY, data) {
@@ -118,6 +119,31 @@ export default class ArmyFigure extends Figure {
         this.isMoved = false;
         this.isAttack = false;
         this.unHighLightMovePosition();
+    }
+
+    static canBuy(data) {
+        let player = GameManager.instance.player;
+        let supply;
+        if (data.isFlyable) {
+            supply = player.supplies[SupplyTypes.AIR_ARMY];
+        } else {
+            supply = player.supplies[SupplyTypes.LAND_ARMY];
+        }
+        return supply.supply >= data.price;
+    }
+
+    static buy(data) {
+        let player = GameManager.instance.player;
+        let supply;
+        if (data.isFlyable) {
+            supply = player.supplies[SupplyTypes.AIR_ARMY];
+        } else {
+            supply = player.supplies[SupplyTypes.LAND_ARMY];
+        }
+        if (ArmyFigure.canBuy(data)) {
+            return supply.takeSupply(data.price);
+        }
+        return false;
     }
 
     highLightAttackPosition() {

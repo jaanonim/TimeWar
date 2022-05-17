@@ -1,6 +1,8 @@
+import {UiHandlers} from "../managers/UiHandlers";
+
 export class Supply {
     constructor(startSupply) {
-        this.supply = 0;
+        this.supply = startSupply;
         this.maxSupply = startSupply;
     }
 
@@ -13,9 +15,12 @@ export class Supply {
             return false;
         }
         this.supply -= v;
+        UiHandlers.instance.updateSupply();
+        console.log(this.supply);
         return true;
     }
-    increaseMaxSupply(v=1){
+
+    increaseMaxSupply(v = 1) {
         this.maxSupply += v;
     }
 

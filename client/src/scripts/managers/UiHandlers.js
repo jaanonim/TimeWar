@@ -49,6 +49,6 @@ export class UiHandlers {
         UiHandlers.instance.setTurnInfo(
             GameManager.instance.player.team === turn ? yourTurnText : waitingTurnText
         );
-        UiHandlers.instance.setIsActiveNextTurnButton(GameManager.instance.player.team === turn);
+        UiHandlers.instance?.setIsActiveNextTurnButton(GameManager.instance.player.team === turn);
     }
 }

@@ -10,6 +10,7 @@
     "isFlyable": false,
     "model": "arachnoid",
     "scale": 0.5,
+    "price": 2,
     "attackMask": [
       [1, 1, 1, 1, 1],
       [1, 1, 0, 1, 1],
@@ -34,6 +35,7 @@
     "isFlyable": false,
     "model": "reconBot",
     "scale": 0.5,
+    "price": 3,
     "attackMask": [
       [1, 1, 1],
       [1, 0, 1],
