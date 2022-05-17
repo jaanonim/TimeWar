@@ -42,6 +42,7 @@ export default class GameManager {
 
     async startGame() {
         MapCreator.instance.createMap(this.sceneManager.scene);
+        UiHandlers.instance.updateSupply();
     }
 
     update() {

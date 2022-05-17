@@ -3,10 +3,14 @@ import {FigureTypes} from "../../scripts/enums/FigureTypes";
 import FiguresPlaceSection from "../FiguresPlaceSection";
 import styles from "./LeftPanel.module.css";
 import {UiHandlers} from "../../scripts/managers/UiHandlers";
+import {SupplyTypes} from "../../scripts/enums/SupplyTypes";
 
 function LeftPanel() {
     const [selectedFigureId, setSelectedFigureId] = useState(null);
     const [selectedFigureType, setSelectedFigureType] = useState(null);
+    const [supplyLandArmy, setSupplyLandArmy] = useState({value: 0, max: 10});
+    const [supplyBuildings, setSupplyBuildings] = useState({value: 0, max: 10});
+    const [supplyAirArmy, setSupplyAirArmy] = useState({value: 0, max: 10});
     const [figures, setFigures] = useState(null);
 
     let landArmy = figures ? figures.landArmy : [];
@@ -17,6 +21,11 @@ function LeftPanel() {
         selectedFigureType
     );
     UiHandlers.instance.setFiguresOnMenu = setFigures;
+    UiHandlers.instance.setSupplyOnMenu = (supply) => {
+        setSupplyLandArmy(supply[SupplyTypes.LAND_ARMY]);
+        setSupplyBuildings(supply[SupplyTypes.BUILDING]);
+        setSupplyAirArmy(supply[SupplyTypes.AIR_ARMY]);
+    };
     return (
         <div className={`${styles.ui} ${styles.placementPanel}`}>
             <FiguresPlaceSection
@@ -31,8 +40,8 @@ function LeftPanel() {
                     setSelectedFigureId(newId);
                     setSelectedFigureType(FigureTypes.ARMY);
                 }}
-                value={2}
-                max={3}
+                value={supplyLandArmy.value}
+                max={supplyLandArmy.max}
             />
 
             <FiguresPlaceSection
@@ -47,8 +56,23 @@ function LeftPanel() {
                     setSelectedFigureId(newId);
                     setSelectedFigureType(FigureTypes.BUILDING);
                 }}
-                value={2}
-                max={3}
+                value={supplyBuildings.value}
+                max={supplyBuildings.max}
+            />
+            <FiguresPlaceSection
+                name="Air Army"
+                figures={airArmy}
+                select={
+                    selectedFigureType === FigureTypes.ARMY
+                        ? selectedFigureId
+                        : -1
+                }
+                selecting={(newId) => {
+                    setSelectedFigureId(newId);
+                    setSelectedFigureType(FigureTypes.ARMY);
+                }}
+                value={supplyAirArmy.value}
+                max={supplyAirArmy.max}
             />
 
         </div>
