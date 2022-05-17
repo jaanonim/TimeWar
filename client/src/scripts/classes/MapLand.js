@@ -76,7 +76,7 @@ export default class MapLand extends THREE.Object3D {
             this.hightLightType !== HighLightType.NONE
         ) {
             gm.selectedFigure.makeAction(event, this);
-        } else {
+        } else if(!gm.attackOption) {
             gm.placeFigureAction(this);
         }
     }
