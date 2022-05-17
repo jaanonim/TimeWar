@@ -1,13 +1,14 @@
 import FigureFactor from "./classes/FigureFactor";
 import Player from "./classes/Player";
-import {PlayerTeams} from "./enums/PlayerTeams";
-import FigureManager from "./FigureManager";
+import { PlayerTeams } from "./enums/PlayerTeams";
+import FigureManager from "./managers/FigureManager";
+import LabelsManager from "./managers/LabelsManager";
+import ModelsManager from "./managers/ModelsManager";
+import { MouseKeyboardManager } from "./managers/MouseKeyboardManager";
+import { UiHandlers } from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
+import { SceneInitializator } from "./SceneInitializator";
 import Socket from "./Socket";
-import {SceneInitializator} from "./managers/SceneInitializator";
-import ModelsManager from "./ModelsManager";
-import {UiHandlers} from "./managers/UiHandlers";
-import {MouseKeyboardManager} from "./managers/MouseKeyboardManager";
 
 export default class GameManager {
     static _instance = null;
@@ -34,8 +35,9 @@ export default class GameManager {
 
     async initDisplay(displayElement) {
         await ModelsManager.loadModels();
-        this.sceneManager = await (new SceneInitializator(displayElement));
+        this.sceneManager = await new SceneInitializator(displayElement);
         this.mouseKeyboardManager = new MouseKeyboardManager(displayElement);
+        this.labelsManager = await new LabelsManager(displayElement);
         this.update();
         new Socket("room");
     }

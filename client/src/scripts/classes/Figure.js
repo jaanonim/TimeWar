@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import {PlayerTeams} from "../enums/PlayerTeams";
+import { PlayerTeams } from "../enums/PlayerTeams";
 import GameManager from "../GameManager";
+import ModelsManager from "../managers/ModelsManager";
 import MapCreator from "../MapCreator";
-import ModelsManager from "../ModelsManager";
-import {getRandomElement, getRandomVector3} from "../utilities/Random";
+import { getRandomElement, getRandomVector3 } from "../utilities/Random";
 import FigureLabel from "./FigureLabel";
 
 export default class Figure extends THREE.Object3D {
@@ -21,6 +21,8 @@ export default class Figure extends THREE.Object3D {
         this.maxLives = data.maxLives;
         this.price = data.price;
         this.takeDamage = false;
+        this.highlighted = false;
+
         this.place(positionX, positionY);
         this.setupModel(data);
     }
@@ -60,21 +62,18 @@ export default class Figure extends THREE.Object3D {
         this.add(this.model);
 
         this.lable = new FigureLabel(this);
-        this.lable.hide();
+        //this.lable.hide();
     }
 
     update() {
         this.lable.update();
     }
 
-    select() {
-    }
+    select() {}
 
-    unselect() {
-    }
+    unselect() {}
 
-    makeAction(event, land) {
-    }
+    makeAction(event, land) {}
 
     place(x, y) {
         this.mapPositionX = x;
@@ -97,30 +96,24 @@ export default class Figure extends THREE.Object3D {
         }
     }
 
-    capture() {
-    }
+    capture() {}
 
-    renew() {
-    }
+    renew() {}
 
-    canBuy() {
-    }
+    canBuy() {}
 
-    buy() {
-    }
+    buy() {}
 
     //HOOKS
     onHoverEnter(event) {
-        this.lable.show();
+        this.highlighted = true;
     }
 
     onHoverExit(event) {
-        this.lable.hide();
+        this.highlighted = false;
     }
 
-    onRightClick(event) {
-
-    }
+    onRightClick(event) {}
 
     onLeftClick(event) {
         let gm = GameManager.instance;
@@ -137,7 +130,6 @@ export default class Figure extends THREE.Object3D {
     }
 
     onDestroy() {
-        console.log("DIED", this.name);
+        this.lable.destroy();
     }
-
 }

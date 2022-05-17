@@ -1,5 +1,5 @@
 import { FigureTypes } from "../enums/FigureTypes";
-import FigureManager from "../FigureManager";
+import FigureManager from "../managers/FigureManager";
 import ArmyFigure from "./figures/ArmyFigure";
 import BuildingFigure from "./figures/BuildingFigure";
 import ResearchLab from "./figures/ResearchLab";
