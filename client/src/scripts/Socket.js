@@ -64,7 +64,8 @@ export default class Socket {
                 data.msg.mapPositionX,
                 data.msg.mapPositionY,
                 data.msg.figureId,
-                data.msg.figureType
+                data.msg.figureType,
+                false
             );
         });
         this.socket.on("moveFigure", (data) => {

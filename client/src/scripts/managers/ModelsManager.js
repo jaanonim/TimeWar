@@ -22,6 +22,14 @@ export default class ModelsManager {
             "red",
             "blue",
         ]);
+        this.models.airport = await this.loadModel("models/Buildings/Airport/Airport", [
+            "red",
+            "blue",
+        ]);
+        this.models.barracks = await this.loadModel("models/Buildings/Barracks/Barracks", [
+            "red",
+            "blue",
+        ]);
         this.models.land = await this.loadModel("models/Land/Land/Land");
         this.models.mountain = await this.loadModel(
             "models/Land/Mountain/Mountain"

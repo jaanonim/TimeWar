@@ -33,7 +33,8 @@ export default class MapCreator {
                         figure.mapPositionX,
                         figure.mapPositionY,
                         figure.figureId,
-                        figure.figureType
+                        figure.figureType,
+                        false
                     );
                     object.isMoved = figure.isMoved;
                     object.isAttack = figure.isAttack;

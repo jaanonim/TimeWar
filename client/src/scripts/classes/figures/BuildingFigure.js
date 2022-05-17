@@ -1,10 +1,34 @@
-import { FigureTypes } from "../../enums/FigureTypes";
+import {FigureTypes} from "../../enums/FigureTypes";
 import Figure from "../Figure";
+import GameManager from "../../GameManager";
+import {SupplyTypes} from "../../enums/SupplyTypes";
+import {UiHandlers} from "../../managers/UiHandlers";
 
 export default class BuildingFigure extends Figure {
     constructor(who, positionX, positionY, data) {
         super(who, positionX, positionY, FigureTypes.BUILDING, data);
         this.capturingMask = data.capturingMask;
+        if (data.increaseSupplyType != null) {
+            this.increaseSupplyType = SupplyTypes[data.increaseSupplyType];
+            this.increaseSupply = data.increaseSupply;
+        }
+    }
+
+    static canBuy(data) {
+        let player = GameManager.instance.player;
+        let supply;
+        supply = player.supplies[SupplyTypes.BUILDING];
+        return supply.supply >= data.price;
+    }
+
+    static buy(data) {
+        let player = GameManager.instance.player;
+        let supply;
+        supply = player.supplies[SupplyTypes.BUILDING];
+        if (BuildingFigure.canBuy(data)) {
+            return supply.takeSupply(data.price);
+        }
+        return false;
     }
 
     renew() {
@@ -32,6 +56,14 @@ export default class BuildingFigure extends Figure {
                     map[mapPosX][mapPosY].capture();
                 }
             }
+        }
+    }
+
+    placeAction() {
+        let player = GameManager.instance.player;
+        if (this.increaseSupplyType != null) {
+            player.supplies[this.increaseSupplyType].increaseMaxSupply(this.increaseSupply);
+            UiHandlers.instance.updateSupply();
         }
     }
 }

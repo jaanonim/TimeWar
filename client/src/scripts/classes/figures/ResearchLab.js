@@ -11,4 +11,7 @@ export default class ResearchLab extends BuildingFigure {
             GameManager.instance.player.increaseWinProgress();
         super.renew();
     }
+
+    placeAction() {
+    }
 }

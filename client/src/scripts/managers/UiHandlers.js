@@ -16,12 +16,29 @@ export class UiHandlers {
     constructor() {
         this.setFiguresOnMenu = null;
         this.setIsActiveNextTurnButton = null;
+        this.setSupplyOnMenu = null;
         this.setWinTargetBar = null;
     }
 
     onSelectFigureInUI(newId, type) {
         GameManager.instance.selectFigureIdInUI = newId;
         GameManager.instance.selectFigureTypeInUI = type;
+    }
+
+    updateSupply() {
+        let gm = GameManager.instance;
+        let player = gm.player;
+        console.log(player);
+        let result = {};
+        for (let supplyName in player.supplies) {
+            let supply = player.supplies[supplyName];
+            result[supplyName] = {
+                value: supply.supply,
+                max: supply.maxSupply
+            };
+            console.log(result);
+        }
+        this.setSupplyOnMenu(result)
     }
 
     changeWinTargetBar() {
@@ -32,6 +49,6 @@ export class UiHandlers {
         UiHandlers.instance.setTurnInfo(
             GameManager.instance.player.team === turn ? yourTurnText : waitingTurnText
         );
-        UiHandlers.instance.setIsActiveNextTurnButton(GameManager.instance.player.team === turn);
+        UiHandlers.instance?.setIsActiveNextTurnButton(GameManager.instance.player.team === turn);
     }
 }
