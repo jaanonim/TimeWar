@@ -30,7 +30,61 @@
     "description": "Lorem ipsum2",
     "lives": 10,
     "maxLives": 10,
+    "increaseSupplyType": "BUILDING",
+    "increaseSupply": 5,
     "model": "factory",
+    "scale": 1,
+    "display": true,
+    "price": 10,
+    "capturingMask": [
+      [1, 1, 1],
+      [1, 1, 1],
+      [1, 1, 1]
+    ],
+    "offset": [
+      {
+        "x": 0,
+        "y": 0.4,
+        "z": 0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Barracks",
+    "image": "Barracks",
+    "description": "Lorem ipsum3",
+    "lives": 10,
+    "maxLives": 10,
+    "increaseSupplyType": "LAND_ARMY",
+    "increaseSupply": 5,
+    "model": "barracks",
+    "scale": 1,
+    "display": true,
+    "price": 10,
+    "capturingMask": [
+      [1, 1, 1],
+      [1, 1, 1],
+      [1, 1, 1]
+    ],
+    "offset": [
+      {
+        "x": 0,
+        "y": 0.4,
+        "z": 0
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Airport",
+    "image": "Airport",
+    "description": "Lorem ipsum3",
+    "lives": 10,
+    "maxLives": 10,
+    "increaseSupplyType": "AIR_ARMY",
+    "increaseSupply": 3,
+    "model": "airport",
     "scale": 1,
     "display": true,
     "price": 10,

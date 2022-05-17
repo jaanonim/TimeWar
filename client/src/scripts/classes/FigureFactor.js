@@ -37,8 +37,11 @@ export default class FigureFactor {
         if (isBuying && !BuildingFigure.buy(objData)) {
             return null;
         }
-
-        return new BuildingFigure(who, x, y, objData);
+        let building = new BuildingFigure(who, x, y, objData);
+        if(isBuying){
+            building.placeAction();
+        }
+        return building;
     }
 
     createFigure(who, x, y, figureId, typeFigure, isBuying) {
