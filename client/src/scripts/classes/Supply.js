@@ -16,7 +16,6 @@ export class Supply {
         }
         this.supply -= v;
         UiHandlers.instance.updateSupply();
-        console.log(this.supply);
         return true;
     }
 
