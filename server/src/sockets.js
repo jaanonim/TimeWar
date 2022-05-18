@@ -1,4 +1,4 @@
-const { Server } = require("socket.io");
+const {Server} = require("socket.io");
 const Room = require("./classes/Room");
 let io = null;
 let rooms = [];
@@ -13,6 +13,7 @@ module.exports = {
 
         io.on("connection", async (socket) => {
             let roomName = socket.handshake.query.room;
+            console.log(roomName);
             let room = rooms.find((r) => r.name === roomName);
             if (room == null) {
                 room = new Room(roomName);

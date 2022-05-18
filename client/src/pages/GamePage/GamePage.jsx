@@ -1,21 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import GameScreen from "../../components/GameScreen";
 import UiOverlay from "../../components/UiOverlay";
 import useToast from "../../hooks/useToast";
 import styles from "./GamePage.module.css";
 import Modal from "../../components/Modal";
 import Input from "../../components/Input";
+import {UiHandlers} from "../../scripts/managers/UiHandlers";
 
 function GamePage() {
     const toast = useToast();
-
+    const [infoPanelEnable, setInfoPanelEnable] = useState(true);
+    UiHandlers.instance.setInfoRoomPanel = setInfoPanelEnable;
     const queryParams = new URLSearchParams(window.location.search);
     let roomCode = queryParams.get("room");
     return (
         <>
             <UiOverlay/>
-            <GameScreen/>
-            <Modal>
+            <GameScreen roomCode={roomCode}/>
+            <Modal
+                show={infoPanelEnable}
+            >
                 <div className={styles.modal} style={{textAlign: "center"}}>
                     <h2
                         style={{

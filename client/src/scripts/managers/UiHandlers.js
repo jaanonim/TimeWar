@@ -18,6 +18,7 @@ export class UiHandlers {
         this.setIsActiveNextTurnButton = null;
         this.setSupplyOnMenu = null;
         this.setWinTargetBar = null;
+        this.setInfoRoomPanel = null;
     }
 
     onSelectFigureInUI(newId, type) {

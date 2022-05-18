@@ -10,6 +10,7 @@ export default class Socket {
 
     constructor(room) {
         if (Socket.instance != null) return null;
+        console.log(room);
         Socket.instance = this;
         this.socket = io(
             environment === "development" ? developmentUrl : productionUrl,

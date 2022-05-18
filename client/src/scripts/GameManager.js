@@ -21,8 +21,7 @@ export default class GameManager {
     }
 
     constructor() {
-        //TODO: Change to create player on start game
-        this.player = new Player("Player", "blue");
+        this.player = new Player(localStorage.getItem("nick"), "blue");
         this.attackOption = false;
         this.turn = "";
         this.figuries = [];
@@ -34,7 +33,7 @@ export default class GameManager {
         this.isDisplayInit = false;
     }
 
-    async initDisplay(displayElement) {
+    async initDisplay(displayElement, roomCode) {
         if (this.isDisplayInit) return;
         this.isDisplayInit = true;
         await ModelsManager.loadModels();
@@ -42,19 +41,13 @@ export default class GameManager {
         this.mouseKeyboardManager = new MouseKeyboardManager(displayElement);
         this.labelsManager = await new LabelsManager(displayElement);
         this.update();
-        new Socket("room");
-    }
-
-    restartDOM(displayElement) {
-        if (this.sceneManager != null) {
-            console.log(this.sceneManager, displayElement);
-            this.sceneManager.appendElement(displayElement);
-        }
+        new Socket(roomCode);
     }
 
     async startGame() {
         MapCreator.instance.createMap(this.sceneManager.scene);
         UiHandlers.instance.updateSupply();
+        UiHandlers.instance.setInfoRoomPanel(false);
     }
 
     update() {
