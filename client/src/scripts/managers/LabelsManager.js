@@ -21,6 +21,7 @@ export default class LabelsManager {
     async initDisplay(displayElement) {
         this.domElement = document.createElement("div");
         this.domElement.classList.add("labels");
+        this.domElement.classList.add("noselect");
         displayElement.appendChild(this.domElement);
     }
 
