@@ -31,15 +31,25 @@ export default class GameManager {
         this.selectedFigure = null;
         this.selectFigureIdInUI = null;
         this.selectFigureTypeInUI = null;
+        this.isDisplayInit = false;
     }
 
     async initDisplay(displayElement) {
+        if (this.isDisplayInit) return;
+        this.isDisplayInit = true;
         await ModelsManager.loadModels();
         this.sceneManager = await new SceneInitializator(displayElement);
         this.mouseKeyboardManager = new MouseKeyboardManager(displayElement);
         this.labelsManager = await new LabelsManager(displayElement);
         this.update();
         new Socket("room");
+    }
+
+    restartDOM(displayElement) {
+        if (this.sceneManager != null) {
+            console.log(this.sceneManager, displayElement);
+            this.sceneManager.appendElement(displayElement);
+        }
     }
 
     async startGame() {

@@ -1,6 +1,6 @@
 import Stats from "stats-js";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
 export class SceneInitializator {
     constructor(displayElement) {
@@ -19,6 +19,17 @@ export class SceneInitializator {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         displayElement.innerHTML = "";
         displayElement.appendChild(this.renderer.domElement);
+        this.renderer.domElement.addEventListener(
+            'webglcontextlost',
+            (event) => {
+                event.preventDefault();
+                setTimeout(() => {
+                    console.log("RESTORE");
+                    this.renderer.forceContextRestore();
+                }, 100);
+            },
+            false
+        );
 
         //Light
         const light = new THREE.DirectionalLight(0xffffff, 3, 100);
