@@ -28,27 +28,32 @@ export class UiHandlers {
     updateSupply() {
         let gm = GameManager.instance;
         let player = gm.player;
-        console.log(player);
         let result = {};
         for (let supplyName in player.supplies) {
             let supply = player.supplies[supplyName];
             result[supplyName] = {
                 value: supply.supply,
-                max: supply.maxSupply
+                max: supply.maxSupply,
             };
-            console.log(result);
         }
-        this.setSupplyOnMenu(result)
+        this.setSupplyOnMenu(result);
     }
 
     changeWinTargetBar() {
-        UiHandlers.instance.setWinTargetBar(GameManager.instance.player.winProgress, GameManager.instance.winTarget);
+        UiHandlers.instance.setWinTargetBar(
+            GameManager.instance.player.winProgress,
+            GameManager.instance.winTarget
+        );
     }
 
     changeTurnText(turn) {
         UiHandlers.instance.setTurnInfo(
-            GameManager.instance.player.team === turn ? yourTurnText : waitingTurnText
+            GameManager.instance.player.team === turn
+                ? yourTurnText
+                : waitingTurnText
         );
-        UiHandlers.instance?.setIsActiveNextTurnButton(GameManager.instance.player.team === turn);
+        UiHandlers.instance?.setIsActiveNextTurnButton(
+            GameManager.instance.player.team === turn
+        );
     }
 }
