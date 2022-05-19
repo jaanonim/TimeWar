@@ -20,6 +20,7 @@ export class MouseKeyboardManager {
 
     keyDownInteract(event) {
         let gm = GameManager.instance;
+        GameManager.instance.camera.keyDown(event);
         if (event.key === "a") {
             if (!gm.attackOption && gm.selectedFigure !== null) {
                 gm.selectedFigure.unselect();
@@ -32,6 +33,7 @@ export class MouseKeyboardManager {
 
     keyUpInteract(event) {
         let gm = GameManager.instance;
+        GameManager.instance.camera.keyUp(event);
         if (event.key === "a") {
             if (gm.attackOption && gm.selectedFigure !== null) {
                 gm.selectedFigure.unselect();
@@ -49,7 +51,7 @@ export class MouseKeyboardManager {
         const mouseVector = new THREE.Vector2();
         mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        raycaster.setFromCamera(mouseVector, gm.camera.camera);
+        raycaster.setFromCamera(mouseVector, gm.camera);
         const intersects = raycaster.intersectObjects(
             gm.sceneManager.scene.children
         );
@@ -77,7 +79,7 @@ export class MouseKeyboardManager {
         const mouseVector = new THREE.Vector2();
         mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        raycaster.setFromCamera(mouseVector, gm.camera.camera);
+        raycaster.setFromCamera(mouseVector, gm.camera);
         const intersects = raycaster.intersectObjects(
             gm.sceneManager.scene.children
         );
