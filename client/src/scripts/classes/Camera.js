@@ -41,8 +41,10 @@ export default class Camera extends PerspectiveCamera {
         this.rotationPos = new THREE.Vector3(0, this.baseRotationPosY, 0.7);
 
         /* CONSTS */
-        this.movmentSpeed = new THREE.Vector3(30, 0, 10);
-        this.rotatmentSpeed = new THREE.Vector3(0, 0.5, 0.5);
+        this.movmentSpeed = new THREE.Vector3(15, 0, 15);
+        this.rotatmentSpeed = new THREE.Vector3(0, 1, 1);
+        this.maxZoom = 40;
+        this.minZoom = 5;
 
         this.updatePos();
         this.setupRender(displayElement);
@@ -101,6 +103,20 @@ export default class Camera extends PerspectiveCamera {
         this.rotateCam(delta);
         this.updatePos();
         this.renderer.render(scene, this);
+    }
+
+    zoomIn() {
+        this.movePos.setX(this.movePos.x + 1);
+        if (this.maxZoom < this.movePos.x) {
+            this.movePos.setX(this.maxZoom);
+        }
+    }
+
+    zoomOut() {
+        this.movePos.setX(this.movePos.x - 1);
+        if (this.minZoom > this.movePos.x) {
+            this.movePos.setX(this.minZoom);
+        }
     }
 
     keyUp(event) {
