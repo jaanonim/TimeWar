@@ -18,7 +18,7 @@ export default class Player {
     setTeam(team) {
         this.team = team;
         let camera = GameManager.instance.sceneManager.camera;
-        camera.setSite(this.team === "RED" ? 1 : -1);
+        camera.setSite(this.team);
     }
 
     increaseWinProgress() {

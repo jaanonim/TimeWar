@@ -53,8 +53,8 @@ export default class Camera extends PerspectiveCamera {
         window.addEventListener("resize", this.onWindowResize.bind(this));
     }
 
-    setSite(v) {
-        this.baseRotationPosY *= -v;
+    setSite(team) {
+        this.baseRotationPosY *= team === "RED" ? 1 : -1;
         this.rotationPos.y = this.baseRotationPosY;
         this.updatePos();
     }
