@@ -1,13 +1,13 @@
 import FigureFactor from "./classes/FigureFactor";
 import Player from "./classes/Player";
-import {PlayerTeams} from "./enums/PlayerTeams";
+import { PlayerTeams } from "./enums/PlayerTeams";
 import FigureManager from "./managers/FigureManager";
 import LabelsManager from "./managers/LabelsManager";
 import ModelsManager from "./managers/ModelsManager";
-import {MouseKeyboardManager} from "./managers/MouseKeyboardManager";
-import {UiHandlers} from "./managers/UiHandlers";
+import { MouseKeyboardManager } from "./managers/MouseKeyboardManager";
+import { UiHandlers } from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
-import {SceneInitializator} from "./SceneInitializator";
+import { SceneInitializator } from "./SceneInitializator";
 import Socket from "./Socket";
 
 export default class GameManager {
@@ -18,6 +18,10 @@ export default class GameManager {
             GameManager._instance = new GameManager();
         }
         return GameManager._instance;
+    }
+
+    get camera() {
+        return this.sceneManager.camera;
     }
 
     constructor() {

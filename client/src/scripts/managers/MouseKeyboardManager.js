@@ -49,7 +49,7 @@ export class MouseKeyboardManager {
         const mouseVector = new THREE.Vector2();
         mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        raycaster.setFromCamera(mouseVector, gm.sceneManager.camera);
+        raycaster.setFromCamera(mouseVector, gm.camera.camera);
         const intersects = raycaster.intersectObjects(
             gm.sceneManager.scene.children
         );
@@ -77,7 +77,7 @@ export class MouseKeyboardManager {
         const mouseVector = new THREE.Vector2();
         mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        raycaster.setFromCamera(mouseVector, gm.sceneManager.camera);
+        raycaster.setFromCamera(mouseVector, gm.camera.camera);
         const intersects = raycaster.intersectObjects(
             gm.sceneManager.scene.children
         );

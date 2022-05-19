@@ -23,7 +23,7 @@ export default class Label {
     }
 
     update(obj) {
-        const sm = GameManager.instance.sceneManager;
+        const camera = GameManager.instance.camera;
         const tempV = new Vector3();
         //const raycaster = new THREE.Raycaster();
 
@@ -31,7 +31,7 @@ export default class Label {
         obj.getWorldPosition(tempV);
         tempV.setY(tempV.y + 3);
 
-        tempV.project(sm.camera);
+        tempV.project(camera.camera);
         /*
         raycaster.setFromCamera(tempV, sm.camera);
         const intersectedObjects = raycaster.intersectObjects(sm.scene.children);
@@ -44,8 +44,10 @@ export default class Label {
           this.label.style.display = "";
         }*/
 
-        const x = (tempV.x * 0.5 + 0.5) * sm.renderer.domElement.clientWidth;
-        const y = (tempV.y * -0.5 + 0.5) * sm.renderer.domElement.clientHeight;
+        const x =
+            (tempV.x * 0.5 + 0.5) * camera.renderer.domElement.clientWidth;
+        const y =
+            (tempV.y * -0.5 + 0.5) * camera.renderer.domElement.clientHeight;
         this.labelDom.domElement.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
 
         if (this.visible) this.labelDom.domElement.style.display = "";
