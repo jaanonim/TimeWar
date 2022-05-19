@@ -54,7 +54,7 @@ export default class Camera extends PerspectiveCamera {
     }
 
     setSite(team) {
-        this.baseRotationPosY *= team === "RED" ? 1 : -1;
+        this.baseRotationPosY *= team === "RED" ? -1 : 1;
         this.rotationPos.y = this.baseRotationPosY;
         this.updatePos();
     }
