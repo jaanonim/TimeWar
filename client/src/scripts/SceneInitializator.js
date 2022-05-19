@@ -1,6 +1,5 @@
 import Stats from "stats-js";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Camera from "./classes/Camera";
 
 export class SceneInitializator {
@@ -34,11 +33,6 @@ export class SceneInitializator {
     }
 
     initHelpers() {
-        this.cameraConrols = new OrbitControls(
-            this.camera,
-            this.camera.renderer.domElement
-        );
-
         //Stats
         this.stats = new Stats();
         this.stats.showPanel(0);
@@ -60,7 +54,6 @@ export class SceneInitializator {
 
     update(delta) {
         this.stats.begin();
-        this.cameraConrols.update();
         this.scene.children.forEach((child) => {
             if (child.update !== undefined) child.update(delta);
         });
