@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { PerspectiveCamera } from "three";
+import Settings from "../utilities/Settings";
 
 const PI_2 = Math.PI / 2;
 export default class Camera extends PerspectiveCamera {
@@ -27,8 +28,13 @@ export default class Camera extends PerspectiveCamera {
         );
     }
 
-    constructor(displayElement, fov) {
-        super(fov, window.innerWidth / window.innerHeight, 0.1, 1000);
+    constructor(displayElement) {
+        super(
+            Settings.instance.get("camera.fov"),
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
 
         this.movment = new THREE.Vector3(0, 0, 0);
         this.rotatment = new THREE.Vector3(0, 0, 0);
@@ -41,8 +47,10 @@ export default class Camera extends PerspectiveCamera {
         this.rotationPos = new THREE.Vector3(0, this.baseRotationPosY, 0.7);
 
         /* CONSTS */
-        this.movmentSpeed = new THREE.Vector3(15, 0, 15);
-        this.rotatmentSpeed = new THREE.Vector3(0, 1, 1);
+        const ms = Settings.instance.get("camera.movmentSpeed");
+        const rs = Settings.instance.get("camera.rotatmentSpeed");
+        this.movmentSpeed = new THREE.Vector3(ms, 0, ms);
+        this.rotatmentSpeed = new THREE.Vector3(0, rs, rs);
         this.maxZoom = 40;
         this.minZoom = 5;
 
@@ -74,11 +82,18 @@ export default class Camera extends PerspectiveCamera {
 
     setupRender(displayElement) {
         this.renderer = new THREE.WebGLRenderer({
-            antialias: true,
+            antialias: Settings.instance.get("renderer.antialias"),
+            powerPreference: "high-performance",
         });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(
+            window.devicePixelRatio *
+                Settings.instance.get("renderer.pixelRatio")
+        );
 
-        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.enabled = Settings.instance.get(
+            "renderer.shadowMap.enabled"
+        );
         this.renderer.shadowMap.type = THREE.PCFShadowMap;
 
         displayElement.innerHTML = "";
