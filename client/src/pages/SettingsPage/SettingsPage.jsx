@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
-import Checkbox from "../../components/Checkbox";
+import SettingsCheckbox from "../../components/SettingsCheckbox";
 import Slider from "../../components/Slider";
 import useToast from "../../hooks/useToast";
 import styles from "./SettingsPage.module.css";
@@ -14,7 +14,14 @@ function SettingsPage() {
         <h1 className={styles.logo}>TimeWar</h1>
         <div className={styles.cbox}>
           <Slider />
-          <Checkbox />
+          <SettingsCheckbox
+            name="renderer.antialias"
+            text="Antialias"
+          ></SettingsCheckbox>
+          <SettingsCheckbox
+            name="renderer.shadowMap.enabled"
+            text="Shadows"
+          ></SettingsCheckbox>
           <div
             className={styles.resetSettings}
             onClick={() => {

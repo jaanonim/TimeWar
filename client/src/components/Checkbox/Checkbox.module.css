@@ -1,3 +1,45 @@
 .box {
   width: 100%;
 }
+
+.container {
+  display: block;
+  position: relative;
+  margin-bottom: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  min-height: 2rem;
+}
+
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0.175rem;
+  right: 0;
+  height: 1.75rem;
+  width: 1.75rem;
+  background-color: var(--third-background);
+  border: var(--border-size) solid var(--text);
+}
+
+.container:hover input ~ .checkmark {
+  background-color: var(--secend-background);
+}
+
+.container input:checked ~ .checkmark {
+  background-color: var(--akcent);
+}
+
+.container:hover input:checked ~ .checkmark {
+  background-color: var(--akcent-dark);
+}
