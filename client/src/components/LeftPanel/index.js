@@ -1,4 +1,1 @@
-export {
-    default
-}
-from './LeftPanel';
+export { default } from "./LeftPanel";

@@ -5,6 +5,7 @@ import Loading from "./components/Loading";
 const MainPage = React.lazy(() => import("./pages/MainPage"));
 const JoinPage = React.lazy(() => import("./pages/JoinPage"));
 const GamePage = React.lazy(() => import("./pages/GamePage"));
+const SettingsPage = React.lazy(() => import("./pages/SettingsPage"));
 
 function App() {
   return (
@@ -30,6 +31,14 @@ function App() {
         element={
           <React.Suspense fallback={<Loading />}>
             <JoinPage />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <React.Suspense fallback={<Loading />}>
+            <SettingsPage />
           </React.Suspense>
         }
       />

@@ -1,6 +1,7 @@
 import Stats from "stats-js";
 import * as THREE from "three";
 import Camera from "./classes/Camera";
+import Settings from "./utilities/Settings";
 
 export class SceneInitializator {
     constructor(displayElement) {
@@ -17,7 +18,7 @@ export class SceneInitializator {
         //Light
         const light = new THREE.DirectionalLight(0xffffff, 3, 100);
         light.position.set(10, 20, 10);
-        light.castShadow = true;
+        light.castShadow = Settings.instance.get("renderer.shadowMap.enabled");
         this.scene.add(light);
 
         const light2 = new THREE.DirectionalLight(0xffffff, 1, 100);
@@ -25,7 +26,7 @@ export class SceneInitializator {
         this.scene.add(light2);
 
         //Camera
-        this.camera = new Camera(displayElement, 75);
+        this.camera = new Camera(displayElement);
 
         //Inits
         this.initHelpers();
@@ -40,14 +41,18 @@ export class SceneInitializator {
     }
 
     initShadows(light) {
+        if (!light.castShadow) return;
+
         const shadowSize = 100;
         light.shadow.camera.left = -shadowSize;
         light.shadow.camera.right = shadowSize;
         light.shadow.camera.top = shadowSize;
         light.shadow.camera.bottom = -shadowSize;
         light.shadow.blurSamples = 1;
-        light.shadow.mapSize.width = 1024 * 64;
-        light.shadow.mapSize.height = 1024 * 64;
+        light.shadow.mapSize.width =
+            1024 * Settings.instance.get("shadow.mapSize.width");
+        light.shadow.mapSize.height =
+            1024 * Settings.instance.get("shadow.mapSize.height");
         light.shadow.camera.near = 0.5;
         light.shadow.camera.far = 100;
     }
