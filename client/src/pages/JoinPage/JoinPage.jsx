@@ -69,7 +69,7 @@ function JoinPage() {
                                 textAlign="center"
                                 textTransform="uppercase"
                                 onInput={event => {
-                                    setRoomCode(event.target.value)
+                                    setRoomCode(event.target.value.toUpperCase())
                                 }}
                                 onEnter={() => {
                                     joinBtn.current.click();
