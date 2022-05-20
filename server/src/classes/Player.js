@@ -1,9 +1,38 @@
 module.exports = class Player {
-    constructor(room, name, socket) {
+    constructor(room, nick, socket) {
         this.room = room;
-        this.name = name;
+        this.nick = nick;
+        this.isConnect = true;
+        this.supplies = {
+            "land_army": {
+                supply: 10,
+                maxSupply: 10
+            },
+            "air_army": {
+                supply: 10,
+                maxSupply: 10
+            },
+            "building": {
+                supply: 10,
+                maxSupply: 10
+            }
+        };
         this.socket = socket;
         this.winProgress = 0;
+    }
+
+    getPlayerData() {
+        return {
+            name: this.name,
+            supplies: this.supplies,
+            winProgress: this.winProgress
+        }
+    }
+
+    renewSupplies() {
+        for (let supplyName in this.supplies) {
+            this.supplies[supplyName].supply = this.supplies[supplyName].maxSupply;
+        }
     }
 
     addResearchPoint() {

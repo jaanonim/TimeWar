@@ -18,6 +18,7 @@ export default class Camera extends PerspectiveCamera {
             new THREE.Vector3(10, 0, 10)
         );
     }
+
     /* ***** */
 
     get eluerPos() {
@@ -90,9 +91,19 @@ export default class Camera extends PerspectiveCamera {
             window.devicePixelRatio *
                 Settings.instance.get("renderer.pixelRatio")
         );
-
         this.renderer.shadowMap.enabled = Settings.instance.get(
             "renderer.shadowMap.enabled"
+        );
+        this.renderer.domElement.addEventListener(
+            'webglcontextlost',
+            (event) => {
+                event.preventDefault();
+                setTimeout(() => {
+                    console.log("RESTORE");
+                    this.renderer.forceContextRestore();
+                }, 100);
+            },
+            false
         );
         this.renderer.shadowMap.type = THREE.PCFShadowMap;
 
