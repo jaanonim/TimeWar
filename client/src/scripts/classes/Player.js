@@ -21,6 +21,22 @@ export default class Player {
         camera.setSite(this.team);
     }
 
+    setSupply(supplies) {
+        for (let name in SupplyTypes) {
+            let value = SupplyTypes[name];
+            if (supplies[value]) {
+                this.supplies[value].supply = supplies[value].supply;
+                this.supplies[value].maxSupply = supplies[value].maxSupply;
+            }
+        }
+        UiHandlers.instance.updateSupply();
+    }
+
+    setWinProgress(progress) {
+        this.winProgress = progress;
+        UiHandlers.instance.changeWinTargetBar();
+    }
+
     increaseWinProgress() {
         this.winProgress++;
         UiHandlers.instance.changeWinTargetBar();

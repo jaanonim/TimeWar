@@ -38,19 +38,21 @@ module.exports = class Room {
         this.mapObjects[figureMoveData.figureX][figureMoveData.figureY] = null;
     }
 
-    attackFigure(figureMoveData) {
+    attackFigure(figureAttackData) {
         let figure1 =
-            this.mapObjects[figureMoveData.figureX][figureMoveData.figureY];
+            this.mapObjects[figureAttackData.figureX][figureAttackData.figureY];
         let figure2 =
-            this.mapObjects[figureMoveData.x][figureMoveData.y];
+            this.mapObjects[figureAttackData.x][figureAttackData.y];
 
         figure1.isAttack = true;
 
-        figure2.lives -= figure1.damage;
         figure2.takeDamage = true;
-        console.log(figure2, figure1.damage);
-        if (figure2.lives <= 0) {
-            this.mapObjects[figureMoveData.x][figureMoveData.y] = null;
+        if (figure2.lives !== -1) {
+            figure2.lives -= figure1.damage;
+            console.log(figure2, figure1.damage);
+            if (figure2.lives <= 0) {
+                this.mapObjects[figureAttackData.x][figureAttackData.y] = null;
+            }
         }
     }
 };

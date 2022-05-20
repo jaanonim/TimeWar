@@ -1,15 +1,16 @@
-import { Clock } from "three";
+import {Clock} from "three";
 import FigureFactor from "./classes/FigureFactor";
 import Player from "./classes/Player";
-import { PlayerTeams } from "./enums/PlayerTeams";
+import {PlayerTeams} from "./enums/PlayerTeams";
 import FigureManager from "./managers/FigureManager";
 import LabelsManager from "./managers/LabelsManager";
 import ModelsManager from "./managers/ModelsManager";
-import { MouseKeyboardManager } from "./managers/MouseKeyboardManager";
-import { UiHandlers } from "./managers/UiHandlers";
+import {MouseKeyboardManager} from "./managers/MouseKeyboardManager";
+import {UiHandlers} from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
-import { SceneInitializator } from "./SceneInitializator";
+import {SceneInitializator} from "./SceneInitializator";
 import Socket from "./Socket";
+import {runWhenExist} from "./utilities/RunWhenExist";
 
 export default class GameManager {
     static _instance = null;
@@ -26,8 +27,8 @@ export default class GameManager {
     }
 
     constructor() {
-        //TODO: Change to create player on start game
-        this.player = new Player("Player", "blue");
+        console.log("NICK", sessionStorage.getItem("nick"));
+        this.player = new Player(sessionStorage.getItem("nick"), "blue");
         this.attackOption = false;
         this.turn = "";
         this.figuries = [];
@@ -36,22 +37,25 @@ export default class GameManager {
         this.selectedFigure = null;
         this.selectFigureIdInUI = null;
         this.selectFigureTypeInUI = null;
-
+        this.isDisplayInit = false;
         this.clock = new Clock();
     }
 
-    async initDisplay(displayElement) {
+    async initDisplay(displayElement, roomCode) {
+        if (this.isDisplayInit) return;
+        this.isDisplayInit = true;
         await ModelsManager.loadModels();
         this.sceneManager = await new SceneInitializator(displayElement);
         this.mouseKeyboardManager = new MouseKeyboardManager(displayElement);
         this.labelsManager = await new LabelsManager(displayElement);
         this.update();
-        new Socket("room");
+        new Socket(roomCode);
     }
 
     async startGame() {
         MapCreator.instance.createMap(this.sceneManager.scene);
         UiHandlers.instance.updateSupply();
+        await runWhenExist(UiHandlers.instance.setInfoRoomPanel, () => UiHandlers.instance.setInfoRoomPanel(false));
     }
 
     update() {
@@ -76,10 +80,12 @@ export default class GameManager {
             this.player.supplies[supply].reset();
         }
         UiHandlers.instance.updateSupply();
+        console.log(this.figuries);
         this.figuries.forEach((figure) => figure?.renew());
     }
 
     loadFigures(figures) {
+        this.figuries = [];
         FigureManager.instance.figures = figures;
         UiHandlers.instance.setFiguresOnMenu({
             landArmy: FigureManager.instance.getLandArmy(),

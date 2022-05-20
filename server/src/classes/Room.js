@@ -41,14 +41,27 @@ module.exports = class Room {
     }
 
     addPlayer(playerSocket) {
+        let nick = playerSocket.handshake.query.nick;
         if (this.bluePlayer == null) {
-            this.bluePlayer = new Player(this, "", playerSocket);
+            this.bluePlayer = new Player(this, nick, playerSocket);
             return "BLUE";
         }
         if (this.redPlayer == null) {
-            this.redPlayer = new Player(this, "", playerSocket);
+            this.redPlayer = new Player(this, nick, playerSocket);
             return "RED";
         }
+
+        if (this.bluePlayer.nick === nick) {
+            this.bluePlayer.socket = playerSocket;
+            this.bluePlayer.isConnect = true;
+            return "BLUE";
+        }
+        if (this.redPlayer.nick === nick) {
+            this.redPlayer.socket = playerSocket;
+            this.redPlayer.isConnect = true;
+            return "RED";
+        }
+
         return null;
     }
 
@@ -76,8 +89,10 @@ module.exports = class Room {
 
     placeFigure(player, figure) {
         //TODO: make checking if this move is OK
+        let playerObj = this.redPlayer.socket.id === player ? this.redPlayer : this.bluePlayer;
         figure.who = this.redPlayer.socket.id === player ? "RED" : "BLUE";
         let obj = this.figures.getFigure(figure.figureId, figure.figureType);
+        this.figures.supplyOperations(obj, playerObj, figure.figureType);
         this.map.addFigure(obj, figure);
         this.sendToOpponent(player, "placeFigure", figure);
     }
@@ -97,9 +112,11 @@ module.exports = class Room {
     endTurn(player) {
         if (this.bluePlayer.socket.id === player) {
             this.bluePlayer.addResearchPoint();
+            this.bluePlayer.renewSupplies();
             this.turn = "RED";
         } else {
             this.redPlayer.addResearchPoint();
+            this.redPlayer.renewSupplies();
             this.turn = "BLUE";
         }
         this.map.figures.forEach((figure) => {
@@ -127,15 +144,13 @@ module.exports = class Room {
 
     disconnectPlayer(player) {
         if (this.bluePlayer && this.bluePlayer.socket.id === player) {
-            this.bluePlayer = null;
+            this.bluePlayer.isConnect = false;
             this.isStartGame = false;
-            return true;
-        }
-        if (this.redPlayer && this.redPlayer.socket.id === player) {
-            this.redPlayer = null;
+        } else if (this.redPlayer && this.redPlayer.socket.id === player) {
+            this.redPlayer.isConnect = false;
             this.isStartGame = false;
-            return true;
         }
-        return false;
+
+        return this.bluePlayer?.isConnect || this.redPlayer?.isConnect;
     }
 };

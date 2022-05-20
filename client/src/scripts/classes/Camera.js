@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { PerspectiveCamera } from "three";
+import {PerspectiveCamera} from "three";
 
 const PI_2 = Math.PI / 2;
 export default class Camera extends PerspectiveCamera {
@@ -17,6 +17,7 @@ export default class Camera extends PerspectiveCamera {
             new THREE.Vector3(10, 0, 10)
         );
     }
+
     /* ***** */
 
     get eluerPos() {
@@ -77,7 +78,17 @@ export default class Camera extends PerspectiveCamera {
             antialias: true,
         });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-
+        this.renderer.domElement.addEventListener(
+            'webglcontextlost',
+            (event) => {
+                event.preventDefault();
+                setTimeout(() => {
+                    console.log("RESTORE");
+                    this.renderer.forceContextRestore();
+                }, 100);
+            },
+            false
+        );
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFShadowMap;
 

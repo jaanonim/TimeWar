@@ -1,6 +1,7 @@
 import {io} from "socket.io-client";
 import GameManager from "./GameManager";
 import MapCreator from "./MapCreator";
+import {UiHandlers} from "./managers/UiHandlers";
 
 const environment = process.env.NODE_ENV;
 const productionUrl = "/";
@@ -10,12 +11,14 @@ export default class Socket {
 
     constructor(room) {
         if (Socket.instance != null) return null;
+        console.log("ROOM NUMBER", room);
         Socket.instance = this;
         this.socket = io(
             environment === "development" ? developmentUrl : productionUrl,
             {
                 query: {
                     room: room,
+                    nick: GameManager.instance.player.name
                 },
             }
         );
@@ -84,10 +87,14 @@ export default class Socket {
             figure.attack(data.msg.x, data.msg.y);
         });
         this.socket.on("startGame", async (data) => {
-            GameManager.instance.player.setTeam(data.team);
+            let player = GameManager.instance.player;
+            player.setTeam(data.team);
+            player.setSupply(data.player.supplies);
+            player.setWinProgress(data.player.winProgress);
             GameManager.instance.setTurn(data.turn);
             GameManager.instance.loadFigures(data.figures);
             GameManager.instance.winTarget = data.winTarget;
+            UiHandlers.instance.changeWinTargetBar();
             MapCreator.instance.setMap(data.mapStruct);
             await GameManager.instance.startGame();
             MapCreator.instance.recreateMap(data.mapObjects);

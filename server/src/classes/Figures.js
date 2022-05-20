@@ -28,4 +28,21 @@ module.exports = class Figures {
         }
     }
 
+    supplyOperations(obj, playerObj, type) {
+        if (type === 1) {
+            if (obj.isFlyable) {
+                playerObj.supplies['air_army'].supply -= obj.price;
+            } else {
+                playerObj.supplies['land_army'].supply -= obj.price;
+            }
+        } else if (type === 2) {
+            playerObj.supplies['building'].supply -= obj.price;
+        }
+
+        if (obj.increaseSupplyType != null) {
+            let supply = playerObj.supplies[obj.increaseSupplyType.toLowerCase()];
+            supply.maxSupply += obj.increaseSupply;
+        }
+    }
+
 };

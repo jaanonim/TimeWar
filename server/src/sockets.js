@@ -1,4 +1,4 @@
-const { Server } = require("socket.io");
+const {Server} = require("socket.io");
 const Room = require("./classes/Room");
 let io = null;
 let rooms = [];
@@ -13,6 +13,7 @@ module.exports = {
 
         io.on("connection", async (socket) => {
             let roomName = socket.handshake.query.room;
+            console.log(roomName, socket.handshake.query.nick);
             let room = rooms.find((r) => r.name === roomName);
             if (room == null) {
                 room = new Room(roomName);
@@ -30,6 +31,7 @@ module.exports = {
                 console.log("game started");
                 room.redPlayer.socket.emit("startGame", {
                     team: "RED",
+                    player: room.redPlayer.getPlayerData(),
                     turn: room.turn,
                     mapStruct: room.map.mapStruct,
                     mapObjects: room.map.mapObjects,
@@ -38,6 +40,7 @@ module.exports = {
                 });
                 room.bluePlayer.socket.emit("startGame", {
                     team: "BLUE",
+                    player: room.bluePlayer.getPlayerData(),
                     turn: room.turn,
                     mapStruct: room.map.mapStruct,
                     mapObjects: room.map.mapObjects,
@@ -59,7 +62,9 @@ module.exports = {
             });
 
             socket.on("disconnecting", () => {
-                room.disconnectPlayer(socket.id);
+                if (!room.disconnectPlayer(socket.id)) {
+                    rooms = rooms.filter(r => r.name !== room.name)
+                }
                 console.log("disconnecting ", socket.id);
             });
         });
