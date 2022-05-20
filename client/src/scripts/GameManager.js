@@ -72,10 +72,12 @@ export default class GameManager {
             this.player.supplies[supply].reset();
         }
         UiHandlers.instance.updateSupply();
+        console.log(this.figuries);
         this.figuries.forEach((figure) => figure?.renew());
     }
 
     loadFigures(figures) {
+        this.figuries = [];
         FigureManager.instance.figures = figures;
         UiHandlers.instance.setFiguresOnMenu({
             landArmy: FigureManager.instance.getLandArmy(),
