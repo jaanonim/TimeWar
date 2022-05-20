@@ -65,7 +65,6 @@ module.exports = {
                 if (!room.disconnectPlayer(socket.id)) {
                     rooms = rooms.filter(r => r.name !== room.name)
                 }
-                console.log(rooms.length);
                 console.log("disconnecting ", socket.id);
             });
         });

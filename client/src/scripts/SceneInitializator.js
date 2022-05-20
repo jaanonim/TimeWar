@@ -13,23 +13,6 @@ export class SceneInitializator {
     async initDisplay(displayElement) {
         //Initialization Scene
         this.scene = new THREE.Scene();
-        this.renderer = new THREE.WebGLRenderer({
-            antialias: true,
-        });
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        displayElement.innerHTML = "";
-        displayElement.appendChild(this.renderer.domElement);
-        this.renderer.domElement.addEventListener(
-            'webglcontextlost',
-            (event) => {
-                event.preventDefault();
-                setTimeout(() => {
-                    console.log("RESTORE");
-                    this.renderer.forceContextRestore();
-                }, 100);
-            },
-            false
-        );
 
         //Light
         const light = new THREE.DirectionalLight(0xffffff, 3, 100);

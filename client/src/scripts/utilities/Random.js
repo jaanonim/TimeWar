@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-const defaultCharset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+const defaultCharset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 const getRandomString = (length, charset = defaultCharset) => {
     let result = "";
     for (let i = 0; i < length; i++) {

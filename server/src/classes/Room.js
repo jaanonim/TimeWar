@@ -66,7 +66,6 @@ module.exports = class Room {
     }
 
     canStartGame() {
-        console.log("can start ", this.bluePlayer != null, this.redPlayer != null);
         return this.bluePlayer != null && this.redPlayer != null;
     }
 
@@ -94,7 +93,6 @@ module.exports = class Room {
         figure.who = this.redPlayer.socket.id === player ? "RED" : "BLUE";
         let obj = this.figures.getFigure(figure.figureId, figure.figureType);
         this.figures.supplyOperations(obj, playerObj, figure.figureType);
-        console.log(playerObj);
         this.map.addFigure(obj, figure);
         this.sendToOpponent(player, "placeFigure", figure);
     }
