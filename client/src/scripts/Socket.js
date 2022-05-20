@@ -88,6 +88,7 @@ export default class Socket {
         });
         this.socket.on("startGame", async (data) => {
             let player = GameManager.instance.player;
+            console.log(data);
             player.setTeam(data.team);
             player.setSupply(data.player.supplies);
             player.setWinProgress(data.player.winProgress);
@@ -95,6 +96,7 @@ export default class Socket {
             GameManager.instance.loadFigures(data.figures);
             GameManager.instance.winTarget = data.winTarget;
             UiHandlers.instance.changeWinTargetBar();
+            UiHandlers.instance.setVersusInfo(data.player.nick, data.opponentNick);
             MapCreator.instance.setMap(data.mapStruct);
             await GameManager.instance.startGame();
             MapCreator.instance.recreateMap(data.mapObjects);

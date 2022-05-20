@@ -37,6 +37,7 @@ module.exports = {
                     mapObjects: room.map.mapObjects,
                     figures: room.figures.getFigures(),
                     winTarget: room.winTarget,
+                    opponentNick: room.bluePlayer.nick
                 });
                 room.bluePlayer.socket.emit("startGame", {
                     team: "BLUE",
@@ -46,6 +47,7 @@ module.exports = {
                     mapObjects: room.map.mapObjects,
                     figures: room.figures.getFigures(),
                     winTarget: room.winTarget,
+                    opponentNick: room.redPlayer.nick
                 });
             }
             socket.on("placeFigure", (figure) => {

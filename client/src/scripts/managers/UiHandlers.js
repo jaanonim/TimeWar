@@ -19,6 +19,7 @@ export class UiHandlers {
         this.setSupplyOnMenu = null;
         this.setWinTargetBar = null;
         this.setInfoRoomPanel = null;
+        this.setVersusInfo = null;
     }
 
     onSelectFigureInUI(newId, type) {
@@ -46,7 +47,6 @@ export class UiHandlers {
             GameManager.instance.winTarget
         );
     }
-
     changeTurnText(turn) {
         UiHandlers.instance.setTurnInfo(
             GameManager.instance.player.team === turn
