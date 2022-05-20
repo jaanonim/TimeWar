@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 import SettingsCheckbox from "../../components/SettingsCheckbox";
-import Slider from "../../components/Slider";
+import SettingsSlider from "../../components/SettingsSlider";
 import useToast from "../../hooks/useToast";
+import Settings from "../../scripts/utilities/Settings";
 import styles from "./SettingsPage.module.css";
 
 function SettingsPage() {
@@ -13,7 +14,27 @@ function SettingsPage() {
       <nav className={styles.nav}>
         <h1 className={styles.logo}>TimeWar</h1>
         <div className={styles.cbox}>
-          <Slider />
+          <SettingsSlider
+            name="camera.fov"
+            text="Field of View"
+            min={30}
+            max={160}
+            step={5}
+          ></SettingsSlider>
+          <SettingsSlider
+            name="camera.movmentSpeed"
+            text="Camera Movement Speed"
+            min={1}
+            max={30}
+            step={1}
+          ></SettingsSlider>
+          <SettingsSlider
+            name="camera.rotatmentSpeed"
+            text="Camera Rotation Speed"
+            min={0.1}
+            max={2}
+            step={0.1}
+          ></SettingsSlider>
           <SettingsCheckbox
             name="renderer.antialias"
             text="Antialias"
@@ -22,9 +43,17 @@ function SettingsPage() {
             name="renderer.shadowMap.enabled"
             text="Shadows"
           ></SettingsCheckbox>
+          <SettingsSlider
+            name="renderer.pixelRatio"
+            text="Resolutin Scale"
+            min={0.1}
+            max={2}
+            step={0.1}
+          ></SettingsSlider>
           <div
             className={styles.resetSettings}
             onClick={() => {
+              Settings.instance.setDefaults();
               toast({ message: "Settings reseted" });
             }}
           >

@@ -1,19 +1,22 @@
 import { useState } from "react";
 import Settings from "../../scripts/utilities/Settings";
-import Checkbox from "../Checkbox";
+import Slider from "../Slider";
 
-function SettingsCheckbox(props) {
+function SettingsSlider(props) {
   const [v, setV] = useState(Settings.instance.get(props.name));
   return (
-    <Checkbox
+    <Slider
+      min={props.min}
+      max={props.max}
+      step={props.step}
       onChange={(v) => {
         Settings.instance.set(props.name, v);
         setV(v);
       }}
-      checked={Settings.instance.get(props.name)}
+      value={Settings.instance.get(props.name)}
     >
       {props.text}
-    </Checkbox>
+    </Slider>
   );
 }
-export default SettingsCheckbox;
+export default SettingsSlider;

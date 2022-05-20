@@ -72,6 +72,7 @@
 }
 
 .resetSettings {
+  margin-top: 2rem;
   color: var(--main);
   width: 100%;
   text-align: center;

@@ -1,3 +1,14 @@
+const defaultSettings = {
+    "camera.fov": 75,
+    "camera.movmentSpeed": 15,
+    "camera.rotatmentSpeed": 1,
+    "renderer.antialias": true,
+    "renderer.shadowMap.enabled": true,
+    "renderer.pixelRatio": 1,
+    "shadow.mapSize.width": 64,
+    "shadow.mapSize.height": 64,
+};
+
 export default class Settings {
     static _instance = null;
 
@@ -9,16 +20,6 @@ export default class Settings {
     }
 
     constructor() {
-        const defaultSettings = {
-            "camera.fov": 75,
-            "camera.movmentSpeed": 15,
-            "camera.rotatmentSpeed": 1,
-            "renderer.antialias": true,
-            "renderer.shadowMap.enabled": true,
-            "renderer.pixelRatio": 1,
-            "shadow.mapSize.width": 64,
-            "shadow.mapSize.height": 64,
-        };
         let localStorageSettings = {};
         try {
             localStorageSettings = JSON.parse(localStorage.getItem("settings"));
@@ -29,6 +30,11 @@ export default class Settings {
         };
 
         localStorage.setItem("settings", JSON.stringify(this.settings));
+    }
+
+    setDefaults() {
+        this.settings = { ...defaultSettings };
+        this.save();
     }
 
     set(key, value) {
