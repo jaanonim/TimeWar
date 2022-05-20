@@ -13,7 +13,7 @@ module.exports = {
 
         io.on("connection", async (socket) => {
             let roomName = socket.handshake.query.room;
-            console.log(roomName);
+            console.log(roomName, socket.handshake.query.nick);
             let room = rooms.find((r) => r.name === roomName);
             if (room == null) {
                 room = new Room(roomName);

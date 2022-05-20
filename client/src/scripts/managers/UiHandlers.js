@@ -52,4 +52,5 @@ export class UiHandlers {
         );
         UiHandlers.instance?.setIsActiveNextTurnButton(GameManager.instance.player.team === turn);
     }
+
 }

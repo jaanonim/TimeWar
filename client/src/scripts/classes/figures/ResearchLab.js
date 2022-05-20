@@ -12,6 +12,10 @@ export default class ResearchLab extends BuildingFigure {
         super.renew();
     }
 
+    makeDamage(damage) {
+        this.takeDamage = true;
+    }
+
     placeAction() {
     }
 }
