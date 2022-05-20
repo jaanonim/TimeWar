@@ -31,6 +31,7 @@ module.exports = {
                 console.log("game started");
                 room.redPlayer.socket.emit("startGame", {
                     team: "RED",
+                    player: room.redPlayer.getPlayerData(),
                     turn: room.turn,
                     mapStruct: room.map.mapStruct,
                     mapObjects: room.map.mapObjects,
@@ -39,6 +40,7 @@ module.exports = {
                 });
                 room.bluePlayer.socket.emit("startGame", {
                     team: "BLUE",
+                    player: room.bluePlayer.getPlayerData(),
                     turn: room.turn,
                     mapStruct: room.map.mapStruct,
                     mapObjects: room.map.mapObjects,
@@ -60,7 +62,10 @@ module.exports = {
             });
 
             socket.on("disconnecting", () => {
-                room.disconnectPlayer(socket.id);
+                if (!room.disconnectPlayer(socket.id)) {
+                    rooms = rooms.filter(r => r.name !== room.name)
+                }
+                console.log(rooms.length);
                 console.log("disconnecting ", socket.id);
             });
         });

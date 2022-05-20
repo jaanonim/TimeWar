@@ -21,7 +21,8 @@ export default class GameManager {
     }
 
     constructor() {
-        this.player = new Player(localStorage.getItem("nick"), "blue");
+        console.log(sessionStorage.getItem("nick"));
+        this.player = new Player(sessionStorage.getItem("nick"), "blue");
         this.attackOption = false;
         this.turn = "";
         this.figuries = [];

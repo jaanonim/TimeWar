@@ -26,7 +26,7 @@ function JoinPage() {
                             placeholder="Enter your nick"
                             value={nick}
                             onInput={event => {
-                                localStorage.setItem("nick", event.target.value);
+                                sessionStorage.setItem("nick", event.target.value);
                                 setNick(event.target.value);
                             }}
                         />

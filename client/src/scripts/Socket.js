@@ -17,6 +17,7 @@ export default class Socket {
             {
                 query: {
                     room: room,
+                    nick: GameManager.instance.player.name
                 },
             }
         );
@@ -85,7 +86,10 @@ export default class Socket {
             figure.attack(data.msg.x, data.msg.y);
         });
         this.socket.on("startGame", async (data) => {
-            GameManager.instance.player.setTeam(data.team);
+            let player = GameManager.instance.player;
+            player.setTeam(data.team);
+            player.setSupply(data.player.supplies);
+            player.setWinProgress(data.player.winProgress);
             GameManager.instance.setTurn(data.turn);
             GameManager.instance.loadFigures(data.figures);
             GameManager.instance.winTarget = data.winTarget;

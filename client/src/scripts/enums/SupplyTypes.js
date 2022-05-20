@@ -1,5 +1,5 @@
 export const SupplyTypes = {
-    LAND_ARMY: 1,
-    AIR_ARMY: 2,
-    BUILDING: 3
+    LAND_ARMY: "land_army",
+    AIR_ARMY: "air_army",
+    BUILDING: "building"
 };
