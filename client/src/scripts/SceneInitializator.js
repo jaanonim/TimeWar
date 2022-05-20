@@ -1,6 +1,6 @@
 import Stats from "stats-js";
 import * as THREE from "three";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import Camera from "./classes/Camera";
 
 export class SceneInitializator {
     constructor(displayElement) {
@@ -41,32 +41,15 @@ export class SceneInitializator {
         light2.position.set(-10, -20, -10);
         this.scene.add(light2);
 
+        //Camera
+        this.camera = new Camera(displayElement, 75);
+
         //Inits
-        this.initCamera();
         this.initHelpers();
         this.initShadows(light);
-
-        //Add Listener for resizing screen
-        window.addEventListener("resize", this.onWindowResize.bind(this));
-    }
-
-    initCamera() {
-        this.camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-        );
-        this.camera.position.y = 25;
-        this.camera.position.z = 35;
     }
 
     initHelpers() {
-        this.cameraConrols = new OrbitControls(
-            this.camera,
-            this.renderer.domElement
-        );
-
         //Stats
         this.stats = new Stats();
         this.stats.showPanel(0);
@@ -74,9 +57,6 @@ export class SceneInitializator {
     }
 
     initShadows(light) {
-        this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFShadowMap;
-
         const shadowSize = 100;
         light.shadow.camera.left = -shadowSize;
         light.shadow.camera.right = shadowSize;
@@ -89,19 +69,12 @@ export class SceneInitializator {
         light.shadow.camera.far = 100;
     }
 
-    update() {
+    update(delta) {
         this.stats.begin();
-        this.cameraConrols.update();
         this.scene.children.forEach((child) => {
-            if (child.update !== undefined) child.update();
+            if (child.update !== undefined) child.update(delta);
         });
-        this.renderer.render(this.scene, this.camera);
+        this.camera.update(delta, this.scene);
         this.stats.end();
-    }
-
-    onWindowResize() {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 }
