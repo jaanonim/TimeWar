@@ -1,14 +1,14 @@
-import { Clock } from "three";
+import {Clock} from "three";
 import FigureFactor from "./classes/FigureFactor";
 import Player from "./classes/Player";
-import { PlayerTeams } from "./enums/PlayerTeams";
+import {PlayerTeams} from "./enums/PlayerTeams";
 import FigureManager from "./managers/FigureManager";
 import LabelsManager from "./managers/LabelsManager";
 import ModelsManager from "./managers/ModelsManager";
-import { MouseKeyboardManager } from "./managers/MouseKeyboardManager";
-import { UiHandlers } from "./managers/UiHandlers";
+import {MouseKeyboardManager} from "./managers/MouseKeyboardManager";
+import {UiHandlers} from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
-import { SceneInitializator } from "./SceneInitializator";
+import {SceneInitializator} from "./SceneInitializator";
 import Socket from "./Socket";
 import {runWhenExist} from "./utilities/RunWhenExist";
 
@@ -27,7 +27,7 @@ export default class GameManager {
     }
 
     constructor() {
-        console.log(sessionStorage.getItem("nick"));
+        console.log("NICK", sessionStorage.getItem("nick"));
         this.player = new Player(sessionStorage.getItem("nick"), "blue");
         this.attackOption = false;
         this.turn = "";

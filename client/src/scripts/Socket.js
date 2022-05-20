@@ -11,7 +11,7 @@ export default class Socket {
 
     constructor(room) {
         if (Socket.instance != null) return null;
-        console.log(room);
+        console.log("ROOM NUMBER", room);
         Socket.instance = this;
         this.socket = io(
             environment === "development" ? developmentUrl : productionUrl,
@@ -88,7 +88,6 @@ export default class Socket {
         });
         this.socket.on("startGame", async (data) => {
             let player = GameManager.instance.player;
-            console.log(data);
             player.setTeam(data.team);
             player.setSupply(data.player.supplies);
             player.setWinProgress(data.player.winProgress);
