@@ -28,6 +28,7 @@ export default class Socket {
     }
 
     placeFigure(figure) {
+        if (figure == null) return;
         this.socket.emit("placeFigure", {
             figureId: figure.figureId,
             figureType: figure.figureType,

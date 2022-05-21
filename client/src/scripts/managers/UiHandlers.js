@@ -36,7 +36,7 @@ export class UiHandlers {
                 max: supply.maxSupply,
             };
         }
-        this.setSupplyOnMenu(result);
+        runWhenExist(this.setSupplyOnMenu, () => this.setSupplyOnMenu(result));
     }
 
     changeWinTargetBar() {
