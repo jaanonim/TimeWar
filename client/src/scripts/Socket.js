@@ -105,9 +105,6 @@ export default class Socket {
         });
         this.socket.on("endGame", (data) => {
             UiHandlers.instance.setEndPanel(true, data.who === GameManager.instance.player.team);
-            setTimeout(() => {
-                location.reload();
-            }, 5000);
         });
         this.socket.on("changeTurn", (turn) => {
             GameManager.instance.setTurn(turn.msg);

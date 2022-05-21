@@ -21,7 +21,6 @@ export default class MapCreator {
     unCapturingMap() {
         this.mapObjects.forEach((row) => {
             row.forEach((land) => {
-                console.log("asss");
                 if (land !== null) {
                     land.unCapture();
                 }
