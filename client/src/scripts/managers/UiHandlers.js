@@ -1,8 +1,5 @@
 import GameManager from "../GameManager";
 
-const yourTurnText = "You Turn";
-const waitingTurnText = "Wait for Your Turn";
-
 export class UiHandlers {
     static _instance = null;
 
@@ -48,14 +45,13 @@ export class UiHandlers {
     }
 
     changeTurnText(turn) {
-        UiHandlers.instance.setTurnInfo(
-            GameManager.instance.player.team === turn
-                ? yourTurnText
-                : waitingTurnText
-        );
         UiHandlers.instance?.setIsActiveNextTurnButton(
             GameManager.instance.player.team === turn
         );
+        try {
+            UiHandlers.instance.disableLeftButtoms(
+                GameManager.instance.player.team !== turn
+            );
+        } catch (e) {}
     }
-
 }

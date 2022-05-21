@@ -1,16 +1,16 @@
-import {Clock} from "three";
+import { Clock } from "three";
 import FigureFactor from "./classes/FigureFactor";
 import Player from "./classes/Player";
-import {PlayerTeams} from "./enums/PlayerTeams";
+import { PlayerTeams } from "./enums/PlayerTeams";
 import FigureManager from "./managers/FigureManager";
 import LabelsManager from "./managers/LabelsManager";
 import ModelsManager from "./managers/ModelsManager";
-import {MouseKeyboardManager} from "./managers/MouseKeyboardManager";
-import {UiHandlers} from "./managers/UiHandlers";
+import { MouseKeyboardManager } from "./managers/MouseKeyboardManager";
+import { UiHandlers } from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
-import {SceneInitializator} from "./SceneInitializator";
+import { SceneInitializator } from "./SceneInitializator";
 import Socket from "./Socket";
-import {runWhenExist} from "./utilities/RunWhenExist";
+import { runWhenExist } from "./utilities/RunWhenExist";
 
 export default class GameManager {
     static _instance = null;
@@ -55,7 +55,9 @@ export default class GameManager {
     async startGame() {
         MapCreator.instance.createMap(this.sceneManager.scene);
         UiHandlers.instance.updateSupply();
-        await runWhenExist(UiHandlers.instance.setInfoRoomPanel, () => UiHandlers.instance.setInfoRoomPanel(false));
+        await runWhenExist(UiHandlers.instance.setInfoRoomPanel, () =>
+            UiHandlers.instance.setInfoRoomPanel(false)
+        );
     }
 
     update() {
@@ -98,6 +100,7 @@ export default class GameManager {
 
     placeFigureAction(land) {
         if (this.selectedFigure != null) {
+            console.log(this.selectedFigure); //TODO: remove, for no it's for futhure debuging
             this.selectedFigure.unHighLightMovePosition();
             this.selectedFigure = null;
         }
