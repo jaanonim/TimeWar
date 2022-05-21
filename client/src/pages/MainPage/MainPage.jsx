@@ -24,9 +24,9 @@ function MainPage() {
             </Link>
           </li>
           <li className={styles.navItem}>
-            <Link className={styles.link} to="/aboute">
+            <Link className={styles.link} to="/about">
               <Button>
-                <div className={styles.box}>Aboute</div>
+                <div className={styles.box}>About</div>
               </Button>
             </Link>
           </li>
@@ -36,7 +36,7 @@ function MainPage() {
         </footer>
       </nav>
       <aside className={styles.aside}>
-        <h2>TODO: Some 3d animation</h2>
+        <AsideAnimation />
       </aside>
     </div>
   );
