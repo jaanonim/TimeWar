@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import {PlayerTeams} from "../enums/PlayerTeams";
+import { PlayerTeams } from "../enums/PlayerTeams";
 import GameManager from "../GameManager";
 import ModelsManager from "../managers/ModelsManager";
 import MapCreator from "../MapCreator";
-import {getRandomElement, getRandomVector3} from "../utilities/Random";
+import { getRandomElement, getRandomVector3 } from "../utilities/Random";
 import FigureLabel from "./FigureLabel";
 
 export default class Figure extends THREE.Object3D {
@@ -62,21 +62,19 @@ export default class Figure extends THREE.Object3D {
         this.add(this.model);
 
         this.lable = new FigureLabel(this);
-        //this.lable.hide();
     }
 
-    update() {
+    update() {}
+
+    lateUpdate() {
         this.lable.update();
     }
 
-    select() {
-    }
+    select() {}
 
-    unselect() {
-    }
+    unselect() {}
 
-    makeAction(event, land) {
-    }
+    makeAction(event, land) {}
 
     place(x, y) {
         this.mapPositionX = x;
@@ -99,11 +97,9 @@ export default class Figure extends THREE.Object3D {
         }
     }
 
-    capture() {
-    }
+    capture() {}
 
-    renew() {
-    }
+    renew() {}
 
     static canBuy(data) {}
 
@@ -118,8 +114,7 @@ export default class Figure extends THREE.Object3D {
         this.highlighted = false;
     }
 
-    onRightClick(event) {
-    }
+    onRightClick(event) {}
 
     onLeftClick(event) {
         let gm = GameManager.instance;
