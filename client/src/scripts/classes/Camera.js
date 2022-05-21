@@ -2,6 +2,10 @@ import * as THREE from "three";
 import { PerspectiveCamera } from "three";
 import Settings from "../utilities/Settings";
 
+const CLAMP = new THREE.Box3(
+    new THREE.Vector3(-1, -1, -1),
+    new THREE.Vector3(1, 1, 1)
+);
 const PI_2 = Math.PI / 2;
 export default class Camera extends PerspectiveCamera {
     /* CONSTS */
@@ -95,7 +99,7 @@ export default class Camera extends PerspectiveCamera {
             "renderer.shadowMap.enabled"
         );
         this.renderer.domElement.addEventListener(
-            'webglcontextlost',
+            "webglcontextlost",
             (event) => {
                 event.preventDefault();
                 setTimeout(() => {
@@ -147,55 +151,59 @@ export default class Camera extends PerspectiveCamera {
 
     keyUp(event) {
         if (event.key === "ArrowUp") {
-            this.movment.x = 0;
+            this.movment.x += 1;
         }
         if (event.key === "ArrowDown") {
-            this.movment.x = 0;
+            this.movment.x += -1;
         }
         if (event.key === "ArrowLeft") {
-            this.movment.z = 0;
+            this.movment.z += -1;
         }
         if (event.key === "ArrowRight") {
-            this.movment.z = 0;
+            this.movment.z += 1;
         }
         if (event.key === "e") {
-            this.rotatment.y = 0;
+            this.rotatment.y += -1;
         }
         if (event.key === "q") {
-            this.rotatment.y = 0;
+            this.rotatment.y += 1;
         }
         if (event.key === "r") {
-            this.rotatment.z = 0;
+            this.rotatment.z += -1;
         }
         if (event.key === "f") {
-            this.rotatment.z = 0;
+            this.rotatment.z += 1;
         }
+        CLAMP.clampPoint(this.movment, this.movment);
+        CLAMP.clampPoint(this.rotatment, this.rotatment);
     }
 
     keyDown(event) {
         if (event.key === "ArrowUp") {
-            this.movment.x = -1;
+            this.movment.x += -1;
         }
         if (event.key === "ArrowDown") {
-            this.movment.x = 1;
+            this.movment.x += 1;
         }
         if (event.key === "ArrowLeft") {
-            this.movment.z = 1;
+            this.movment.z += 1;
         }
         if (event.key === "ArrowRight") {
-            this.movment.z = -1;
+            this.movment.z += -1;
         }
         if (event.key === "e") {
-            this.rotatment.y = 1;
+            this.rotatment.y += 1;
         }
         if (event.key === "q") {
-            this.rotatment.y = -1;
+            this.rotatment.y += -1;
         }
         if (event.key === "r") {
-            this.rotatment.z = 1;
+            this.rotatment.z += 1;
         }
         if (event.key === "f") {
-            this.rotatment.z = -1;
+            this.rotatment.z += -1;
         }
+        CLAMP.clampPoint(this.movment, this.movment);
+        CLAMP.clampPoint(this.rotatment, this.rotatment);
     }
 }

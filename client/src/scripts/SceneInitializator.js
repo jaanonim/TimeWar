@@ -63,6 +63,9 @@ export class SceneInitializator {
             if (child.update !== undefined) child.update(delta);
         });
         this.camera.update(delta, this.scene);
+        this.scene.children.forEach((child) => {
+            if (child.lateUpdate !== undefined) child.lateUpdate(delta);
+        });
         this.stats.end();
     }
 }
