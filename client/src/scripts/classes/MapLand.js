@@ -30,7 +30,6 @@ export default class MapLand extends THREE.Object3D {
     }
 
     capture(who) {
-        //TODO: think about what happen when 2 player want capture 1 place
         if (this.captured == null) {
             this.captured = who;
             this.captureForce = 1;

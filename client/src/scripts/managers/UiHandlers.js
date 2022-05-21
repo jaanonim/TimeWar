@@ -18,6 +18,7 @@ export class UiHandlers {
         this.setWinTargetBar = null;
         this.setInfoRoomPanel = null;
         this.setVersusInfo = null;
+        this.setEndPanel = null;
     }
 
     onSelectFigureInUI(newId, type) {
