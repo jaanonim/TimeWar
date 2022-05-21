@@ -90,7 +90,6 @@ export default class Socket {
         });
         this.socket.on("startGame", async (data) => {
             let player = GameManager.instance.player;
-            console.log(data);
             player.setTeam(data.team);
             player.setSupply(data.player.supplies);
             player.setWinProgress(data.player.winProgress);

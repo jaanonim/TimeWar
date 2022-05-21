@@ -77,7 +77,6 @@ export default class GameManager {
 
     capturingOperations() {
         MapCreator.instance.unCapturingMap();
-        console.log(this.figuries);
         this.figuries.forEach(figure => {
             if (figure != null) {
                 figure.capture();
