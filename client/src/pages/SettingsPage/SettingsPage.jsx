@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import AsideAnimation from "../../components/AsideAnimation";
 import Button from "../../components/Button";
 import SettingsCheckbox from "../../components/SettingsCheckbox";
 import SettingsSlider from "../../components/SettingsSlider";
@@ -74,7 +75,7 @@ function SettingsPage() {
         </footer>
       </nav>
       <aside className={styles.aside}>
-        <h2>TODO: Some 3d animation</h2>
+        <AsideAnimation />
       </aside>
     </div>
   );

@@ -1,28 +1,15 @@
-import TurnInfo from "../TurnInfo";
-import styles from "./TopInfo.module.css";
 import TurnTimer from "../TurnTimer";
-import {UiHandlers} from "../../scripts/managers/UiHandlers";
-import {useState} from "react";
-
+import styles from "./TopInfo.module.css";
 function TopInfo() {
-    const [nicks, setNicks] = useState(["", ""]);
-    UiHandlers.instance.setVersusInfo = (myNick, opponentNick) => {
-        setNicks([
-            myNick, opponentNick
-        ])
-    };
-    return (
-        <div className={styles.box}>
-            <div className={styles.nicks}>
-                <div className={styles.nickLeft}>{nicks[0]}</div>
-                <div className={styles.vs}>vs</div>
-                <div className={styles.nickRight}>{nicks[1]}</div>
-            </div>
-
-            <TurnInfo/>
-            <TurnTimer/>
-        </div>
-    );
+  return (
+    <div className={styles.box}>
+      <div className={styles.nicks}>
+        <div className={styles.nickLeft}>jaanonim</div>
+        <div className={styles.vs}>vs</div>
+        <div className={styles.nickRight}>n2one</div>
+      </div>
+      <TurnTimer />
+    </div>
+  );
 }
-
 export default TopInfo;

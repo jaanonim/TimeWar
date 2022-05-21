@@ -6,6 +6,7 @@ const MainPage = React.lazy(() => import("./pages/MainPage"));
 const JoinPage = React.lazy(() => import("./pages/JoinPage"));
 const GamePage = React.lazy(() => import("./pages/GamePage"));
 const SettingsPage = React.lazy(() => import("./pages/SettingsPage"));
+const AboutPage = React.lazy(() => import("./pages/AboutPage"));
 
 function App() {
   return (
@@ -39,6 +40,14 @@ function App() {
         element={
           <React.Suspense fallback={<Loading />}>
             <SettingsPage />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="/about"
+        element={
+          <React.Suspense fallback={<Loading />}>
+            <AboutPage />
           </React.Suspense>
         }
       />

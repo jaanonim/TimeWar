@@ -16,13 +16,13 @@ export class SceneInitializator {
         this.scene = new THREE.Scene();
 
         //Light
-        const light = new THREE.DirectionalLight(0xffffff, 3, 100);
+        const light = new THREE.DirectionalLight(0xffffff, 2.5, 100);
         light.position.set(10, 20, 10);
         light.castShadow = Settings.instance.get("renderer.shadowMap.enabled");
         this.scene.add(light);
 
-        const light2 = new THREE.DirectionalLight(0xffffff, 1, 100);
-        light2.position.set(-10, -20, -10);
+        const light2 = new THREE.DirectionalLight(0xffffff, 1.5, 100);
+        light2.position.set(-10, 20, -10);
         this.scene.add(light2);
 
         //Camera
@@ -63,6 +63,9 @@ export class SceneInitializator {
             if (child.update !== undefined) child.update(delta);
         });
         this.camera.update(delta, this.scene);
+        this.scene.children.forEach((child) => {
+            if (child.lateUpdate !== undefined) child.lateUpdate(delta);
+        });
         this.stats.end();
     }
 }
