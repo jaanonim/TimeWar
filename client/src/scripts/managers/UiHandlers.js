@@ -1,4 +1,5 @@
 import GameManager from "../GameManager";
+import {runWhenExist} from "../utilities/RunWhenExist";
 
 export class UiHandlers {
     static _instance = null;
@@ -39,7 +40,7 @@ export class UiHandlers {
     }
 
     changeWinTargetBar() {
-        UiHandlers.instance.setWinTargetBar(
+        UiHandlers.instance?.setWinTargetBar(
             GameManager.instance.player.winProgress,
             GameManager.instance.winTarget
         );
@@ -49,10 +50,8 @@ export class UiHandlers {
         UiHandlers.instance?.setIsActiveNextTurnButton(
             GameManager.instance.player.team === turn
         );
-        try {
-            UiHandlers.instance.disableLeftButtoms(
-                GameManager.instance.player.team !== turn
-            );
-        } catch (e) {}
+        runWhenExist(UiHandlers.instance.disableLeftButtoms, () => UiHandlers.instance.disableLeftButtoms(
+            GameManager.instance.player.team !== turn
+        ))
     }
 }
