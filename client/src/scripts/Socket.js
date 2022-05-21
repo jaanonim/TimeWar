@@ -2,6 +2,7 @@ import {io} from "socket.io-client";
 import GameManager from "./GameManager";
 import MapCreator from "./MapCreator";
 import {UiHandlers} from "./managers/UiHandlers";
+import {runWhenExist} from "./utilities/RunWhenExist";
 
 const environment = process.env.NODE_ENV;
 const productionUrl = "/";
@@ -96,10 +97,11 @@ export default class Socket {
             GameManager.instance.loadFigures(data.figures);
             GameManager.instance.winTarget = data.winTarget;
             UiHandlers.instance.changeWinTargetBar();
-            UiHandlers.instance.setVersusInfo(data.player.nick, data.opponentNick);
+            await runWhenExist(UiHandlers.instance.setVersusInfo, () => UiHandlers.instance.setVersusInfo(data.player.nick, data.opponentNick));
             MapCreator.instance.setMap(data.mapStruct);
             await GameManager.instance.startGame();
             MapCreator.instance.recreateMap(data.mapObjects);
+            GameManager.instance.capturingOperations();
         });
         this.socket.on("endGame", (data) => {
             //TODO: MAKE END GAME PANEL

@@ -67,6 +67,19 @@ export default class GameManager {
     setTurn(turn) {
         this.turn = turn;
         UiHandlers.instance.changeTurnText(this.turn);
+        if (this.turn === this.player.team) {
+            this.capturingOperations();
+        }
+    }
+
+    capturingOperations() {
+        MapCreator.instance.unCapturingMap();
+        console.log(this.figuries);
+        this.figuries.forEach(figure => {
+            if (figure != null) {
+                figure.capture();
+            }
+        })
     }
 
     endTurn() {
@@ -80,8 +93,8 @@ export default class GameManager {
             this.player.supplies[supply].reset();
         }
         UiHandlers.instance.updateSupply();
-        console.log(this.figuries);
         this.figuries.forEach((figure) => figure?.renew());
+
     }
 
     loadFigures(figures) {
@@ -131,6 +144,7 @@ export default class GameManager {
     removeFigure(x, y) {
         let figure = MapCreator.instance.mapObjects[x][y].figure;
         figure.onDestroy();
+        this.figuries = this.figuries.filter(fig => fig !== figure);
         this.sceneManager.scene.remove(figure);
         MapCreator.instance.mapObjects[x][y].figure = null;
     }
