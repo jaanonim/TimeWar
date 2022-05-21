@@ -74,7 +74,7 @@ function SettingsPage() {
         </footer>
       </nav>
       <aside className={styles.aside}>
-        <h2>TODO: Some 3d animation</h2>
+        <AsideAnimation />
       </aside>
     </div>
   );

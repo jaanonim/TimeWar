@@ -16,26 +16,31 @@
   text-shadow: 0.5rem 0.5rem var(--shadow-color);
 }
 
-.navList {
+.cbox {
   font-size: 2rem;
   padding: 0;
   margin: 2rem;
 }
 
-.navItem {
+.flex {
   display: flex;
-  cursor: pointer;
 }
 
 .link {
   text-decoration: none;
   color: var(--text);
-  width: 100%;
+  width: 50%;
   margin: 1rem 2rem 1rem 1rem;
 }
 
 .box {
   padding: 0.5rem 0.5rem 0.5rem 1rem;
+  text-align: center;
+}
+
+.box2 {
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  text-align: center;
 }
 
 .nav {
@@ -45,8 +50,8 @@
 }
 
 .aside {
-  width: 60vw;
   height: 100%;
+  width: 60vw;
 }
 
 .footer {
@@ -57,4 +62,30 @@
   position: absolute;
   bottom: 0;
   left: 0;
+}
+
+.modal {
+  padding: 1rem;
+}
+
+.resetSettings {
+  margin-top: 2rem;
+  color: var(--main);
+  width: 100%;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+}
+.resetSettings:hover {
+  color: var(--main-dark);
+}
+
+.cbox a {
+  color: var(--main);
+  text-decoration: none;
+}
+
+.cbox a:hover {
+  color: var(--main-dark);
+  text-decoration: none;
 }
