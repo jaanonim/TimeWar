@@ -18,6 +18,16 @@ export default class MapCreator {
         this.mapHeight = 0;
     }
 
+    unCapturingMap() {
+        this.mapObjects.forEach((row) => {
+            row.forEach((land) => {
+                if (land !== null) {
+                    land.unCapture();
+                }
+            });
+        });
+    }
+
     setMap(map) {
         this.map = map;
         this.mapWidth = this.map.length * this.tileSize;

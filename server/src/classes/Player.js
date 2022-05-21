@@ -23,7 +23,7 @@ module.exports = class Player {
 
     getPlayerData() {
         return {
-            name: this.name,
+            nick: this.nick,
             supplies: this.supplies,
             winProgress: this.winProgress
         }

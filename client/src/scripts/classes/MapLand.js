@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { HighLightType } from "../enums/HighLightType";
+import {HighLightType} from "../enums/HighLightType";
 import GameManager from "../GameManager";
 
 export default class MapLand extends THREE.Object3D {
@@ -20,17 +20,39 @@ export default class MapLand extends THREE.Object3D {
         this.height = height;
         this.position.set(x, 0, y);
         this.captured = null;
+        this.captureForce = 0;
         this.figure = null;
         this.hightLightType = HighLightType.NONE;
         this.model = null;
         this.defaultColor = 0xffffff;
+        this.myCapturingColor = 0x0000ff;
+        this.opponentCapturingColor = 0xff0000;
     }
 
-    capture() {
-        //TODO: think about what happen when 2 player want capture 1 place
+    capture(who) {
         if (this.captured == null) {
-            this.captured = GameManager.instance.player;
+            this.captured = who;
+            this.captureForce = 1;
+            if (GameManager.instance.player.team === who) {
+                this.model.material.color.set(this.myCapturingColor)
+            } else {
+                this.model.material.color.set(this.opponentCapturingColor);
+            }
+        } else {
+            if (this.captured === who) {
+                this.captureForce++;
+            } else {
+                this.captureForce--;
+            }
+            if (this.captureForce === 0) {
+                this.unCapture()
+            }
         }
+    }
+
+    unCapture() {
+        this.captured = null;
+        this.model.material.color.set(this.defaultColor);
     }
 
     highLight() {
@@ -42,7 +64,15 @@ export default class MapLand extends THREE.Object3D {
         } else if (this.hightLightType === HighLightType.ATTACK) {
             this.model.material.color.set(0xee4444);
         } else {
-            this.model.material.color.set(0x0033ee);
+            if (this.captured != null) {
+                if (GameManager.instance.player.team === this.captured) {
+                    this.model.material.color.set(this.myCapturingColor + 0x111111)
+                } else {
+                    this.model.material.color.set(this.opponentCapturingColor + 0x111111);
+                }
+            } else {
+                this.model.material.color.set(0x0033ee);
+            }
         }
     }
 
@@ -53,16 +83,26 @@ export default class MapLand extends THREE.Object3D {
             this.model.material.color.set(0x3312ff);
         } else if (this.hightLightType === HighLightType.ATTACK) {
             this.model.material.color.set(0xff5555);
+        } else if (this.captured != null) {
+            if (GameManager.instance.player.team === this.captured) {
+                this.model.material.color.set(this.myCapturingColor)
+            } else {
+                this.model.material.color.set(this.opponentCapturingColor);
+            }
         } else {
             this.model.material.color.set(this.defaultColor);
         }
     }
+
     //HOOKS
-    onHoverEnter(event) {}
+    onHoverEnter(event) {
+    }
 
-    onHoverExit(event) {}
+    onHoverExit(event) {
+    }
 
-    onRightClick(event) {}
+    onRightClick(event) {
+    }
 
     onLeftClick(event) {
         let gm = GameManager.instance;
@@ -76,7 +116,7 @@ export default class MapLand extends THREE.Object3D {
             this.hightLightType !== HighLightType.NONE
         ) {
             gm.selectedFigure.makeAction(event, this);
-        } else if(!gm.attackOption) {
+        } else if (!gm.attackOption) {
             gm.placeFigureAction(this);
         }
     }

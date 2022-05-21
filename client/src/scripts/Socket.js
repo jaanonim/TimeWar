@@ -2,6 +2,7 @@ import {io} from "socket.io-client";
 import GameManager from "./GameManager";
 import MapCreator from "./MapCreator";
 import {UiHandlers} from "./managers/UiHandlers";
+import {runWhenExist} from "./utilities/RunWhenExist";
 
 const environment = process.env.NODE_ENV;
 const productionUrl = "/";
@@ -27,6 +28,7 @@ export default class Socket {
     }
 
     placeFigure(figure) {
+        if (figure == null) return;
         this.socket.emit("placeFigure", {
             figureId: figure.figureId,
             figureType: figure.figureType,
@@ -95,16 +97,14 @@ export default class Socket {
             GameManager.instance.loadFigures(data.figures);
             GameManager.instance.winTarget = data.winTarget;
             UiHandlers.instance.changeWinTargetBar();
+            await runWhenExist(UiHandlers.instance.setVersusInfo, () => UiHandlers.instance.setVersusInfo(data.player.nick, data.opponentNick));
             MapCreator.instance.setMap(data.mapStruct);
             await GameManager.instance.startGame();
             MapCreator.instance.recreateMap(data.mapObjects);
+            GameManager.instance.capturingOperations();
         });
         this.socket.on("endGame", (data) => {
-            //TODO: MAKE END GAME PANEL
-            alert("WIN" + data.who);
-            setTimeout(() => {
-                location.reload();
-            }, 3000);
+            UiHandlers.instance.setEndPanel(true, data.who === GameManager.instance.player.team);
         });
         this.socket.on("changeTurn", (turn) => {
             GameManager.instance.setTurn(turn.msg);

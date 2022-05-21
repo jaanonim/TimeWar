@@ -1,16 +1,16 @@
-import { Clock } from "three";
+import {Clock} from "three";
 import FigureFactor from "./classes/FigureFactor";
 import Player from "./classes/Player";
-import { PlayerTeams } from "./enums/PlayerTeams";
+import {PlayerTeams} from "./enums/PlayerTeams";
 import FigureManager from "./managers/FigureManager";
 import LabelsManager from "./managers/LabelsManager";
 import ModelsManager from "./managers/ModelsManager";
-import { MouseKeyboardManager } from "./managers/MouseKeyboardManager";
-import { UiHandlers } from "./managers/UiHandlers";
+import {MouseKeyboardManager} from "./managers/MouseKeyboardManager";
+import {UiHandlers} from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
-import { SceneInitializator } from "./SceneInitializator";
+import {SceneInitializator} from "./SceneInitializator";
 import Socket from "./Socket";
-import { runWhenExist } from "./utilities/RunWhenExist";
+import {runWhenExist} from "./utilities/RunWhenExist";
 
 export default class GameManager {
     static _instance = null;
@@ -53,6 +53,7 @@ export default class GameManager {
     }
 
     async startGame() {
+        console.log("START");
         MapCreator.instance.createMap(this.sceneManager.scene);
         UiHandlers.instance.updateSupply();
         await runWhenExist(UiHandlers.instance.setInfoRoomPanel, () =>
@@ -69,6 +70,18 @@ export default class GameManager {
     setTurn(turn) {
         this.turn = turn;
         UiHandlers.instance.changeTurnText(this.turn);
+        if (this.turn === this.player.team) {
+            this.capturingOperations();
+        }
+    }
+
+    capturingOperations() {
+        MapCreator.instance.unCapturingMap();
+        this.figuries.forEach(figure => {
+            if (figure != null) {
+                figure.capture();
+            }
+        })
     }
 
     endTurn() {
@@ -82,8 +95,8 @@ export default class GameManager {
             this.player.supplies[supply].reset();
         }
         UiHandlers.instance.updateSupply();
-        console.log(this.figuries);
         this.figuries.forEach((figure) => figure?.renew());
+
     }
 
     loadFigures(figures) {
@@ -105,6 +118,7 @@ export default class GameManager {
             this.selectedFigure = null;
         }
         if (this.selectFigureIdInUI == null) return;
+        if (land.captured !== this.player.team) return;
         let figure = this.placeFigure(
             this.player.team,
             land.mapPositionX,
@@ -126,6 +140,8 @@ export default class GameManager {
             figureType,
             isBuying
         );
+        if (figure == null) return null;
+        figure.capture();
         this.figuries.push(figure);
         this.sceneManager.scene.add(figure);
         return figure;
@@ -134,6 +150,7 @@ export default class GameManager {
     removeFigure(x, y) {
         let figure = MapCreator.instance.mapObjects[x][y].figure;
         figure.onDestroy();
+        this.figuries = this.figuries.filter(fig => fig !== figure);
         this.sceneManager.scene.remove(figure);
         MapCreator.instance.mapObjects[x][y].figure = null;
     }
