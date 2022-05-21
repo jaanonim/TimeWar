@@ -48,5 +48,10 @@ export class UiHandlers {
         UiHandlers.instance?.setIsActiveNextTurnButton(
             GameManager.instance.player.team === turn
         );
+        try {
+            UiHandlers.instance.disableLeftButtoms(
+                GameManager.instance.player.team !== turn
+            );
+        } catch (e) {}
     }
 }
