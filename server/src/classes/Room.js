@@ -66,6 +66,7 @@ module.exports = class Room {
     }
 
     canStartGame() {
+        console.log(this.bluePlayer,this.redPlayer);
         return this.bluePlayer != null && this.redPlayer != null;
     }
 

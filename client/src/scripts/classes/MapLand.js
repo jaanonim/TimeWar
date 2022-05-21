@@ -20,6 +20,7 @@ export default class MapLand extends THREE.Object3D {
         this.height = height;
         this.position.set(x, 0, y);
         this.captured = null;
+        this.captureForce = 0;
         this.figure = null;
         this.hightLightType = HighLightType.NONE;
         this.model = null;
@@ -32,10 +33,20 @@ export default class MapLand extends THREE.Object3D {
         //TODO: think about what happen when 2 player want capture 1 place
         if (this.captured == null) {
             this.captured = who;
+            this.captureForce = 1;
             if (GameManager.instance.player.team === who) {
                 this.model.material.color.set(this.myCapturingColor)
             } else {
                 this.model.material.color.set(this.opponentCapturingColor);
+            }
+        } else {
+            if (this.captured === who) {
+                this.captureForce++;
+            } else {
+                this.captureForce--;
+            }
+            if (this.captureForce === 0) {
+                this.unCapture()
             }
         }
     }

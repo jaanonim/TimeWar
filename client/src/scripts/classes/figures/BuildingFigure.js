@@ -55,7 +55,8 @@ export default class BuildingFigure extends Figure {
                 }
 
                 if (this.capturingMask[x][y]) {
-                    map[mapPosX][mapPosY].capture(this.who);
+                    if(map[mapPosX] != null)
+                        map[mapPosX][mapPosY]?.capture(this.who);
                 }
             }
         }
