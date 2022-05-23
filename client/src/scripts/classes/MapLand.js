@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import {HighLightType} from "../enums/HighLightType";
+import { HighLightType } from "../enums/HighLightType";
 import GameManager from "../GameManager";
 
 export default class MapLand extends THREE.Object3D {
@@ -34,7 +34,7 @@ export default class MapLand extends THREE.Object3D {
             this.captured = who;
             this.captureForce = 1;
             if (GameManager.instance.player.team === who) {
-                this.model.material.color.set(this.myCapturingColor)
+                this.model.material.color.set(this.myCapturingColor);
             } else {
                 this.model.material.color.set(this.opponentCapturingColor);
             }
@@ -45,7 +45,7 @@ export default class MapLand extends THREE.Object3D {
                 this.captureForce--;
             }
             if (this.captureForce === 0) {
-                this.unCapture()
+                this.unCapture();
             }
         }
     }
@@ -66,9 +66,13 @@ export default class MapLand extends THREE.Object3D {
         } else {
             if (this.captured != null) {
                 if (GameManager.instance.player.team === this.captured) {
-                    this.model.material.color.set(this.myCapturingColor + 0x111111)
+                    this.model.material.color.set(
+                        this.myCapturingColor + 0x111111
+                    );
                 } else {
-                    this.model.material.color.set(this.opponentCapturingColor + 0x111111);
+                    this.model.material.color.set(
+                        this.opponentCapturingColor + 0x111111
+                    );
                 }
             } else {
                 this.model.material.color.set(0x0033ee);
@@ -85,7 +89,7 @@ export default class MapLand extends THREE.Object3D {
             this.model.material.color.set(0xff5555);
         } else if (this.captured != null) {
             if (GameManager.instance.player.team === this.captured) {
-                this.model.material.color.set(this.myCapturingColor)
+                this.model.material.color.set(this.myCapturingColor);
             } else {
                 this.model.material.color.set(this.opponentCapturingColor);
             }
@@ -95,14 +99,11 @@ export default class MapLand extends THREE.Object3D {
     }
 
     //HOOKS
-    onHoverEnter(event) {
-    }
+    onHoverEnter(event) {}
 
-    onHoverExit(event) {
-    }
+    onHoverExit(event) {}
 
-    onRightClick(event) {
-    }
+    onRightClick(event) {}
 
     onLeftClick(event) {
         let gm = GameManager.instance;

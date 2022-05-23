@@ -1,6 +1,7 @@
 import Stats from "stats-js";
 import * as THREE from "three";
 import Camera from "./classes/Camera";
+import Cursor from "./classes/Cursor";
 import Settings from "./utilities/Settings";
 
 export class SceneInitializator {
@@ -24,6 +25,9 @@ export class SceneInitializator {
         const light2 = new THREE.DirectionalLight(0xffffff, 1.5, 100);
         light2.position.set(-10, 20, -10);
         this.scene.add(light2);
+
+        const cursor = new Cursor();
+        this.scene.add(cursor);
 
         //Camera
         this.camera = new Camera(displayElement);
