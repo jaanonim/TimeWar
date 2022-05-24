@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { HighLightType } from "../enums/HighLightType";
 import GameManager from "../GameManager";
+import MapCreator from "../MapCreator";
 
 export default class MapLand extends THREE.Object3D {
     constructor(
@@ -25,19 +26,66 @@ export default class MapLand extends THREE.Object3D {
         this.hightLightType = HighLightType.NONE;
         this.model = null;
         this.defaultColor = 0xffffff;
-        this.myCapturingColor = 0x0000ff;
-        this.opponentCapturingColor = 0xff0000;
+        this.redColor = 0x4444ff;
+        this.blueColor = 0xff4444;
+        this.createBorders();
+    }
+
+    createBorders() {
+        const borderSize = 0.2;
+        const tileSize = MapCreator.instance.tileSize;
+        const borderMove = 1.5;
+
+        // left top rigth bottom
+        this.borders = [
+            this.createBorder(borderSize, tileSize, borderMove, 0),
+            this.createBorder(tileSize, borderSize, 0, borderMove),
+            this.createBorder(borderSize, tileSize, -borderMove, 0),
+            this.createBorder(tileSize, borderSize, 0, -borderMove),
+        ];
+    }
+
+    createBorder(sizeX, sizeY, posX, pozZ) {
+        const geometry = new THREE.PlaneGeometry(sizeX, sizeY);
+
+        const material = new THREE.MeshBasicMaterial({
+            //map: texture,
+            color: 0xffffff,
+            side: THREE.DoubleSide,
+            transparent: true,
+        });
+
+        const obj = new THREE.Mesh(geometry, material);
+
+        obj.rotateX(Math.PI / 2);
+        obj.position.set(posX, 1, pozZ);
+        this.add(obj);
+
+        obj.hide = () => {
+            obj.visible = false;
+        };
+        obj.show = () => {
+            obj.visible = true;
+        };
+        obj.setColor = (color) => {
+            obj.material.color.set(color);
+        };
+
+        obj.hide();
+
+        return obj;
     }
 
     capture(who) {
         if (this.captured == null) {
             this.captured = who;
             this.captureForce = 1;
-            if (GameManager.instance.player.team === who) {
-                this.model.material.color.set(this.myCapturingColor);
-            } else {
-                this.model.material.color.set(this.opponentCapturingColor);
-            }
+            this.borders.forEach((border) => {
+                border.setColor(
+                    who === "BLUE" ? this.redColor : this.blueColor
+                );
+                border.show();
+            });
         } else {
             if (this.captured === who) {
                 this.captureForce++;
@@ -53,6 +101,9 @@ export default class MapLand extends THREE.Object3D {
     unCapture() {
         this.captured = null;
         this.model.material.color.set(this.defaultColor);
+        this.borders.forEach((border) => {
+            border.hide();
+        });
     }
 
     highLight() {

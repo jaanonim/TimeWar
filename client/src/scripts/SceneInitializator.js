@@ -26,8 +26,8 @@ export class SceneInitializator {
         light2.position.set(-10, 20, -10);
         this.scene.add(light2);
 
-        const cursor = new Cursor();
-        this.scene.add(cursor);
+        this.cursor = new Cursor();
+        this.scene.add(this.cursor);
 
         //Camera
         this.camera = new Camera(displayElement);

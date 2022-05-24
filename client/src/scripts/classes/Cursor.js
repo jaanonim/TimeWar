@@ -19,12 +19,38 @@ export default class Cursor extends Mesh {
 
         const material = new MeshBasicMaterial({
             map: texture,
-            color: 0xff0000,
+            color: 0xffffff,
             side: DoubleSide,
             transparent: true,
         });
         super(geometry, material);
-        this.position.set(size / 2, 0.6, -size / 2);
+
+        this.defaultColor = 0xffffff;
+        this.redColor = 0x7777ff;
+        this.blueColor = 0xff7777;
+
+        this.yPos = 0.6;
         this.rotateX(Math.PI / 2);
+        this.hide();
+    }
+
+    move(obj) {
+        this.show();
+        this.position.set(obj.position.x, this.yPos, obj.position.z);
+        if (obj.captured === "BLUE") {
+            this.material.color.set(this.redColor);
+        } else if (obj.captured === "RED") {
+            this.material.color.set(this.blueColor);
+        } else {
+            this.material.color.set(this.defaultColor);
+        }
+    }
+
+    show() {
+        this.visible = true;
+    }
+
+    hide() {
+        this.visible = false;
     }
 }

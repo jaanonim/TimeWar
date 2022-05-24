@@ -17,6 +17,7 @@ export class MouseKeyboardManager {
             "mousemove",
             this.highlighting.bind(this)
         );
+        this.lastEvent = null;
     }
 
     scroll(event) {
@@ -83,7 +84,8 @@ export class MouseKeyboardManager {
         }
     }
 
-    highlighting(event) {
+    highlighting(event = this.lastEvent) {
+        this.lastEvent = event;
         const gm = GameManager.instance;
         const raycaster = new THREE.Raycaster();
         const mouseVector = new THREE.Vector2();
@@ -99,6 +101,7 @@ export class MouseKeyboardManager {
             );
             if (intersectLand !== undefined) {
                 let obj = intersectLand.object.parent;
+                gm.sceneManager.cursor.move(obj);
                 if (this.lastHighlightingObject !== obj) {
                     if (this.lastHighlightingObject != null) {
                         this.lastHighlightingObject.unHighLight();
