@@ -86,6 +86,7 @@ export class MouseKeyboardManager {
 
     highlighting(event = this.lastEvent) {
         this.lastEvent = event;
+        if (!event) return;
         const gm = GameManager.instance;
         const raycaster = new THREE.Raycaster();
         const mouseVector = new THREE.Vector2();

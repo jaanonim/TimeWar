@@ -13,7 +13,7 @@ export default class Cursor extends Mesh {
         const size = MapCreator.instance.tileSize;
 
         const geometry = new PlaneGeometry(size, size);
-        const texture = new TextureLoader().load("public/img/Cursor.png");
+        const texture = new TextureLoader().load("/img/Cursor.png");
         texture.minFilter = NearestFilter;
         texture.magFilter = NearestFilter;
 
@@ -29,7 +29,7 @@ export default class Cursor extends Mesh {
         this.redColor = 0x7777ff;
         this.blueColor = 0xff7777;
 
-        this.yPos = 0.6;
+        this.yPos = 0.7;
         this.rotateX(Math.PI / 2);
         this.hide();
     }

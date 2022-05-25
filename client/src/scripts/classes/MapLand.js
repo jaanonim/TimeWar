@@ -28,6 +28,8 @@ export default class MapLand extends THREE.Object3D {
         this.defaultColor = 0xffffff;
         this.redColor = 0x4444ff;
         this.blueColor = 0xff4444;
+        this.attackColor = 0xff0000;
+        this.moveColor = 0x00ff00;
         this.createBorders();
     }
 
@@ -76,16 +78,50 @@ export default class MapLand extends THREE.Object3D {
         return obj;
     }
 
+    updateBorder() {
+        if (this.captured == null) return;
+
+        const data = [
+            { x: this.mapPositionX + 1, y: this.mapPositionY },
+            { x: this.mapPositionX, y: this.mapPositionY + 1 },
+            { x: this.mapPositionX - 1, y: this.mapPositionY },
+            { x: this.mapPositionX, y: this.mapPositionY - 1 },
+        ];
+
+        this.borders.forEach((border, i) => {
+            let obj = MapCreator.instance.mapObjects[data[i].x];
+            if (obj != null) {
+                obj = obj[data[i].y];
+            }
+
+            if (obj && obj.captured === this.captured) {
+                border.hide();
+            } else {
+                border.setColor(
+                    this.captured === "BLUE" ? this.redColor : this.blueColor
+                );
+                border.show();
+            }
+        });
+    }
+
+    update() {
+        try {
+            this.updateBorder();
+        } catch (e) {}
+        if (this.hightLightType === HighLightType.MOVE) {
+            this.model.material.color.set(this.moveColor);
+        } else if (this.hightLightType === HighLightType.ATTACK) {
+            this.model.material.color.set(this.attackColor);
+        } else {
+            this.model.material.color.set(this.defaultColor);
+        }
+    }
+
     capture(who) {
         if (this.captured == null) {
             this.captured = who;
             this.captureForce = 1;
-            this.borders.forEach((border) => {
-                border.setColor(
-                    who === "BLUE" ? this.redColor : this.blueColor
-                );
-                border.show();
-            });
         } else {
             if (this.captured === who) {
                 this.captureForce++;
@@ -106,48 +142,9 @@ export default class MapLand extends THREE.Object3D {
         });
     }
 
-    highLight() {
-        if (GameManager.instance.turn !== GameManager.instance.player.team)
-            return;
-        if (this.model == null) return;
-        if (this.hightLightType === HighLightType.MOVE) {
-            this.model.material.color.set(0x2201ee);
-        } else if (this.hightLightType === HighLightType.ATTACK) {
-            this.model.material.color.set(0xee4444);
-        } else {
-            if (this.captured != null) {
-                if (GameManager.instance.player.team === this.captured) {
-                    this.model.material.color.set(
-                        this.myCapturingColor + 0x111111
-                    );
-                } else {
-                    this.model.material.color.set(
-                        this.opponentCapturingColor + 0x111111
-                    );
-                }
-            } else {
-                this.model.material.color.set(0x0033ee);
-            }
-        }
-    }
+    highLight() {}
 
-    unHighLight() {
-        //TODO: After change to select graphics
-        if (this.model == null) return;
-        if (this.hightLightType === HighLightType.MOVE) {
-            this.model.material.color.set(0x3312ff);
-        } else if (this.hightLightType === HighLightType.ATTACK) {
-            this.model.material.color.set(0xff5555);
-        } else if (this.captured != null) {
-            if (GameManager.instance.player.team === this.captured) {
-                this.model.material.color.set(this.myCapturingColor);
-            } else {
-                this.model.material.color.set(this.opponentCapturingColor);
-            }
-        } else {
-            this.model.material.color.set(this.defaultColor);
-        }
-    }
+    unHighLight() {}
 
     //HOOKS
     onHoverEnter(event) {}

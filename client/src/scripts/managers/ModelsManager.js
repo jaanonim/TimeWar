@@ -6,34 +6,36 @@ export default class ModelsManager {
     static models = {};
 
     static async loadModels() {
-        this.models.arachnoid = await this.loadModel(
+        this.models.arachnoid = this.loadModel(
             "models/Figures/Arachnodroid/Arachnoid",
             ["red", "blue"]
         );
-        this.models.reconBot = await this.loadModel(
+        this.models.reconBot = this.loadModel(
             "models/Figures/ReconBot/ReconBot",
             ["red", "blue"]
         );
-        this.models.factory = await this.loadModel(
+        this.models.factory = this.loadModel(
             "models/Buildings/Factory/Factory",
             ["red", "blue"]
         );
-        this.models.lab = await this.loadModel("models/Buildings/Lab/Lab", [
+        this.models.lab = this.loadModel("models/Buildings/Lab/Lab", [
             "red",
             "blue",
         ]);
-        this.models.airport = await this.loadModel("models/Buildings/Airport/Airport", [
-            "red",
-            "blue",
-        ]);
-        this.models.barracks = await this.loadModel("models/Buildings/Barracks/Barracks", [
-            "red",
-            "blue",
-        ]);
-        this.models.land = await this.loadModel("models/Land/Land/Land");
-        this.models.mountain = await this.loadModel(
-            "models/Land/Mountain/Mountain"
+        this.models.airport = this.loadModel(
+            "models/Buildings/Airport/Airport",
+            ["red", "blue"]
         );
+        this.models.barracks = this.loadModel(
+            "models/Buildings/Barracks/Barracks",
+            ["red", "blue"]
+        );
+        this.models.land = this.loadModel("models/Land/Land/Land");
+        this.models.mountain = this.loadModel("models/Land/Mountain/Mountain");
+
+        for (const [key, value] of Object.entries(this.models)) {
+            this.models[key] = await value;
+        }
     }
 
     static getModel(name, color) {
