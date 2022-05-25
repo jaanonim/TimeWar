@@ -1,8 +1,13 @@
 const {Server} = require("socket.io");
 const Room = require("./classes/Room");
+require("./classes/DatabaseController");
 let io = null;
 let rooms = [];
+
 module.exports = {
+    removeRoom: (room) => {
+        rooms = rooms.filter(r => r !== room);
+    },
     initSockets: (server) => {
         io = new Server(server, {
             cors: {

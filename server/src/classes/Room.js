@@ -16,8 +16,8 @@ module.exports = class Room {
 
     async initMap() {
         await this.map.loadMap("map1");
-        await this.figures.loadArmy("Army");
-        await this.figures.loadBuildings("Buildings");
+        await this.figures.loadArmy();
+        await this.figures.loadBuildings();
         this.placeStartBuildings();
     }
 
@@ -66,11 +66,15 @@ module.exports = class Room {
     }
 
     canStartGame() {
-        console.log(this.bluePlayer,this.redPlayer);
+        console.log(this.bluePlayer != null, this.redPlayer != null);
+
+
         return this.bluePlayer != null && this.redPlayer != null;
     }
 
     win(player) {
+        const {removeRoom} = require("../sockets");
+        removeRoom(this);
         let win =
             this.redPlayer.socket.id === player.socket.id ? "RED" : "BLUE";
 

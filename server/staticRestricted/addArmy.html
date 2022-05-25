@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        label {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<form action="/admin/addArmy" method="post">
+    <label>Name <input type="text" name="name"></label>
+    <label>Image <input type="text" name="image"></label>
+    <label>Description <input type="text" name="description"></label>
+    <label>Lives <input type="number" name="lives"></label>
+    <label>Max lives <input type="number" name="maxLives"></label>
+    <label>Damage <input type="number" name="damage"></label>
+    <label>IsFlyable <input type="checkbox" name="isFlyable"></label>
+    <label>Model <input type="text" name="model"></label>
+    <label>Scale <input type="number" name="scale" step="0.01"></label>
+    <label>Price <input type="number" name="price"></label>
+    <label>Attack Mask Size
+        <input type="number" size="2" style="width: 10ch" value="5" id="AttackMaskWidth" name="AttackMaskWidth">
+        X
+        <input type="number" size="2" style="width: 10ch" value="5" id="AttackMaskHeight" name="AttackMaskHeight">
+    </label>
+    <div>Attack Mask<br/>
+        <div id="AttackMaskTable"></div>
+    </div>
+    <label>Move Mask Size
+        <input type="number" size="2" style="width: 10ch" value="5" id="MoveMaskWidth" name="MoveMaskWidth">
+        X
+        <input type="number" size="2" style="width: 10ch" value="5" id="MoveMaskHeight" name="MoveMaskHeight">
+    </label>
+    <div>Move Mask<br/>
+        <div id="MoveMaskTable"></div>
+    </div>
+    <input type="submit" value="create">
+</form>
+<script>
+    const changeAttackMask = () => {
+        const table = document.getElementById("AttackMaskTable");
+        const width = document.getElementById("AttackMaskWidth").value;
+        const height = document.getElementById("AttackMaskHeight").value;
+        table.innerHTML = "";
+        for (let i = 0; i < width; i++) {
+            for (let j = 0; j < height; j++) {
+                let input = document.createElement("input");
+                input.name = `AttackMask${j}x${i}`;
+                input.type = "checkbox";
+                table.appendChild(input);
+            }
+            table.appendChild(document.createElement("br"))
+        }
+    };
+    const changeMoveMask = () => {
+        const table = document.getElementById("MoveMaskTable");
+        const width = document.getElementById("MoveMaskWidth").value;
+        const height = document.getElementById("MoveMaskHeight").value;
+        table.innerHTML = "";
+        for (let i = 0; i < width; i++) {
+            for (let j = 0; j < height; j++) {
+                let input = document.createElement("input");
+                input.name = `MoveMask${j}x${i}`;
+                input.type = "checkbox";
+                table.appendChild(input);
+            }
+            table.appendChild(document.createElement("br"))
+        }
+    };
+    document.getElementById("AttackMaskWidth").addEventListener("input", changeAttackMask);
+    document.getElementById("AttackMaskHeight").addEventListener("input", changeAttackMask);
+    changeAttackMask();
+
+    document.getElementById("MoveMaskWidth").addEventListener("input", changeMoveMask);
+    document.getElementById("MoveMaskHeight").addEventListener("input", changeMoveMask);
+    changeMoveMask();
+
+</script>
+</body>
+</html>
