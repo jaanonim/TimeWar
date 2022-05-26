@@ -1,10 +1,10 @@
-import {FigureTypes} from "../../enums/FigureTypes";
-import {HighLightType} from "../../enums/HighLightType";
+import { FigureTypes } from "../../enums/FigureTypes";
+import { HighLightType } from "../../enums/HighLightType";
 import GameManager from "../../GameManager";
 import MapCreator from "../../MapCreator";
 import Figure from "../Figure";
 import Socket from "../../Socket";
-import {SupplyTypes} from "../../enums/SupplyTypes";
+import { SupplyTypes } from "../../enums/SupplyTypes";
 
 export default class ArmyFigure extends Figure {
     constructor(who, positionX, positionY, data) {
@@ -77,7 +77,7 @@ export default class ArmyFigure extends Figure {
     select() {
         let gm = GameManager.instance;
         if (gm.attackOption) {
-            this.highLightAttackPosition()
+            this.highLightAttackPosition();
         } else {
             this.highLightMovePosition();
         }
@@ -154,7 +154,7 @@ export default class ArmyFigure extends Figure {
             let object =
                 MapCreator.instance.mapObjects[this.mapPositionX][
                     this.mapPositionY
-                    ];
+                ];
             if (object != null) {
                 object.hightLightType = HighLightType.MOVE;
                 object.unHighLight();
@@ -206,7 +206,7 @@ export default class ArmyFigure extends Figure {
             let object =
                 MapCreator.instance.mapObjects[this.mapPositionX][
                     this.mapPositionY
-                    ];
+                ];
             if (object != null) {
                 object.hightLightType = HighLightType.MOVE;
                 object.unHighLight();

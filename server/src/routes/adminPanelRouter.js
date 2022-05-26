@@ -4,6 +4,7 @@ const router = express.Router();
 const session = require('express-session');
 const {authInfo, authenticate, restrict} = require("../utils/auth");
 const {Army} = require("../models/armySchema");
+const {Building} = require("../models/buildingSchema");
 router.use(session({
     resave: false,
     saveUninitialized: false,
@@ -48,5 +49,28 @@ router.post("/addArmy", (req, res) => {
 
     res.send("CREATE");
 });
+
+router.post("/addBuilding", (req, res) => {
+    console.log(req.body);
+
+    const building = new Building({
+        name: req.body.name,
+        image: req.body.image,
+        description: req.body.description,
+        lives: req.body.maxLives,
+        maxLives: req.body.maxLives,
+        model: req.body.model,
+        scale: req.body.scale,
+        price: req.body.price,
+        display: req.body.display,
+        capturingMask: req.body.capturingMask,
+        offset: req.body.offset
+    });
+    building.save();
+
+
+    res.send("CREATE");
+});
+
 
 module.exports = router;

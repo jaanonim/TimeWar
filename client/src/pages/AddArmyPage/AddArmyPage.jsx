@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import styles from "./AddArmyPage.module.css";
 import CheckboxBoard from "../../components/CheckboxBoard";
 
 const environment = process.env.NODE_ENV;

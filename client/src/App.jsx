@@ -2,6 +2,7 @@ import { default as React } from "react";
 import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
 import AddArmyPage from "./pages/AddArmyPage";
+import AddBuildingPage from "./pages/AddBuildingPage";
 
 const MainPage = React.lazy(() => import("./pages/MainPage"));
 const JoinPage = React.lazy(() => import("./pages/JoinPage"));
@@ -52,14 +53,22 @@ function App() {
           </React.Suspense>
         }
       />
-        <Route
-            path="/addArmy"
-            element={
-                <React.Suspense fallback={<Loading />}>
-                    <AddArmyPage />
-                </React.Suspense>
-            }
-        />
+      <Route
+        path="/addArmy"
+        element={
+          <React.Suspense fallback={<Loading />}>
+            <AddArmyPage />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="/addBuilding"
+        element={
+          <React.Suspense fallback={<Loading />}>
+            <AddBuildingPage />
+          </React.Suspense>
+        }
+      />
     </Routes>
   );
 }
