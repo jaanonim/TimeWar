@@ -6,16 +6,21 @@ import {
     PlaneGeometry,
     TextureLoader,
 } from "three";
+import GameManager from "../GameManager";
 import MapCreator from "../MapCreator";
 
 export default class Cursor extends Mesh {
-    constructor() {
+    constructor(lockTexture = false) {
         const size = MapCreator.instance.tileSize;
 
         const geometry = new PlaneGeometry(size, size);
         const texture = new TextureLoader().load("/img/Cursor.png");
+        const textureAttack = new TextureLoader().load("/img/Attack.png");
         texture.minFilter = NearestFilter;
         texture.magFilter = NearestFilter;
+
+        textureAttack.minFilter = NearestFilter;
+        textureAttack.magFilter = NearestFilter;
 
         const material = new MeshBasicMaterial({
             map: texture,
@@ -25,24 +30,24 @@ export default class Cursor extends Mesh {
         });
         super(geometry, material);
 
-        this.defaultColor = 0xffffff;
-        this.redColor = 0x7777ff;
-        this.blueColor = 0xff7777;
+        this.defaultTexture = texture;
+        this.attackTexture = textureAttack;
+        this.lock = lockTexture;
 
         this.yPos = 0.7;
         this.rotateX(Math.PI / 2);
-        this.hide();
     }
 
     move(obj) {
-        this.show();
         this.position.set(obj.position.x, this.yPos, obj.position.z);
-        if (obj.captured === "BLUE") {
-            this.material.color.set(this.redColor);
-        } else if (obj.captured === "RED") {
-            this.material.color.set(this.blueColor);
+    }
+
+    update() {
+        if (this.lock) return;
+        if (GameManager.instance.attackOption) {
+            this.material.map = this.attackTexture;
         } else {
-            this.material.color.set(this.defaultColor);
+            this.material.map = this.defaultTexture;
         }
     }
 

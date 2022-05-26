@@ -51,7 +51,6 @@ export default class MapLand extends THREE.Object3D {
         const geometry = new THREE.PlaneGeometry(sizeX, sizeY);
 
         const material = new THREE.MeshBasicMaterial({
-            //map: texture,
             color: 0xffffff,
             side: THREE.DoubleSide,
             transparent: true,
@@ -106,16 +105,7 @@ export default class MapLand extends THREE.Object3D {
     }
 
     update() {
-        try {
-            this.updateBorder();
-        } catch (e) {}
-        if (this.hightLightType === HighLightType.MOVE) {
-            this.model.material.color.set(this.moveColor);
-        } else if (this.hightLightType === HighLightType.ATTACK) {
-            this.model.material.color.set(this.attackColor);
-        } else {
-            this.model.material.color.set(this.defaultColor);
-        }
+        this.updateBorder();
     }
 
     capture(who) {
