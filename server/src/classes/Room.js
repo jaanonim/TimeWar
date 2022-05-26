@@ -66,7 +66,6 @@ module.exports = class Room {
     }
 
     canStartGame() {
-        console.log(this.bluePlayer,this.redPlayer);
         return this.bluePlayer != null && this.redPlayer != null;
     }
 
@@ -90,7 +89,10 @@ module.exports = class Room {
 
     placeFigure(player, figure) {
         //TODO: make checking if this move is OK
-        let playerObj = this.redPlayer.socket.id === player ? this.redPlayer : this.bluePlayer;
+        let playerObj =
+            this.redPlayer.socket.id === player
+                ? this.redPlayer
+                : this.bluePlayer;
         figure.who = this.redPlayer.socket.id === player ? "RED" : "BLUE";
         let obj = this.figures.getFigure(figure.figureId, figure.figureType);
         this.figures.supplyOperations(obj, playerObj, figure.figureType);
