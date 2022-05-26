@@ -4,6 +4,7 @@
     "description": "Trun base strategii multiplayer game written with three.js",
     "main": "index.js",
     "scripts": {
+        "dev-clinet": "concurrently \"npm -w server run start\" \"npm -w client run dev\"",
         "dev": "concurrently \"npm -w server run dev\" \"npm -w client run dev\"",
         "build": "npm run build -w client",
         "test": "echo \"Error: no test specified\" && exit 1",

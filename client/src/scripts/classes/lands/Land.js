@@ -1,3 +1,5 @@
+import { Color } from "three";
+import { HighLightType } from "../../enums/HighLightType";
 import ModelsManager from "../../managers/ModelsManager";
 import MapLand from "../MapLand";
 
@@ -15,5 +17,20 @@ export default class Land extends MapLand {
         this.model.material = this.model.material.clone();
         this.add(this.model);
         this.unHighLight();
+    }
+
+    setColor(color) {
+        this.model.material.emissive = new Color(color);
+    }
+
+    update(delta) {
+        super.update(delta);
+        if (this.hightLightType === HighLightType.MOVE) {
+            this.setColor(0x333333);
+        } else if (this.hightLightType === HighLightType.ATTACK) {
+            this.setColor(0xaa0000);
+        } else {
+            this.setColor(0x000000);
+        }
     }
 }

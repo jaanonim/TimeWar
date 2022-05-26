@@ -4,6 +4,7 @@ import GameManager from "../GameManager";
 import ModelsManager from "../managers/ModelsManager";
 import MapCreator from "../MapCreator";
 import { getRandomElement, getRandomVector3 } from "../utilities/Random";
+import Cursor from "./Cursor";
 import FigureLabel from "./FigureLabel";
 
 export default class Figure extends THREE.Object3D {
@@ -25,6 +26,10 @@ export default class Figure extends THREE.Object3D {
 
         this.place(positionX, positionY);
         this.setupModel(data);
+
+        this.cursor = new Cursor(true);
+        this.cursor.hide();
+        GameManager.instance.sceneManager.scene.add(this.cursor);
     }
 
     setupModel(data) {
@@ -64,15 +69,21 @@ export default class Figure extends THREE.Object3D {
         this.lable = new FigureLabel(this);
     }
 
-    update() {}
+    update() {
+        this.cursor.move(this);
+    }
 
     lateUpdate() {
         this.lable.update();
     }
 
-    select() {}
+    select() {
+        this.cursor.show();
+    }
 
-    unselect() {}
+    unselect() {
+        this.cursor.hide();
+    }
 
     makeAction(event, land) {}
 
