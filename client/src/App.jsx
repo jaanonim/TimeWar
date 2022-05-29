@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
 import AddArmyPage from "./pages/AddArmyPage";
 import AddBuildingPage from "./pages/AddBuildingPage";
+import ChangeDefaultSettingsPage from "./pages/ChangeDefaultSettingPage";
 
 const MainPage = React.lazy(() => import("./pages/MainPage"));
 const JoinPage = React.lazy(() => import("./pages/JoinPage"));
@@ -66,6 +67,14 @@ function App() {
         element={
           <React.Suspense fallback={<Loading />}>
             <AddBuildingPage />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="/changeDefaultSettings"
+        element={
+          <React.Suspense fallback={<Loading />}>
+            <ChangeDefaultSettingsPage />
           </React.Suspense>
         }
       />

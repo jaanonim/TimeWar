@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Army } = require("../models/armySchema");
 const { Building } = require("../models/buildingSchema");
+const { DefaultSettings } = require("../models/DefalutSettingsSchema");
 require("dotenv").config();
 
 class DatabaseController {
@@ -25,6 +26,25 @@ class DatabaseController {
         return building.map((a) => {
             return { id: a._id.toString(), ...a._doc };
         });
+    }
+
+    async getDefaultSetting() {
+        let setting = await DefaultSettings.find();
+        console.log(setting);
+        if (setting.length === 0) {
+            const defaultSettings = new DefaultSettings({
+                playerTarget: 10,
+                labId: "",
+                supply: {
+                    air_army: 5,
+                    land_army: 5,
+                    building: 5,
+                },
+            });
+            defaultSettings.save();
+            return defaultSettings;
+        }
+        return setting[0];
     }
 }
 

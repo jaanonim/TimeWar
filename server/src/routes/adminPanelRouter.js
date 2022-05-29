@@ -1,15 +1,18 @@
 require("dotenv").config();
 const express = require("express");
 const router = express.Router();
-const session = require('express-session');
-const {authInfo, authenticate, restrict} = require("../utils/auth");
-const {Army} = require("../models/armySchema");
-const {Building} = require("../models/buildingSchema");
-router.use(session({
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.secret
-}));
+const session = require("express-session");
+const { authInfo, authenticate, restrict } = require("../utils/auth");
+const { Army } = require("../models/armySchema");
+const { Building } = require("../models/buildingSchema");
+const databaseController = require("../classes/DatabaseController");
+router.use(
+    session({
+        resave: false,
+        saveUninitialized: false,
+        secret: process.env.secret,
+    })
+);
 router.use(express.json());
 router.use(authInfo);
 router.post("/login", (req, res) => {
@@ -21,11 +24,10 @@ router.post("/login", (req, res) => {
                 res.redirect("/admin/panel");
             });
         } else {
-            res.redirect('/admin/');
+            res.redirect("/admin/");
         }
     });
 });
-
 
 router.post("/addArmy", (req, res) => {
     console.log(req.body);
@@ -42,10 +44,9 @@ router.post("/addArmy", (req, res) => {
         scale: req.body.scale,
         price: req.body.price,
         attackMask: req.body.attackMask,
-        moveMask: req.body.moveMask
+        moveMask: req.body.moveMask,
     });
     army.save();
-
 
     res.send("CREATE");
 });
@@ -64,13 +65,20 @@ router.post("/addBuilding", (req, res) => {
         price: req.body.price,
         display: req.body.display,
         capturingMask: req.body.capturingMask,
-        offset: req.body.offset
+        offset: req.body.offset,
     });
     building.save();
-
 
     res.send("CREATE");
 });
 
+router.post("/changeDefaultSetting", async (req, res) => {
+    let setting = await databaseController.getDefaultSetting();
+
+    console.log(setting);
+    Object.assign(setting, req.body);
+    setting.save();
+    res.send("CREATE");
+});
 
 module.exports = router;
