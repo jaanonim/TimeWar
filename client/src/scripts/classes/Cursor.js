@@ -8,6 +8,7 @@ import {
 } from "three";
 import GameManager from "../GameManager";
 import MapCreator from "../MapCreator";
+import Gost from "./Gost";
 
 export default class Cursor extends Mesh {
     constructor(lockTexture = false) {
@@ -33,13 +34,27 @@ export default class Cursor extends Mesh {
         this.defaultTexture = texture;
         this.attackTexture = textureAttack;
         this.lock = lockTexture;
+        this.currentLand = null;
 
         this.yPos = 0.7;
         this.rotateX(Math.PI / 2);
+
+        if (!this.lock) {
+            this.gost = new Gost();
+            this.add(this.gost);
+        }
     }
 
     move(obj) {
-        this.position.set(obj.position.x, this.yPos, obj.position.z);
+        if (obj) this.currentLand = obj;
+        if (this.currentLand) {
+            this.position.set(
+                this.currentLand.position.x,
+                this.yPos,
+                this.currentLand.position.z
+            );
+            if (this.gost) this.gost.update(this.currentLand);
+        }
     }
 
     update() {
