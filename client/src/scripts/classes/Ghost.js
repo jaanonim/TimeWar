@@ -4,7 +4,7 @@ import GameManager from "../GameManager";
 import FigureManager from "../managers/FigureManager";
 import { runWhenTeamIsSet } from "../utilities/RunWhenExist";
 import Figure from "./Figure";
-export default class Gost extends Object3D {
+export default class Ghost extends Object3D {
     constructor() {
         super();
 
