@@ -1,5 +1,5 @@
 import GameManager from "../GameManager";
-import {runWhenExist} from "../utilities/RunWhenExist";
+import { runWhenExist } from "../utilities/RunWhenExist";
 
 export class UiHandlers {
     static _instance = null;
@@ -22,8 +22,7 @@ export class UiHandlers {
     }
 
     onSelectFigureInUI(newId, type) {
-        GameManager.instance.selectFigureIdInUI = newId;
-        GameManager.instance.selectFigureTypeInUI = type;
+        GameManager.instance.setSelectFigureInUI(newId, type);
     }
 
     updateSupply() {
@@ -51,8 +50,10 @@ export class UiHandlers {
         UiHandlers.instance?.setIsActiveNextTurnButton(
             GameManager.instance.player.team === turn
         );
-        runWhenExist(UiHandlers.instance.disableLeftButtoms, () => UiHandlers.instance.disableLeftButtoms(
-            GameManager.instance.player.team !== turn
-        ))
+        runWhenExist(UiHandlers.instance.disableLeftButtoms, () =>
+            UiHandlers.instance.disableLeftButtoms(
+                GameManager.instance.player.team !== turn
+            )
+        );
     }
 }

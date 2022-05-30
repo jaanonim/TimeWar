@@ -1,8 +1,8 @@
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import GameManager from "./GameManager";
+import { UiHandlers } from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
-import {UiHandlers} from "./managers/UiHandlers";
-import {runWhenExist} from "./utilities/RunWhenExist";
+import { runWhenExist } from "./utilities/RunWhenExist";
 
 const environment = process.env.NODE_ENV;
 const productionUrl = "/";
@@ -19,7 +19,7 @@ export default class Socket {
             {
                 query: {
                     room: room,
-                    nick: GameManager.instance.player.name
+                    nick: GameManager.instance.player.name,
                 },
             }
         );
@@ -77,15 +77,14 @@ export default class Socket {
             let figure =
                 MapCreator.instance.mapObjects[data.msg.figureX][
                     data.msg.figureY
-                    ].figure;
+                ].figure;
             figure.move(data.msg.newX, data.msg.newY);
-
         });
         this.socket.on("attackFigure", (data) => {
             let figure =
                 MapCreator.instance.mapObjects[data.msg.figureX][
                     data.msg.figureY
-                    ].figure;
+                ].figure;
             figure.attack(data.msg.x, data.msg.y);
         });
         this.socket.on("startGame", async (data) => {
@@ -98,14 +97,22 @@ export default class Socket {
             GameManager.instance.loadFigures(data.figures);
             GameManager.instance.winTarget = data.winTarget;
             UiHandlers.instance.changeWinTargetBar();
-            await runWhenExist(UiHandlers.instance.setVersusInfo, () => UiHandlers.instance.setVersusInfo(data.player.nick, data.opponentNick));
+            await runWhenExist(UiHandlers.instance.setVersusInfo, () =>
+                UiHandlers.instance.setVersusInfo(
+                    data.player.nick,
+                    data.opponentNick
+                )
+            );
             MapCreator.instance.setMap(data.mapStruct);
             await GameManager.instance.startGame();
             MapCreator.instance.recreateMap(data.mapObjects);
             GameManager.instance.capturingOperations();
         });
         this.socket.on("endGame", (data) => {
-            UiHandlers.instance.setEndPanel(true, data.who === GameManager.instance.player.team);
+            UiHandlers.instance.setEndPanel(
+                true,
+                data.who === GameManager.instance.player.team
+            );
         });
         this.socket.on("changeTurn", (turn) => {
             GameManager.instance.setTurn(turn.msg);

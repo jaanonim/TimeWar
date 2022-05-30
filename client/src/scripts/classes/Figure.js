@@ -4,9 +4,42 @@ import GameManager from "../GameManager";
 import ModelsManager from "../managers/ModelsManager";
 import MapCreator from "../MapCreator";
 import { getRandomElement, getRandomVector3 } from "../utilities/Random";
+import Cursor from "./Cursor";
 import FigureLabel from "./FigureLabel";
 
 export default class Figure extends THREE.Object3D {
+    static createModel(data, who) {
+        if (ModelsManager.models[data.model] === undefined) {
+            return null;
+        }
+
+        const model = ModelsManager.getModel(
+            data.model,
+            who.toLowerCase()
+        ).children[0].clone();
+
+        if (who === PlayerTeams.RED) model.rotation.y = Math.PI;
+        model.scale.set(data.scale, data.scale, data.scale);
+
+        if (data.offset && data.offset.length > 0) {
+            if (data.offset.length === 2) {
+                model.position = getRandomVector3(
+                    data.offset[0],
+                    data.offset[1]
+                );
+            } else if (data.offset.length > 2) {
+                model.position.set(...getRandomElement(data.offset));
+            } else {
+                model.position.set(
+                    data.offset[0].x,
+                    data.offset[0].y,
+                    data.offset[0].z
+                );
+            }
+        }
+        return model;
+    }
+
     constructor(who, positionX, positionY, type, data) {
         super();
         this.figureId = data.id;
@@ -25,11 +58,16 @@ export default class Figure extends THREE.Object3D {
 
         this.place(positionX, positionY);
         this.setupModel(data);
+
+        this.cursor = new Cursor(true);
+        this.cursor.hide();
+        GameManager.instance.sceneManager.scene.add(this.cursor);
     }
 
     setupModel(data) {
-        if (ModelsManager.models[data.model] === undefined) {
-            console.error("Unknown model", data.model);
+        this.model = Figure.createModel(data, this.who);
+        if (this.model == null) {
+            console.error("Model not found");
             return;
         }
 
@@ -58,22 +96,27 @@ export default class Figure extends THREE.Object3D {
                 );
             }
         }
-
         this.model.material = this.model.material.clone();
         this.add(this.model);
 
         this.lable = new FigureLabel(this);
     }
 
-    update() {}
+    update() {
+        this.cursor.move(this);
+    }
 
     lateUpdate() {
         this.lable.update();
     }
 
-    select() {}
+    select() {
+        this.cursor.show();
+    }
 
-    unselect() {}
+    unselect() {
+        this.cursor.hide();
+    }
 
     makeAction(event, land) {}
 

@@ -1,16 +1,16 @@
-import {Clock} from "three";
+import { Clock } from "three";
 import FigureFactor from "./classes/FigureFactor";
 import Player from "./classes/Player";
-import {PlayerTeams} from "./enums/PlayerTeams";
+import { PlayerTeams } from "./enums/PlayerTeams";
 import FigureManager from "./managers/FigureManager";
 import LabelsManager from "./managers/LabelsManager";
 import ModelsManager from "./managers/ModelsManager";
-import {MouseKeyboardManager} from "./managers/MouseKeyboardManager";
-import {UiHandlers} from "./managers/UiHandlers";
+import { MouseKeyboardManager } from "./managers/MouseKeyboardManager";
+import { UiHandlers } from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
-import {SceneInitializator} from "./SceneInitializator";
+import { SceneInitializator } from "./SceneInitializator";
 import Socket from "./Socket";
-import {runWhenExist} from "./utilities/RunWhenExist";
+import { runWhenExist } from "./utilities/RunWhenExist";
 
 export default class GameManager {
     static _instance = null;
@@ -78,11 +78,17 @@ export default class GameManager {
 
     capturingOperations() {
         MapCreator.instance.unCapturingMap();
-        this.figuries.forEach(figure => {
+        this.figuries.forEach((figure) => {
             if (figure != null) {
                 figure.capture();
             }
-        })
+        });
+    }
+
+    setSelectFigureInUI(newId, type) {
+        this.selectFigureIdInUI = newId;
+        this.selectFigureTypeInUI = type;
+        if (this.sceneManager) this.sceneManager.cursor.move();
     }
 
     endTurn() {
@@ -97,7 +103,6 @@ export default class GameManager {
         }
         UiHandlers.instance.updateSupply();
         this.figuries.forEach((figure) => figure?.renew());
-
     }
 
     loadFigures(figures) {
@@ -112,20 +117,29 @@ export default class GameManager {
         });
     }
 
+    figureCanBePlaced(land) {
+        //TODO: move validation of places to plaece figuer here
+        // If valid return {id, type} else return null
+        if (land.captured !== this.player.team) return null;
+        return this.selectFigureIdInUI && this.selectFigureTypeInUI
+            ? { id: this.selectFigureIdInUI, type: this.selectFigureTypeInUI }
+            : null;
+    }
+
     placeFigureAction(land) {
         if (this.selectedFigure != null) {
             console.log(this.selectedFigure); //TODO: remove, for no it's for futhure debuging
             this.selectedFigure.unHighLightMovePosition();
             this.selectedFigure = null;
         }
-        if (this.selectFigureIdInUI == null) return;
-        if (land.captured !== this.player.team) return;
+        const f = this.figureCanBePlaced(land);
+        if (f == null) return;
         let figure = this.placeFigure(
             this.player.team,
             land.mapPositionX,
             land.mapPositionY,
-            this.selectFigureIdInUI,
-            this.selectFigureTypeInUI,
+            f.id,
+            f.type,
             true
         );
         Socket.instance.placeFigure(figure);
@@ -151,7 +165,7 @@ export default class GameManager {
     removeFigure(x, y) {
         let figure = MapCreator.instance.mapObjects[x][y].figure;
         figure.onDestroy();
-        this.figuries = this.figuries.filter(fig => fig !== figure);
+        this.figuries = this.figuries.filter((fig) => fig !== figure);
         this.sceneManager.scene.remove(figure);
         MapCreator.instance.mapObjects[x][y].figure = null;
     }

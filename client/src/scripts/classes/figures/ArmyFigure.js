@@ -1,10 +1,11 @@
+import { Color } from "three";
 import { FigureTypes } from "../../enums/FigureTypes";
 import { HighLightType } from "../../enums/HighLightType";
+import { SupplyTypes } from "../../enums/SupplyTypes";
 import GameManager from "../../GameManager";
 import MapCreator from "../../MapCreator";
-import Figure from "../Figure";
 import Socket from "../../Socket";
-import { SupplyTypes } from "../../enums/SupplyTypes";
+import Figure from "../Figure";
 
 export default class ArmyFigure extends Figure {
     constructor(who, positionX, positionY, data) {
@@ -46,6 +47,15 @@ export default class ArmyFigure extends Figure {
         return this.moveMask[maskX][maskY];
     }
 
+    update(delta) {
+        super.update(delta);
+        if (!this.isMoved || !this.isAttack) {
+            this.model.material.color = new Color(0xffffff);
+        } else {
+            this.model.material.color = new Color(0x888888);
+        }
+    }
+
     attack(x, y) {
         if (this.isAttack) return false;
         if (!this.canAttack(x, y)) return false;
@@ -75,6 +85,7 @@ export default class ArmyFigure extends Figure {
     }
 
     select() {
+        super.select();
         let gm = GameManager.instance;
         if (gm.attackOption) {
             this.highLightAttackPosition();
@@ -84,6 +95,7 @@ export default class ArmyFigure extends Figure {
     }
 
     unselect() {
+        super.unselect();
         this.unHighLightMovePosition();
         this.unHighLightAttackPosition();
     }

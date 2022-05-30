@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { PerspectiveCamera } from "three";
+import GameManager from "../GameManager";
 import Settings from "../utilities/Settings";
 
 const CLAMP = new THREE.Box3(
@@ -75,6 +76,8 @@ export default class Camera extends PerspectiveCamera {
     updatePos() {
         let pos = this.movePos.clone().applyEuler(this.eluerPos);
         pos = this.rootPos.clone().add(pos);
+        if (this.position.equals(pos)) return;
+        GameManager.instance.mouseKeyboardManager?.highlighting();
         this.position.set(pos.x, pos.y, pos.z);
         this.lookAt(this.rootPos);
     }
