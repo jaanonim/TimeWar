@@ -4,6 +4,7 @@ import Loading from "./components/Loading";
 import AddArmyPage from "./pages/AddArmyPage";
 import AddBuildingPage from "./pages/AddBuildingPage";
 import ChangeDefaultSettingsPage from "./pages/ChangeDefaultSettingPage";
+import MapCreatorPage from "./pages/MapCreatorPage";
 
 const MainPage = React.lazy(() => import("./pages/MainPage"));
 const JoinPage = React.lazy(() => import("./pages/JoinPage"));
@@ -75,6 +76,14 @@ function App() {
         element={
           <React.Suspense fallback={<Loading />}>
             <ChangeDefaultSettingsPage />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="/mapCreator"
+        element={
+          <React.Suspense fallback={<Loading />}>
+            <MapCreatorPage />
           </React.Suspense>
         }
       />

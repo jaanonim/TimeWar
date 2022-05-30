@@ -5,6 +5,7 @@ const session = require("express-session");
 const { authInfo, authenticate, restrict } = require("../utils/auth");
 const { Army } = require("../models/armySchema");
 const { Building } = require("../models/buildingSchema");
+const { Map } = require("../models/mapSchema");
 const databaseController = require("../classes/DatabaseController");
 router.use(
     session({
@@ -48,7 +49,7 @@ router.post("/addArmy", (req, res) => {
     });
     army.save();
 
-    res.send("CREATE id="+army._id);
+    res.send("CREATE id=" + army._id);
 });
 
 router.post("/addBuilding", (req, res) => {
@@ -75,7 +76,21 @@ router.post("/addBuilding", (req, res) => {
     });
     building.save();
 
-    res.send("CREATE id="+building._id);
+    res.send("CREATE id=" + building._id);
+});
+
+router.post("/addMap", (req, res) => {
+    console.log(req.body);
+
+    const map = new Map({
+        map: req.body.map.board,
+        blueResearchLab: req.body.blueResearchLab,
+        redResearchLab: req.body.redResearchLab,
+    });
+    map.save();
+
+
+    res.send("CREATE id=" + map._id);
 });
 
 router.post("/changeDefaultSetting", async (req, res) => {
@@ -87,4 +102,14 @@ router.post("/changeDefaultSetting", async (req, res) => {
     res.send("CREATE");
 });
 
+router.get("/getDefaultSetting", async (req, res) => {
+    let setting = await databaseController.getDefaultSetting();
+
+    res.send(JSON.stringify(setting));
+});
+router.get("/getBuildings", async (req, res) => {
+    let buildings = await databaseController.getBuildingList();
+
+    res.send(JSON.stringify(buildings));
+});
 module.exports = router;

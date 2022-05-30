@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import styles from "./AddBuildingPage.module.css";
 import CheckboxBoard from "../../components/CheckboxBoard";
 import { SupplyTypes } from "../../scripts/enums/SupplyTypes";
+import { fetchToServer } from "../../scripts/utilities/fetchToServer";
 
-const environment = process.env.NODE_ENV;
-const productionUrl = "/";
-const developmentUrl = "http://localhost:5000/";
 
 function AddBuildingPage() {
   const [status, setStatus] = useState(null);
@@ -40,19 +38,15 @@ function AddBuildingPage() {
       offset: [offsetX, offsetY, offsetZ],
     };
 
-    let response = await fetch(
-      (environment === "development" ? developmentUrl : productionUrl) +
-        "admin/addBuilding",
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: new Headers({
-          "Content-Type": "application/json",
-        }),
-      }
-    );
+    let response = await fetchToServer("admin/addBuilding", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    });
     if (response.status === 200) {
-      setStatus( await response.text());
+      setStatus(await response.text());
     } else {
       let data = await response.text();
       setStatus("COŚ POSZŁO NIE TAK: " + data);

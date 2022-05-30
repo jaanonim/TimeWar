@@ -1,7 +1,6 @@
 const Map = require("./Map");
 const Figures = require("./Figures");
 const Player = require("./Player");
-
 module.exports = class Room {
     constructor(name, settings) {
         this.settings = settings;
@@ -16,28 +15,26 @@ module.exports = class Room {
     }
 
     async initMap() {
-        await this.map.loadMap("map1");
+        await this.map.loadMap();
         await this.figures.loadArmy();
         await this.figures.loadBuildings();
         this.placeStartBuildings();
     }
 
     placeStartBuildings() {
-        let width = this.map.mapStruct.length;
-        let height = this.map.mapStruct[0].length;
-        this.map.addFigure(this.figures.getFigure(this.settings.labId, 2), {
-            who: "BLUE",
-            figureId: this.settings.labId,
-            figureType: 2,
-            mapPositionX: Math.floor(width / 2),
-            mapPositionY: 0,
-        });
         this.map.addFigure(this.figures.getFigure(this.settings.labId, 2), {
             who: "RED",
             figureId: this.settings.labId,
             figureType: 2,
-            mapPositionX: Math.floor(width / 2),
-            mapPositionY: height - 1,
+            mapPositionX: this.map.mapData.redResearchLab.x,
+            mapPositionY: this.map.mapData.redResearchLab.y,
+        });
+        this.map.addFigure(this.figures.getFigure(this.settings.labId, 2), {
+            who: "BLUE",
+            figureId: this.settings.labId,
+            figureType: 2,
+            mapPositionX: this.map.mapData.blueResearchLab.x,
+            mapPositionY: this.map.mapData.blueResearchLab.y,
         });
     }
 

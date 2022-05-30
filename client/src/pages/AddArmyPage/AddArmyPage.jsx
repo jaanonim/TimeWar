@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import styles from "./AddArmyPage.module.css";
 import CheckboxBoard from "../../components/CheckboxBoard";
-
-const environment = process.env.NODE_ENV;
-const productionUrl = "/";
-const developmentUrl = "http://localhost:5000/";
+import { fetchToServer } from "../../scripts/utilities/fetchToServer";
 
 function AddArmyPage() {
   const [status, setStatus] = useState(null);
@@ -35,17 +32,13 @@ function AddArmyPage() {
       attackMask: attackMask.board,
     };
 
-    let response = await fetch(
-      (environment === "development" ? developmentUrl : productionUrl) +
-        "admin/addArmy",
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: new Headers({
-          "Content-Type": "application/json",
-        }),
-      }
-    );
+    let response = await fetchToServer("admin/addArmy", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    });
     if (response.status === 200) {
       setStatus(await response.text());
     } else {

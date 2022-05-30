@@ -1,14 +1,16 @@
-const fs = require("fs").promises;
-
+const databaseController = require("./DatabaseController");
 module.exports = class Room {
     constructor() {
         this.mapStruct = [];
         this.mapObjects = [];
         this.figures = [];
+        this.mapData = {};
     }
 
-    async loadMap(name) {
-        this.mapStruct = JSON.parse(await fs.readFile(`maps/${name}.json`));
+    async loadMap() {
+        let maps = await databaseController.getMapList();
+        this.mapData = maps[Math.floor(Math.random() * maps.length)];
+        this.mapStruct = this.mapData.map;
         this.mapObjects = [];
         this.mapStruct.forEach((row, i) => {
             this.mapObjects[i] = [];
@@ -19,7 +21,7 @@ module.exports = class Room {
     addFigure(figureObject, figure) {
         let fig = {
             ...figureObject,
-            ...figure
+            ...figure,
         };
         this.mapObjects[figure.mapPositionX][figure.mapPositionY] = fig;
         fig.isMoved = true;
@@ -41,8 +43,7 @@ module.exports = class Room {
     attackFigure(figureAttackData) {
         let figure1 =
             this.mapObjects[figureAttackData.figureX][figureAttackData.figureY];
-        let figure2 =
-            this.mapObjects[figureAttackData.x][figureAttackData.y];
+        let figure2 = this.mapObjects[figureAttackData.x][figureAttackData.y];
 
         figure1.isAttack = true;
 

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Army } = require("../models/armySchema");
 const { Building } = require("../models/buildingSchema");
+const { Map } = require("../models/mapSchema");
 const { DefaultSettings } = require("../models/DefalutSettingsSchema");
 require("dotenv").config();
 
@@ -24,6 +25,13 @@ class DatabaseController {
         let building = await Building.find(query);
 
         return building.map((a) => {
+            return { id: a._id.toString(), ...a._doc };
+        });
+    }
+    async getMapList(query = {}) {
+        let maps = await Map.find(query);
+
+        return maps.map((a) => {
             return { id: a._id.toString(), ...a._doc };
         });
     }
