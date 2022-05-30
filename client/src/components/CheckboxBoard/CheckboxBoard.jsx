@@ -30,9 +30,7 @@ function CheckboxBoard({ infoText, value, onChange }) {
           type={"checkbox"}
           checked={value.board[j][i]}
           onChange={(e) => {
-            console.log(i, j, value.board, e.target.checked);
             value.board[j][i] = e.target.checked;
-            console.log(value);
             onChange({
               width: value.width,
               height: value.height,

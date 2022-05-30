@@ -38,7 +38,6 @@ class DatabaseController {
 
     async getDefaultSetting() {
         let setting = await DefaultSettings.find();
-        console.log(setting);
         if (setting.length === 0) {
             const defaultSettings = new DefaultSettings({
                 playerTarget: 10,

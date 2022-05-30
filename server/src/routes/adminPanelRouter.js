@@ -31,8 +31,6 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/addArmy", (req, res) => {
-    console.log(req.body);
-
     const army = new Army({
         name: req.body.name,
         image: req.body.image,
@@ -53,8 +51,6 @@ router.post("/addArmy", (req, res) => {
 });
 
 router.post("/addBuilding", (req, res) => {
-    console.log(req.body);
-
     const building = new Building({
         name: req.body.name,
         image: req.body.image,
@@ -80,8 +76,6 @@ router.post("/addBuilding", (req, res) => {
 });
 
 router.post("/addMap", (req, res) => {
-    console.log(req.body);
-
     const map = new Map({
         map: req.body.map.board,
         blueResearchLab: req.body.blueResearchLab,
@@ -89,16 +83,15 @@ router.post("/addMap", (req, res) => {
     });
     map.save();
 
-
     res.send("CREATE id=" + map._id);
 });
 
 router.post("/changeDefaultSetting", async (req, res) => {
     let setting = await databaseController.getDefaultSetting();
 
-    console.log(setting);
     Object.assign(setting, req.body);
     setting.save();
+
     res.send("CREATE");
 });
 

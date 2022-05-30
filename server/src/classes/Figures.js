@@ -15,7 +15,6 @@ module.exports = class Figures {
 
     getFigure(id, figureType) {
         if (figureType === 1) {
-            console.log(this.army, id);
             return this.army.find((arm) => arm.id === id);
         } else if (figureType === 2) {
             return this.buildings.find((arm) => arm.id === id);
