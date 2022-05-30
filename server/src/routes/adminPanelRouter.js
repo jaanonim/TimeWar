@@ -48,7 +48,7 @@ router.post("/addArmy", (req, res) => {
     });
     army.save();
 
-    res.send("CREATE");
+    res.send("CREATE id="+army._id);
 });
 
 router.post("/addBuilding", (req, res) => {
@@ -63,13 +63,19 @@ router.post("/addBuilding", (req, res) => {
         model: req.body.model,
         scale: req.body.scale,
         price: req.body.price,
+        increaseSupplyType: req.body.increaseSupplyType,
+        increaseSupply: req.body.increaseSupply,
         display: req.body.display,
         capturingMask: req.body.capturingMask,
-        offset: req.body.offset,
+        offset: {
+            x: req.body.offset[0],
+            y: req.body.offset[1],
+            z: req.body.offset[2],
+        },
     });
     building.save();
 
-    res.send("CREATE");
+    res.send("CREATE id="+building._id);
 });
 
 router.post("/changeDefaultSetting", async (req, res) => {

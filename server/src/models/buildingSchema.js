@@ -12,7 +12,13 @@ const buildingSchema = new Schema({
     price: Number,
     display: Boolean,
     capturingMask: [[Number]],
-    offset:[Number]
+    offset:{
+        x:Number,
+        y:Number,
+        z:Number
+    },
+    increaseSupplyType: String,
+    increaseSupply: Number
 });
 
 const Building = mongoose.model("Building", buildingSchema);

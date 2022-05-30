@@ -94,6 +94,7 @@ export default class Socket {
             player.setSupply(data.player.supplies);
             player.setWinProgress(data.player.winProgress);
             GameManager.instance.setTurn(data.turn);
+            GameManager.instance.labId = data.labId;
             GameManager.instance.loadFigures(data.figures);
             GameManager.instance.winTarget = data.winTarget;
             UiHandlers.instance.changeWinTargetBar();

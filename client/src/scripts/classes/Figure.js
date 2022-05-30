@@ -48,6 +48,7 @@ export default class Figure extends THREE.Object3D {
                     data.offset[1]
                 );
             } else if (data.offset.length > 2) {
+                console.log(this.model, getRandomElement(data.offset));
                 this.model.position.set(...getRandomElement(data.offset));
             } else {
                 this.model.position.set(

@@ -3,9 +3,10 @@ const Figures = require("./Figures");
 const Player = require("./Player");
 
 module.exports = class Room {
-    constructor(name) {
+    constructor(name, settings) {
+        this.settings = settings;
         this.name = name;
-        this.winTarget = 10;
+        this.winTarget = settings.playerTarget;
         this.bluePlayer = null;
         this.redPlayer = null;
         this.isStartGame = false;
@@ -24,16 +25,16 @@ module.exports = class Room {
     placeStartBuildings() {
         let width = this.map.mapStruct.length;
         let height = this.map.mapStruct[0].length;
-        this.map.addFigure(this.figures.getFigure(1, 2), {
+        this.map.addFigure(this.figures.getFigure(this.settings.labId, 2), {
             who: "BLUE",
-            figureId: 1,
+            figureId: this.settings.labId,
             figureType: 2,
             mapPositionX: Math.floor(width / 2),
             mapPositionY: 0,
         });
-        this.map.addFigure(this.figures.getFigure(1, 2), {
+        this.map.addFigure(this.figures.getFigure(this.settings.labId, 2), {
             who: "RED",
-            figureId: 1,
+            figureId: this.settings.labId,
             figureType: 2,
             mapPositionX: Math.floor(width / 2),
             mapPositionY: height - 1,
@@ -68,12 +69,11 @@ module.exports = class Room {
     canStartGame() {
         console.log(this.bluePlayer != null, this.redPlayer != null);
 
-
         return this.bluePlayer != null && this.redPlayer != null;
     }
 
     win(player) {
-        const {removeRoom} = require("../sockets");
+        const { removeRoom } = require("../sockets");
         removeRoom(this);
         let win =
             this.redPlayer.socket.id === player.socket.id ? "RED" : "BLUE";
@@ -94,7 +94,10 @@ module.exports = class Room {
 
     placeFigure(player, figure) {
         //TODO: make checking if this move is OK
-        let playerObj = this.redPlayer.socket.id === player ? this.redPlayer : this.bluePlayer;
+        let playerObj =
+            this.redPlayer.socket.id === player
+                ? this.redPlayer
+                : this.bluePlayer;
         figure.who = this.redPlayer.socket.id === player ? "RED" : "BLUE";
         let obj = this.figures.getFigure(figure.figureId, figure.figureType);
         this.figures.supplyOperations(obj, playerObj, figure.figureType);

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./AddBuildingPage.module.css";
 import CheckboxBoard from "../../components/CheckboxBoard";
+import { SupplyTypes } from "../../scripts/enums/SupplyTypes";
 
 const environment = process.env.NODE_ENV;
 const productionUrl = "/";
@@ -13,6 +14,8 @@ function AddBuildingPage() {
   const [description, setDescription] = useState("");
   const [maxLives, setMaxLives] = useState(4);
   const [model, setModel] = useState("");
+  const [increaseSupplyType, setIncreaseSupplyType] = useState("");
+  const [increaseSupply, setIncreaseSupply] = useState("");
   const [scale, setScale] = useState(2);
   const [price, setPrice] = useState(3);
   const [display, setDisplay] = useState(true);
@@ -31,6 +34,8 @@ function AddBuildingPage() {
       scale,
       price,
       display,
+      increaseSupplyType,
+      increaseSupply,
       capturingMask: capturingMask.board,
       offset: [offsetX, offsetY, offsetZ],
     };
@@ -47,7 +52,7 @@ function AddBuildingPage() {
       }
     );
     if (response.status === 200) {
-      setStatus("DODANY");
+      setStatus( await response.text());
     } else {
       let data = await response.text();
       setStatus("COŚ POSZŁO NIE TAK: " + data);
@@ -123,8 +128,29 @@ function AddBuildingPage() {
             onChange={(e) => setPrice(e.target.value)}
           />
         </label>
+        <label>
+          IncreaseSupplyType{" "}
+          <select onChange={(e) => setIncreaseSupplyType(e.target.value)}>
+            {Object.keys(SupplyTypes).map((key) => (
+              <option
+                value={SupplyTypes[key]}
+                selected={increaseSupplyType === SupplyTypes[key]}
+              >
+                {key}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Increase Supply{" "}
+          <input
+            type="number"
+            value={increaseSupply}
+            onChange={(e) => setIncreaseSupply(e.target.value)}
+          />
+        </label>
         <CheckboxBoard
-          infoText="Move Mask"
+          infoText="Capturing Mask"
           value={capturingMask}
           onChange={setCapturingMask}
         />

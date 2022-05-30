@@ -33,6 +33,7 @@ export default class GameManager {
         this.turn = "";
         this.figuries = [];
         this.winTarget = 0;
+        this.labId = null;
 
         this.selectedFigure = null;
         this.selectFigureIdInUI = null;
