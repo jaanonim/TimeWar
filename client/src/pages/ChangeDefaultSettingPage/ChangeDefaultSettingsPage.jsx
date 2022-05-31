@@ -41,10 +41,10 @@ function ChangeDefaultSettingsPage() {
       }),
     });
     if (response.status === 200) {
-      setStatus("DODANY");
+      setStatus("CHANGED");
     } else {
       let data = await response.text();
-      setStatus("COŚ POSZŁO NIE TAK: " + data);
+      setStatus("ERROR: " + data);
     }
   };
 

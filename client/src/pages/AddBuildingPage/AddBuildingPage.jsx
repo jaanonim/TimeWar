@@ -49,7 +49,7 @@ function AddBuildingPage() {
       setStatus(await response.text());
     } else {
       let data = await response.text();
-      setStatus("COŚ POSZŁO NIE TAK: " + data);
+      setStatus("ERROR: " + data);
     }
   };
 

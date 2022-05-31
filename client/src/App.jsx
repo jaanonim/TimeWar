@@ -5,6 +5,7 @@ import AddArmyPage from "./pages/AddArmyPage";
 import AddBuildingPage from "./pages/AddBuildingPage";
 import ChangeDefaultSettingsPage from "./pages/ChangeDefaultSettingPage";
 import MapCreatorPage from "./pages/MapCreatorPage";
+import AdminLoginPage from "./pages/AdminLoginPage";
 
 const MainPage = React.lazy(() => import("./pages/MainPage"));
 const JoinPage = React.lazy(() => import("./pages/JoinPage"));
@@ -87,6 +88,14 @@ function App() {
           </React.Suspense>
         }
       />
+        <Route
+            path="/login"
+            element={
+                <React.Suspense fallback={<Loading />}>
+                    <AdminLoginPage />
+                </React.Suspense>
+            }
+        />
     </Routes>
   );
 }

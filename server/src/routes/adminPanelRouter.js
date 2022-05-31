@@ -17,20 +17,18 @@ router.use(
 router.use(express.json());
 router.use(authInfo);
 router.post("/login", (req, res) => {
-    authenticate(req.body.login, req.body.password, (err, isLogin, next) => {
+    authenticate(req.body.login, req.body.password, (err, token, next) => {
         if (err) return next(err);
-        if (isLogin) {
-            req.session.regenerate(function () {
-                req.session.user = "ADMIN";
-                res.redirect("/admin/panel");
-            });
+        if (token !== "") {
+            res.send(token);
         } else {
-            res.redirect("/admin/");
+            res.status(403);
+            res.send("LOGIN OR PASSWORD IS INCORRECT");
         }
     });
 });
 
-router.post("/addArmy", (req, res) => {
+router.post("/addArmy",restrict, (req, res) => {
     const army = new Army({
         name: req.body.name,
         image: req.body.image,
@@ -50,7 +48,7 @@ router.post("/addArmy", (req, res) => {
     res.send("CREATE id=" + army._id);
 });
 
-router.post("/addBuilding", (req, res) => {
+router.post("/addBuilding",restrict, (req, res) => {
     const building = new Building({
         name: req.body.name,
         image: req.body.image,
@@ -75,7 +73,7 @@ router.post("/addBuilding", (req, res) => {
     res.send("CREATE id=" + building._id);
 });
 
-router.post("/addMap", (req, res) => {
+router.post("/addMap",restrict, (req, res) => {
     const map = new Map({
         map: req.body.map.board,
         blueResearchLab: req.body.blueResearchLab,
@@ -86,7 +84,7 @@ router.post("/addMap", (req, res) => {
     res.send("CREATE id=" + map._id);
 });
 
-router.post("/changeDefaultSetting", async (req, res) => {
+router.post("/changeDefaultSetting",restrict, async (req, res) => {
     let setting = await databaseController.getDefaultSetting();
 
     Object.assign(setting, req.body);
@@ -95,12 +93,12 @@ router.post("/changeDefaultSetting", async (req, res) => {
     res.send("CREATE");
 });
 
-router.get("/getDefaultSetting", async (req, res) => {
+router.get("/getDefaultSetting",restrict, async (req, res) => {
     let setting = await databaseController.getDefaultSetting();
 
     res.send(JSON.stringify(setting));
 });
-router.get("/getBuildings", async (req, res) => {
+router.get("/getBuildings",restrict, async (req, res) => {
     let buildings = await databaseController.getBuildingList();
 
     res.send(JSON.stringify(buildings));
