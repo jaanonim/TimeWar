@@ -1,8 +1,14 @@
-const {Server} = require("socket.io");
+const { Server } = require("socket.io");
 const Room = require("./classes/Room");
+require("./classes/DatabaseController");
+const databaseController = require("./classes/DatabaseController");
 let io = null;
 let rooms = [];
+
 module.exports = {
+    removeRoom: (room) => {
+        rooms = rooms.filter((r) => r !== room);
+    },
     initSockets: (server) => {
         io = new Server(server, {
             cors: {
@@ -16,7 +22,8 @@ module.exports = {
             console.log(roomName, socket.handshake.query.nick);
             let room = rooms.find((r) => r.name === roomName);
             if (room == null) {
-                room = new Room(roomName);
+                let settings = await databaseController.getDefaultSetting();
+                room = new Room(roomName, settings);
                 await room.initMap();
                 rooms.push(room);
             }
@@ -37,7 +44,7 @@ module.exports = {
                     mapObjects: room.map.mapObjects,
                     figures: room.figures.getFigures(),
                     winTarget: room.winTarget,
-                    opponentNick: room.bluePlayer.nick
+                    opponentNick: room.bluePlayer.nick,
                 });
                 room.bluePlayer.socket.emit("startGame", {
                     team: "BLUE",
@@ -47,7 +54,8 @@ module.exports = {
                     mapObjects: room.map.mapObjects,
                     figures: room.figures.getFigures(),
                     winTarget: room.winTarget,
-                    opponentNick: room.redPlayer.nick
+                    opponentNick: room.redPlayer.nick,
+                    labId: room.settings.labId,
                 });
             }
             socket.on("placeFigure", (figure) => {
@@ -65,7 +73,7 @@ module.exports = {
 
             socket.on("disconnecting", () => {
                 if (!room.disconnectPlayer(socket.id)) {
-                    rooms = rooms.filter(r => r.name !== room.name)
+                    rooms = rooms.filter((r) => r.name !== room.name);
                 }
                 console.log("disconnecting ", socket.id);
             });

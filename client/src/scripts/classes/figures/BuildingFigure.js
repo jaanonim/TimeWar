@@ -1,8 +1,8 @@
-import {FigureTypes} from "../../enums/FigureTypes";
+import { FigureTypes } from "../../enums/FigureTypes";
 import Figure from "../Figure";
 import GameManager from "../../GameManager";
-import {SupplyTypes} from "../../enums/SupplyTypes";
-import {UiHandlers} from "../../managers/UiHandlers";
+import { SupplyTypes } from "../../enums/SupplyTypes";
+import { UiHandlers } from "../../managers/UiHandlers";
 import MapCreator from "../../MapCreator";
 
 export default class BuildingFigure extends Figure {
@@ -10,7 +10,7 @@ export default class BuildingFigure extends Figure {
         super(who, positionX, positionY, FigureTypes.BUILDING, data);
         this.capturingMask = data.capturingMask;
         if (data.increaseSupplyType != null) {
-            this.increaseSupplyType = SupplyTypes[data.increaseSupplyType];
+            this.increaseSupplyType = data.increaseSupplyType;
             this.increaseSupply = data.increaseSupply;
         }
     }
@@ -44,7 +44,8 @@ export default class BuildingFigure extends Figure {
         for (let x = 0; x < maskWidth; x++) {
             for (let y = 0; y < maskHeight; y++) {
                 let mapPosX = this.mapPositionX + x - Math.floor(maskWidth / 2);
-                let mapPosY = this.mapPositionY + y - Math.floor(maskHeight / 2);
+                let mapPosY =
+                    this.mapPositionY + y - Math.floor(maskHeight / 2);
                 if (
                     mapPosX < 0 ||
                     mapPosX >= map.length ||
@@ -55,7 +56,7 @@ export default class BuildingFigure extends Figure {
                 }
 
                 if (this.capturingMask[x][y]) {
-                    if(map[mapPosX] != null)
+                    if (map[mapPosX] != null)
                         map[mapPosX][mapPosY]?.capture(this.who);
                 }
             }
@@ -65,7 +66,9 @@ export default class BuildingFigure extends Figure {
     placeAction() {
         let player = GameManager.instance.player;
         if (this.increaseSupplyType != null) {
-            player.supplies[this.increaseSupplyType].increaseMaxSupply(this.increaseSupply);
+            player.supplies[this.increaseSupplyType].increaseMaxSupply(
+                this.increaseSupply
+            );
             UiHandlers.instance.updateSupply();
         }
     }

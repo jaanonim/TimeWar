@@ -1,11 +1,11 @@
 const Map = require("./Map");
 const Figures = require("./Figures");
 const Player = require("./Player");
-
 module.exports = class Room {
-    constructor(name) {
+    constructor(name, settings) {
+        this.settings = settings;
         this.name = name;
-        this.winTarget = 10;
+        this.winTarget = settings.playerTarget;
         this.bluePlayer = null;
         this.redPlayer = null;
         this.isStartGame = false;
@@ -15,28 +15,26 @@ module.exports = class Room {
     }
 
     async initMap() {
-        await this.map.loadMap("map1");
-        await this.figures.loadArmy("Army");
-        await this.figures.loadBuildings("Buildings");
+        await this.map.loadMap();
+        await this.figures.loadArmy();
+        await this.figures.loadBuildings();
         this.placeStartBuildings();
     }
 
     placeStartBuildings() {
-        let width = this.map.mapStruct.length;
-        let height = this.map.mapStruct[0].length;
-        this.map.addFigure(this.figures.getFigure(1, 2), {
-            who: "BLUE",
-            figureId: 1,
-            figureType: 2,
-            mapPositionX: Math.floor(width / 2),
-            mapPositionY: 0,
-        });
-        this.map.addFigure(this.figures.getFigure(1, 2), {
+        this.map.addFigure(this.figures.getFigure(this.settings.labId, 2), {
             who: "RED",
-            figureId: 1,
+            figureId: this.settings.labId,
             figureType: 2,
-            mapPositionX: Math.floor(width / 2),
-            mapPositionY: height - 1,
+            mapPositionX: this.map.mapData.redResearchLab.x,
+            mapPositionY: this.map.mapData.redResearchLab.y,
+        });
+        this.map.addFigure(this.figures.getFigure(this.settings.labId, 2), {
+            who: "BLUE",
+            figureId: this.settings.labId,
+            figureType: 2,
+            mapPositionX: this.map.mapData.blueResearchLab.x,
+            mapPositionY: this.map.mapData.blueResearchLab.y,
         });
     }
 
@@ -66,10 +64,13 @@ module.exports = class Room {
     }
 
     canStartGame() {
+        console.log(this.bluePlayer != null, this.redPlayer != null);
         return this.bluePlayer != null && this.redPlayer != null;
     }
 
     win(player) {
+        const { removeRoom } = require("../sockets");
+        removeRoom(this);
         let win =
             this.redPlayer.socket.id === player.socket.id ? "RED" : "BLUE";
 

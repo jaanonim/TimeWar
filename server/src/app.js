@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("../client/dist"));
 
-app.use("/api", indexRouter);
+app.use("/", indexRouter);
 
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../../client/dist/index.html"));

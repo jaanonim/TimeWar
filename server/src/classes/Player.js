@@ -4,18 +4,18 @@ module.exports = class Player {
         this.nick = nick;
         this.isConnect = true;
         this.supplies = {
-            "land_army": {
-                supply: 10,
-                maxSupply: 10
+            land_army: {
+                supply: this.room.settings.supply.land_army,
+                maxSupply: this.room.settings.supply.land_army,
             },
-            "air_army": {
-                supply: 10,
-                maxSupply: 10
+            air_army: {
+                supply: this.room.settings.supply.air_army,
+                maxSupply: this.room.settings.supply.air_army,
             },
-            "building": {
-                supply: 10,
-                maxSupply: 10
-            }
+            building: {
+                supply: this.room.settings.supply.building,
+                maxSupply: this.room.settings.supply.building,
+            },
         };
         this.socket = socket;
         this.winProgress = 0;
@@ -25,13 +25,14 @@ module.exports = class Player {
         return {
             nick: this.nick,
             supplies: this.supplies,
-            winProgress: this.winProgress
-        }
+            winProgress: this.winProgress,
+        };
     }
 
     renewSupplies() {
         for (let supplyName in this.supplies) {
-            this.supplies[supplyName].supply = this.supplies[supplyName].maxSupply;
+            this.supplies[supplyName].supply =
+                this.supplies[supplyName].maxSupply;
         }
     }
 
@@ -41,5 +42,4 @@ module.exports = class Player {
             this.room.win(this);
         }
     }
-
 };
