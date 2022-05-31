@@ -165,9 +165,8 @@ export default class GameManager {
 
     removeFigure(x, y) {
         let figure = MapCreator.instance.mapObjects[x][y].figure;
-        figure.onDestroy();
         this.figuries = this.figuries.filter((fig) => fig !== figure);
-        this.sceneManager.scene.remove(figure);
+        figure.onDestroy();
         MapCreator.instance.mapObjects[x][y].figure = null;
     }
 }

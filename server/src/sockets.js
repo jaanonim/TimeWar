@@ -2,6 +2,7 @@ const { Server } = require("socket.io");
 const Room = require("./classes/Room");
 require("./classes/DatabaseController");
 const databaseController = require("./classes/DatabaseController");
+const { runWhenUnlock } = require("./utils/asyncSync");
 let io = null;
 let rooms = [];
 
@@ -20,18 +21,20 @@ module.exports = {
         io.on("connection", async (socket) => {
             let roomName = socket.handshake.query.room;
             console.log(roomName, socket.handshake.query.nick);
-            let room = rooms.find((r) => r.name === roomName);
-            if (room == null) {
-                let settings = await databaseController.getDefaultSetting();
-                room = new Room(roomName, settings);
-                await room.initMap();
-                rooms.push(room);
-            }
-            if (room.addPlayer(socket) == null) {
+            let room = await runWhenUnlock("createRoom", async () => {
+                let room = rooms.find((r) => r.name === roomName);
+                if (room == null) {
+                    let settings = await databaseController.getDefaultSetting();
+                    room = new Room(roomName, settings);
+                    await room.initMap();
+                    rooms.push(room);
+                }
+                return room;
+            });
+            if ((await room.addPlayer(socket)) == null) {
                 socket.disconnect();
                 return;
             }
-
             socket.join(roomName);
 
             if (await room.startGame()) {

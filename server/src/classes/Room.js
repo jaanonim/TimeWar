@@ -1,6 +1,7 @@
 const Map = require("./Map");
 const Figures = require("./Figures");
 const Player = require("./Player");
+const {runWhenUnlock} = require("../utils/asyncSync");
 module.exports = class Room {
     constructor(name, settings) {
         this.settings = settings;
@@ -38,33 +39,33 @@ module.exports = class Room {
         });
     }
 
-    addPlayer(playerSocket) {
+    async addPlayer(playerSocket) {
         let nick = playerSocket.handshake.query.nick;
-        if (this.bluePlayer == null) {
-            this.bluePlayer = new Player(this, nick, playerSocket);
-            return "BLUE";
-        }
-        if (this.redPlayer == null) {
-            this.redPlayer = new Player(this, nick, playerSocket);
-            return "RED";
-        }
+        return await runWhenUnlock("addPlayer", () => {
+            if (this.bluePlayer == null) {
+                this.bluePlayer = new Player(this, nick, playerSocket);
+                return "BLUE";
+            }
+            if (this.redPlayer == null) {
+                this.redPlayer = new Player(this, nick, playerSocket);
+                return "RED";
+            }
 
-        if (this.bluePlayer.nick === nick) {
-            this.bluePlayer.socket = playerSocket;
-            this.bluePlayer.isConnect = true;
-            return "BLUE";
-        }
-        if (this.redPlayer.nick === nick) {
-            this.redPlayer.socket = playerSocket;
-            this.redPlayer.isConnect = true;
-            return "RED";
-        }
-
-        return null;
+            if (this.bluePlayer.nick === nick) {
+                this.bluePlayer.socket = playerSocket;
+                this.bluePlayer.isConnect = true;
+                return "BLUE";
+            }
+            if (this.redPlayer.nick === nick) {
+                this.redPlayer.socket = playerSocket;
+                this.redPlayer.isConnect = true;
+                return "RED";
+            }
+            return null;
+        });
     }
 
     canStartGame() {
-        console.log(this.bluePlayer != null, this.redPlayer != null);
         return this.bluePlayer != null && this.redPlayer != null;
     }
 
