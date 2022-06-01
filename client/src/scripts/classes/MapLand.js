@@ -143,9 +143,26 @@ export default class MapLand extends THREE.Object3D {
 
     onRightClick(event) {}
 
+    canPleaceCurrentFigure() {
+        const gm = GameManager.instance;
+        const team = gm.player.team;
+        if (!gm.selectFigureUiData.isSelected) return null;
+        if (this.captured !== team) return null;
+        const figure = gm.createFigure(
+            team,
+            this.mapPositionX,
+            this.mapPositionY,
+            gm.selectFigureUiData
+        );
+        if (!figure.canBuy()) return null;
+        return figure;
+    }
+
     onLeftClick(event) {
-        let gm = GameManager.instance;
+        console.log("onLeftClick");
+        const gm = GameManager.instance;
         if (this.figure !== null && !gm.attackOption) {
+            c;
             this.figure.onLeftClick(event);
             return;
         }

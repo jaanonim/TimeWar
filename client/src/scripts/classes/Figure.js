@@ -119,9 +119,15 @@ export default class Figure extends THREE.Object3D {
 
     renew() {}
 
-    static canBuy(data) {}
+    canBuy(getSupply) {
+        return getSupply().supply >= this.price;
+    }
 
-    static buy(data) {}
+    buy(getSupply) {
+        return getSupply().takeSupply(this.price);
+    }
+
+    placeAction() {}
 
     //HOOKS
     onHoverEnter(event) {

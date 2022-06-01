@@ -133,29 +133,19 @@ export default class ArmyFigure extends Figure {
         this.unHighLightMovePosition();
     }
 
-    static canBuy(data) {
-        let player = GameManager.instance.player;
-        let supply;
-        if (data.isFlyable) {
-            supply = player.supplies[SupplyTypes.AIR_ARMY];
-        } else {
-            supply = player.supplies[SupplyTypes.LAND_ARMY];
-        }
-        return supply.supply >= data.price;
+    getSupply() {
+        const player = GameManager.instance.player;
+        return this.isFlyable
+            ? player.supplies[SupplyTypes.AIR_ARMY]
+            : player.supplies[SupplyTypes.LAND_ARMY];
     }
 
-    static buy(data) {
-        let player = GameManager.instance.player;
-        let supply;
-        if (data.isFlyable) {
-            supply = player.supplies[SupplyTypes.AIR_ARMY];
-        } else {
-            supply = player.supplies[SupplyTypes.LAND_ARMY];
-        }
-        if (ArmyFigure.canBuy(data)) {
-            return supply.takeSupply(data.price);
-        }
-        return false;
+    buy() {
+        super.buy(this.getSupply.bind(this));
+    }
+
+    canBuy() {
+        return super.canBuy(this.getSupply.bind(this));
     }
 
     highLightAttackPosition() {

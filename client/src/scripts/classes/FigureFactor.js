@@ -1,57 +1,65 @@
-import {FigureTypes} from "../enums/FigureTypes";
+import { FigureTypes } from "../enums/FigureTypes";
 import FigureManager from "../managers/FigureManager";
 import ArmyFigure from "./figures/ArmyFigure";
 import BuildingFigure from "./figures/BuildingFigure";
 import ResearchLab from "./figures/ResearchLab";
 
 export default class FigureFactor {
-    createArmy(who, x, y, figureId, isBuying) {
-        let objData = FigureManager.instance.getFigure(
-            FigureTypes.ARMY,
-            figureId
-        );
-        if (objData === undefined) {
-            console.error("Unknown type 2");
+    createArmy(who, x, y, figureId) {
+        let objData = FigureFactor.getData(figureId, FigureTypes.ARMY);
+        if (!objData) {
+            console.error("Unknown type");
             return;
-        }
-        if (isBuying && !ArmyFigure.buy(objData)) {
-            return null;
         }
 
         return new ArmyFigure(who, x, y, objData);
     }
 
-    createBuilding(who, x, y, figureId, isBuying) {
-        let objData = FigureManager.instance.getFigure(
-            FigureTypes.BUILDING,
-            figureId
-        );
-        if (objData === undefined) {
-            console.error("Unknown type 1");
+    createBuilding(who, x, y, figureId) {
+        let objData = FigureFactor.getData(figureId, FigureTypes.BUILDING);
+        if (!objData) {
+            console.error("Unknown type");
             return;
         }
+
         if (figureId === 1) {
             return new ResearchLab(who, x, y, objData);
         }
 
-        if (isBuying && !BuildingFigure.buy(objData)) {
-            return null;
-        }
         let building = new BuildingFigure(who, x, y, objData);
-        if(isBuying){
-            building.placeAction();
-        }
         return building;
     }
 
-    createFigure(who, x, y, figureId, typeFigure, isBuying) {
+    createFigureFromData(who, x, y, data) {
+        let figureType = data.figureType;
+        let figureId = data.figureId;
+        if (figureType === FigureTypes.ARMY) {
+            return new ArmyFigure(who, x, y, data);
+        } else if (figureType === FigureTypes.BUILDING) {
+            if (figureId === 1) {
+                return new ResearchLab(who, x, y, data);
+            }
+            return new BuildingFigure(who, x, y, data);
+        }
+        return null;
+    }
+
+    createFigure(who, x, y, figureId, typeFigure) {
         switch (typeFigure) {
             case FigureTypes.ARMY:
-                return this.createArmy(who, x, y, figureId, isBuying);
+                return this.createArmy(who, x, y, figureId);
             case FigureTypes.BUILDING:
-                return this.createBuilding(who, x, y, figureId, isBuying);
+                return this.createBuilding(who, x, y, figureId);
             default:
                 console.error("Unknown type " + typeFigure);
         }
+    }
+
+    static getData(figureId, typeFigure) {
+        let objData = FigureManager.instance.getFigure(typeFigure, figureId);
+        if (objData === undefined) {
+            return null;
+        }
+        return objData;
     }
 }

@@ -1,9 +1,9 @@
-import {FigureTypes} from "../../enums/FigureTypes";
-import Figure from "../Figure";
+import { FigureTypes } from "../../enums/FigureTypes";
+import { SupplyTypes } from "../../enums/SupplyTypes";
 import GameManager from "../../GameManager";
-import {SupplyTypes} from "../../enums/SupplyTypes";
-import {UiHandlers} from "../../managers/UiHandlers";
+import { UiHandlers } from "../../managers/UiHandlers";
 import MapCreator from "../../MapCreator";
+import Figure from "../Figure";
 
 export default class BuildingFigure extends Figure {
     constructor(who, positionX, positionY, data) {
@@ -15,21 +15,17 @@ export default class BuildingFigure extends Figure {
         }
     }
 
-    static canBuy(data) {
-        let player = GameManager.instance.player;
-        let supply;
-        supply = player.supplies[SupplyTypes.BUILDING];
-        return supply.supply >= data.price;
+    getSupply() {
+        const player = GameManager.instance.player;
+        return player.supplies[SupplyTypes.BUILDING];
     }
 
-    static buy(data) {
-        let player = GameManager.instance.player;
-        let supply;
-        supply = player.supplies[SupplyTypes.BUILDING];
-        if (BuildingFigure.canBuy(data)) {
-            return supply.takeSupply(data.price);
-        }
-        return false;
+    buy() {
+        super.buy(this.getSupply.bind(this));
+    }
+
+    canBuy() {
+        return super.canBuy(this.getSupply.bind(this));
     }
 
     renew() {
@@ -44,7 +40,8 @@ export default class BuildingFigure extends Figure {
         for (let x = 0; x < maskWidth; x++) {
             for (let y = 0; y < maskHeight; y++) {
                 let mapPosX = this.mapPositionX + x - Math.floor(maskWidth / 2);
-                let mapPosY = this.mapPositionY + y - Math.floor(maskHeight / 2);
+                let mapPosY =
+                    this.mapPositionY + y - Math.floor(maskHeight / 2);
                 if (
                     mapPosX < 0 ||
                     mapPosX >= map.length ||
@@ -55,7 +52,7 @@ export default class BuildingFigure extends Figure {
                 }
 
                 if (this.capturingMask[x][y]) {
-                    if(map[mapPosX] != null)
+                    if (map[mapPosX] != null)
                         map[mapPosX][mapPosY]?.capture(this.who);
                 }
             }
@@ -65,7 +62,9 @@ export default class BuildingFigure extends Figure {
     placeAction() {
         let player = GameManager.instance.player;
         if (this.increaseSupplyType != null) {
-            player.supplies[this.increaseSupplyType].increaseMaxSupply(this.increaseSupply);
+            player.supplies[this.increaseSupplyType].increaseMaxSupply(
+                this.increaseSupply
+            );
             UiHandlers.instance.updateSupply();
         }
     }

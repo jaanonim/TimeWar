@@ -1,9 +1,7 @@
 import { Color, Object3D } from "three";
 import { CellularNoiseMaterial } from "threejs-shader-materials";
 import GameManager from "../GameManager";
-import FigureManager from "../managers/FigureManager";
 import { runWhenTeamIsSet } from "../utilities/RunWhenExist";
-import Figure from "./Figure";
 export default class Ghost extends Object3D {
     constructor() {
         super();
@@ -14,12 +12,11 @@ export default class Ghost extends Object3D {
         });
     }
 
-    setModel(data) {
-        if (data.model == this.currentModelName) return;
-        this.currentModelName = data.model;
+    setModel(model) {
         this.remove(this.model);
 
-        this.model = Figure.createModel(data, "RED");
+        if (!model) return;
+        this.model = model.clone();
         if (!this.model) return;
 
         this.model.castShadow = false;
@@ -44,17 +41,13 @@ export default class Ghost extends Object3D {
         return material;
     }
 
-    update(obj) {
-        const f = GameManager.instance.figureCanBePlaced(obj);
-        let data = null;
-        try {
-            data = FigureManager.instance.getFigure(f.type, f.id);
-        } catch (e) {}
+    update(land) {
+        const f = land.canPleaceCurrentFigure();
 
-        if (data == null) {
-            this.setModel("");
+        if (f == null) {
+            this.setModel(null);
         } else {
-            this.setModel(data);
+            this.setModel(f.model);
         }
     }
 }
