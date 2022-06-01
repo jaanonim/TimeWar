@@ -33,10 +33,8 @@ export default class GameManager {
         this.turn = "";
         this.figuries = [];
         this.winTarget = 0;
-
+        this.selectFigureUiData = { id: null, type: null, isSelected: false };
         this.selectedFigure = null;
-        this.selectFigureIdInUI = null;
-        this.selectFigureTypeInUI = null;
         this.isDisplayInit = false;
         this.clock = new Clock();
     }
@@ -85,8 +83,16 @@ export default class GameManager {
     }
 
     setSelectFigureInUI(newId, type) {
-        this.selectFigureIdInUI = newId;
-        this.selectFigureTypeInUI = type;
+        if (newId == null || type == null) {
+            this.unsetSelectFigureInUI();
+            return;
+        }
+        this.selectFigureUiData = { id: newId, type: type, isSelected: true };
+        if (this.sceneManager) this.sceneManager.cursor.move();
+    }
+
+    unsetSelectFigureInUI() {
+        this.selectFigureUiData = { id: null, type: null, isSelected: false };
         if (this.sceneManager) this.sceneManager.cursor.move();
     }
 
@@ -116,31 +122,14 @@ export default class GameManager {
         });
     }
 
-    figureCanBePlaced(land) {
-        //TODO: move validation of places to plaece figuer here
-        // If valid return {id, type} else return null
-        if (land.captured !== this.player.team) return null;
-        return this.selectFigureIdInUI && this.selectFigureTypeInUI
-            ? { id: this.selectFigureIdInUI, type: this.selectFigureTypeInUI }
-            : null;
-    }
-
     placeFigureAction(land) {
         if (this.selectedFigure != null) {
             console.log(this.selectedFigure); //TODO: remove, for no it's for futhure debuging
             this.selectedFigure.unHighLightMovePosition();
             this.selectedFigure = null;
         }
-        const f = this.figureCanBePlaced(land);
-        if (f == null) return;
-        let figure = this.placeFigure(
-            this.player.team,
-            land.mapPositionX,
-            land.mapPositionY,
-            f.id,
-            f.type,
-            true
-        );
+        const data = land.canPleaceCurrentFigure();
+        this.placeFigure(data, true);
         Socket.instance.placeFigure(figure);
     }
 
@@ -155,6 +144,11 @@ export default class GameManager {
             isBuying
         );
         if (figure == null) return null;
+        if (isBuying) {
+            figure.buy();
+            figure.placeAction();
+        }
+
         figure.capture();
         this.figuries.push(figure);
         this.sceneManager.scene.add(figure);
