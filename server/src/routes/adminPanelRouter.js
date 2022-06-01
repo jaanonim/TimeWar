@@ -1,19 +1,12 @@
 require("dotenv").config();
 const express = require("express");
 const router = express.Router();
-const session = require("express-session");
 const { authInfo, authenticate, restrict } = require("../utils/auth");
 const { Army } = require("../models/armySchema");
 const { Building } = require("../models/buildingSchema");
 const { Map } = require("../models/mapSchema");
 const databaseController = require("../classes/DatabaseController");
-router.use(
-    session({
-        resave: false,
-        saveUninitialized: false,
-        secret: process.env.secret,
-    })
-);
+
 router.use(express.json());
 router.use(authInfo);
 router.post("/login", (req, res) => {
@@ -28,7 +21,7 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.post("/addArmy",restrict, (req, res) => {
+router.post("/addArmy", restrict, (req, res) => {
     const army = new Army({
         name: req.body.name,
         image: req.body.image,
@@ -48,7 +41,7 @@ router.post("/addArmy",restrict, (req, res) => {
     res.send("CREATE id=" + army._id);
 });
 
-router.post("/addBuilding",restrict, (req, res) => {
+router.post("/addBuilding", restrict, (req, res) => {
     const building = new Building({
         name: req.body.name,
         image: req.body.image,
@@ -73,7 +66,7 @@ router.post("/addBuilding",restrict, (req, res) => {
     res.send("CREATE id=" + building._id);
 });
 
-router.post("/addMap",restrict, (req, res) => {
+router.post("/addMap", restrict, (req, res) => {
     const map = new Map({
         map: req.body.map.board,
         blueResearchLab: req.body.blueResearchLab,
@@ -84,7 +77,7 @@ router.post("/addMap",restrict, (req, res) => {
     res.send("CREATE id=" + map._id);
 });
 
-router.post("/changeDefaultSetting",restrict, async (req, res) => {
+router.post("/changeDefaultSetting", restrict, async (req, res) => {
     let setting = await databaseController.getDefaultSetting();
 
     Object.assign(setting, req.body);
@@ -93,12 +86,12 @@ router.post("/changeDefaultSetting",restrict, async (req, res) => {
     res.send("CREATE");
 });
 
-router.get("/getDefaultSetting",restrict, async (req, res) => {
+router.get("/getDefaultSetting", restrict, async (req, res) => {
     let setting = await databaseController.getDefaultSetting();
 
     res.send(JSON.stringify(setting));
 });
-router.get("/getBuildings",restrict, async (req, res) => {
+router.get("/getBuildings", restrict, async (req, res) => {
     let buildings = await databaseController.getBuildingList();
 
     res.send(JSON.stringify(buildings));
