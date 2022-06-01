@@ -24,6 +24,7 @@ export default class Label {
 
     update(obj) {
         const camera = GameManager.instance.camera;
+        if (!obj || !camera) return;
         const tempV = new Vector3();
 
         obj.updateWorldMatrix(true, false);
