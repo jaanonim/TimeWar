@@ -32,7 +32,6 @@ export default class FigureLabel extends Label {
 
     destroy() {
         super.destroy();
-        console.log("DESTROY", this);
         this.figure = null;
     }
 }
