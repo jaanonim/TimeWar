@@ -114,6 +114,8 @@ export default class Figure extends THREE.Object3D {
     }
 
     unselect() {
+        let gm = GameManager.instance;
+        gm.selectedFigure = null;
         this.cursor.hide();
     }
 
@@ -163,7 +165,6 @@ export default class Figure extends THREE.Object3D {
         let gm = GameManager.instance;
         if (gm.selectedFigure === this) {
             gm.selectedFigure.unselect();
-            gm.selectedFigure = null;
         } else {
             if (gm.selectedFigure != null) {
                 gm.selectedFigure.unselect();
@@ -171,6 +172,12 @@ export default class Figure extends THREE.Object3D {
             gm.selectedFigure = this;
             this.select();
         }
+    }
+
+    destroy() {
+        this.onDestroy();
+        let gm = GameManager.instance;
+        gm.scene.remove(this);
     }
 
     onDestroy() {

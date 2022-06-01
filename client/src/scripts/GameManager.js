@@ -128,8 +128,9 @@ export default class GameManager {
 
     placeFigureAction(land) {
         if (this.selectedFigure != null) {
-            console.log(this.selectedFigure); //TODO: remove, for no it's for futhure debuging
-            this.selectedFigure.unHighLightMovePosition();
+            if(this.selectedFigure.unHighLightMovePosition != null) {
+                this.selectedFigure.unHighLightMovePosition();
+            }
             this.selectedFigure = null;
         }
         const f = this.figureCanBePlaced(land);
@@ -164,9 +165,8 @@ export default class GameManager {
 
     removeFigure(x, y) {
         let figure = MapCreator.instance.mapObjects[x][y].figure;
-        figure.onDestroy();
         this.figuries = this.figuries.filter((fig) => fig !== figure);
-        this.sceneManager.scene.remove(figure);
+        figure.onDestroy();
         MapCreator.instance.mapObjects[x][y].figure = null;
     }
 }

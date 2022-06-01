@@ -63,7 +63,7 @@ export default class MapCreator {
                 row.forEach((land) => {
                     if (land !== null) {
                         if (land.figure !== null) {
-                            scene.remove(land.figure);
+                            land.figure.destroy();
                         }
                         scene.remove(land);
                     }
