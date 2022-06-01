@@ -48,6 +48,7 @@ module.exports = {
                     figures: room.figures.getFigures(),
                     winTarget: room.winTarget,
                     opponentNick: room.bluePlayer.nick,
+                    labId: room.settings.labId
                 });
                 room.bluePlayer.socket.emit("startGame", {
                     team: "BLUE",

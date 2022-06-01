@@ -27,6 +27,7 @@ export default class GameManager {
     }
 
     constructor() {
+        document.gm = this;
         console.log("NICK", sessionStorage.getItem("nick"));
         this.player = new Player(sessionStorage.getItem("nick"), "blue");
         this.attackOption = false;
@@ -121,6 +122,7 @@ export default class GameManager {
         //TODO: move validation of places to plaece figuer here
         // If valid return {id, type} else return null
         if (land.captured !== this.player.team) return null;
+        if(land.figure != null) return null;
         return this.selectFigureIdInUI && this.selectFigureTypeInUI
             ? { id: this.selectFigureIdInUI, type: this.selectFigureTypeInUI }
             : null;

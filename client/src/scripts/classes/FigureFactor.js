@@ -1,4 +1,4 @@
-import {FigureTypes} from "../enums/FigureTypes";
+import { FigureTypes } from "../enums/FigureTypes";
 import FigureManager from "../managers/FigureManager";
 import ArmyFigure from "./figures/ArmyFigure";
 import BuildingFigure from "./figures/BuildingFigure";
@@ -31,6 +31,7 @@ export default class FigureFactor {
             console.error("Unknown type 1");
             return;
         }
+        console.log(GameManager.instance.labId);
         if (figureId === GameManager.instance.labId) {
             return new ResearchLab(who, x, y, objData);
         }
@@ -39,7 +40,7 @@ export default class FigureFactor {
             return null;
         }
         let building = new BuildingFigure(who, x, y, objData);
-        if(isBuying){
+        if (isBuying) {
             building.placeAction();
         }
         return building;

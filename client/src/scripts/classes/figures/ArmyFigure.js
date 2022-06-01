@@ -112,7 +112,7 @@ export default class ArmyFigure extends Figure {
                 if (this.attack(x, y)) {
                     Socket.instance.attackFigure(myX, myY, x, y);
                 }
-                gm.selectedFigure.unselect();
+                gm.selectedFigure?.unselect();
             }
         } else {
             if (this.canMove(x, y)) {
@@ -122,7 +122,7 @@ export default class ArmyFigure extends Figure {
                 if (this.move(x, y)) {
                     Socket.instance.moveFigure(myX, myY, x, y);
                 }
-                gm.selectedFigure.unselect();
+                gm.selectedFigure?.unselect();
             }
         }
     }

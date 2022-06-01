@@ -19,8 +19,8 @@ export default class Camera extends PerspectiveCamera {
 
     get maxMovment() {
         return new THREE.Box3(
-            new THREE.Vector3(-10, 0, -10),
-            new THREE.Vector3(10, 0, 10)
+            new THREE.Vector3(-100, 0, -100),
+            new THREE.Vector3(100, 0, 100)
         );
     }
 
