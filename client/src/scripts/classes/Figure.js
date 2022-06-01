@@ -4,6 +4,7 @@ import GameManager from "../GameManager";
 import ModelsManager from "../managers/ModelsManager";
 import MapCreator from "../MapCreator";
 import { getRandomElement, getRandomVector3 } from "../utilities/Random";
+import { runWhenExist } from "../utilities/RunWhenExist";
 import Cursor from "./Cursor";
 import FigureLabel from "./FigureLabel";
 
@@ -175,9 +176,11 @@ export default class Figure extends THREE.Object3D {
     }
 
     destroy() {
-        this.onDestroy();
         let gm = GameManager.instance;
-        gm.scene.remove(this);
+        runWhenExist(gm.scene, () => {
+            this.onDestroy();
+            gm.scene.remove(this);
+        });
     }
 
     onDestroy() {

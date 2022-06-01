@@ -34,8 +34,10 @@ export class MouseKeyboardManager {
         GameManager.instance.camera.keyDown(event);
         if (event.key === "a") {
             if (!gm.attackOption && gm.selectedFigure !== null) {
+                let tempSelect = gm.selectedFigure;
                 gm.selectedFigure.unselect();
                 gm.attackOption = true;
+                gm.selectedFigure = tempSelect;
                 gm.selectedFigure.select();
             }
             gm.attackOption = true;
@@ -47,8 +49,10 @@ export class MouseKeyboardManager {
         GameManager.instance.camera.keyUp(event);
         if (event.key === "a") {
             if (gm.attackOption && gm.selectedFigure !== null) {
+                let tempSelect = gm.selectedFigure;
                 gm.selectedFigure.unselect();
                 gm.attackOption = false;
+                gm.selectedFigure = tempSelect;
                 gm.selectedFigure.select();
             }
             gm.attackOption = false;

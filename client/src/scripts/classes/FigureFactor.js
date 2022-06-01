@@ -1,9 +1,9 @@
-import {FigureTypes} from "../enums/FigureTypes";
+import { FigureTypes } from "../enums/FigureTypes";
+import GameManager from "../GameManager";
 import FigureManager from "../managers/FigureManager";
 import ArmyFigure from "./figures/ArmyFigure";
 import BuildingFigure from "./figures/BuildingFigure";
 import ResearchLab from "./figures/ResearchLab";
-import GameManager from "../GameManager";
 
 export default class FigureFactor {
     createArmy(who, x, y, figureId, isBuying) {
@@ -39,7 +39,7 @@ export default class FigureFactor {
             return null;
         }
         let building = new BuildingFigure(who, x, y, objData);
-        if(isBuying){
+        if (isBuying) {
             building.placeAction();
         }
         return building;
