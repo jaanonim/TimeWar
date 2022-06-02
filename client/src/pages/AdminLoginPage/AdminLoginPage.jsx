@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styles from "./AdminLoginPage.module.css";
 import { fetchToServer } from "../../scripts/utilities/fetchToServer";
 
 function AdminLoginPage() {
@@ -22,8 +21,7 @@ function AdminLoginPage() {
             sessionStorage.setItem("authToken", text);
             setStatus("LOGGED");
         } else {
-            console.log(text);
-            setStatus(text)
+            setStatus(text);
         }
     };
 

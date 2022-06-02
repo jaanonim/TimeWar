@@ -56,6 +56,7 @@ export default class Figure extends THREE.Object3D {
         this.price = data.price;
         this.takeDamage = false;
         this.highlighted = false;
+        this.data = data;
 
         this.place(positionX, positionY);
         this.setupModel(data);

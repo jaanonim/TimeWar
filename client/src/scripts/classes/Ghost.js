@@ -52,7 +52,6 @@ export default class Ghost extends Object3D {
             data = FigureManager.instance.getFigure(f.type, f.id);
         } catch (e) {}
 
-        console.log(data);
         if (data == null || !FigureFactor.canBuy(data, f.type)) {
             this.setModel("");
         } else {

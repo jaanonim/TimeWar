@@ -145,7 +145,14 @@ export default class GameManager {
             f.type,
             true
         );
-        Socket.instance.placeFigure(figure);
+        if (figure) {
+            Socket.instance.placeFigure(figure);
+            if (!FigureFactor.canBuy(figure.data, this.selectFigureTypeInUI)) {
+                UiHandlers.instance.unselectFigureInUI();
+                this.selectFigureIdInUI = null;
+                this.selectFigureTypeInUI = null;
+            }
+        }
     }
 
     placeFigure(who, x, y, figureID, figureType, isBuying) {

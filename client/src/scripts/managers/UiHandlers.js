@@ -50,8 +50,8 @@ export class UiHandlers {
         UiHandlers.instance?.setIsActiveNextTurnButton(
             GameManager.instance.player.team === turn
         );
-        runWhenExist(UiHandlers.instance.disableLeftButtoms, () =>
-            UiHandlers.instance.disableLeftButtoms(
+        runWhenExist(UiHandlers.instance.disableLeftButtons, () =>
+            UiHandlers.instance.disableLeftButtons(
                 GameManager.instance.player.team !== turn
             )
         );
