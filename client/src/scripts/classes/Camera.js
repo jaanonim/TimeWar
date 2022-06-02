@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { PerspectiveCamera } from "three";
 import GameManager from "../GameManager";
+import MapCreator from "../MapCreator";
 import Settings from "../utilities/Settings";
 
 const CLAMP = new THREE.Box3(
@@ -9,7 +10,7 @@ const CLAMP = new THREE.Box3(
 );
 const PI_2 = Math.PI / 2;
 export default class Camera extends PerspectiveCamera {
-    /* CONSTS */
+    /* CONST */
     get maxRotatment() {
         return new THREE.Box3(
             new THREE.Vector3(0, this.baseRotationPosY - 1, 0.2),
@@ -18,9 +19,10 @@ export default class Camera extends PerspectiveCamera {
     }
 
     get maxMovment() {
+        const mc = MapCreator.instance;
         return new THREE.Box3(
-            new THREE.Vector3(-100, 0, -100),
-            new THREE.Vector3(100, 0, 100)
+            new THREE.Vector3(-mc.mapWidth / 2, 0, -mc.mapHeight / 2),
+            new THREE.Vector3(mc.mapWidth / 2, 0, mc.mapHeight / 2)
         );
     }
 
