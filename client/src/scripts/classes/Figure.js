@@ -121,7 +121,9 @@ export default class Figure extends THREE.Object3D {
         this.cursor.hide();
     }
 
-    makeAction(event, land) {}
+    makeAction(event, land) {
+        this.unselect();
+    }
 
     place(x, y) {
         this.mapPositionX = x;

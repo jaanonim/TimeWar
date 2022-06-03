@@ -133,6 +133,7 @@ export default class GameManager {
             if (this.selectedFigure.unHighLightMovePosition != null) {
                 this.selectedFigure.unHighLightMovePosition();
             }
+            this.selectedFigure.unselect();
             this.selectedFigure = null;
         }
         const f = this.figureCanBePlaced(land);
