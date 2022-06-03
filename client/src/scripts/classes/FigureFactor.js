@@ -55,4 +55,14 @@ export default class FigureFactor {
                 console.error("Unknown type " + typeFigure);
         }
     }
+
+    static canBuy(objData, type) {
+        if (type === FigureTypes.ARMY) {
+            return ArmyFigure.canBuy(objData);
+        }
+        if (type === FigureTypes.BUILDING) {
+            return BuildingFigure.canBuy(objData);
+        }
+        return false;
+    }
 }

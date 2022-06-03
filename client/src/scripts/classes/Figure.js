@@ -56,6 +56,7 @@ export default class Figure extends THREE.Object3D {
         this.price = data.price;
         this.takeDamage = false;
         this.highlighted = false;
+        this.data = data;
 
         this.place(positionX, positionY);
         this.setupModel(data);
@@ -120,7 +121,9 @@ export default class Figure extends THREE.Object3D {
         this.cursor.hide();
     }
 
-    makeAction(event, land) {}
+    makeAction(event, land) {
+        this.unselect();
+    }
 
     place(x, y) {
         this.mapPositionX = x;

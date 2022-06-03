@@ -4,6 +4,7 @@ import GameManager from "../GameManager";
 import FigureManager from "../managers/FigureManager";
 import { runWhenTeamIsSet } from "../utilities/RunWhenExist";
 import Figure from "./Figure";
+import FigureFactor from "./FigureFactor";
 export default class Ghost extends Object3D {
     constructor() {
         super();
@@ -51,7 +52,7 @@ export default class Ghost extends Object3D {
             data = FigureManager.instance.getFigure(f.type, f.id);
         } catch (e) {}
 
-        if (data == null) {
+        if (data == null || !FigureFactor.canBuy(data, f.type)) {
             this.setModel("");
         } else {
             this.setModel(data);

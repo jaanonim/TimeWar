@@ -133,6 +133,7 @@ export default class GameManager {
             if (this.selectedFigure.unHighLightMovePosition != null) {
                 this.selectedFigure.unHighLightMovePosition();
             }
+            this.selectedFigure.unselect();
             this.selectedFigure = null;
         }
         const f = this.figureCanBePlaced(land);
@@ -145,7 +146,14 @@ export default class GameManager {
             f.type,
             true
         );
-        Socket.instance.placeFigure(figure);
+        if (figure) {
+            Socket.instance.placeFigure(figure);
+            if (!FigureFactor.canBuy(figure.data, this.selectFigureTypeInUI)) {
+                UiHandlers.instance.unselectFigureInUI();
+                this.selectFigureIdInUI = null;
+                this.selectFigureTypeInUI = null;
+            }
+        }
     }
 
     placeFigure(who, x, y, figureID, figureType, isBuying) {
