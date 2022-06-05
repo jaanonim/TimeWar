@@ -15,7 +15,8 @@
         "socket.io-client": "^4.4.1",
         "stats-js": "^1.0.1",
         "three": "^0.139.0",
-        "threejs-shader-materials": "github:MasatoMakino/threejs-shader-materials"
+        "threejs-shader-materials": "github:MasatoMakino/threejs-shader-materials",
+        "tweenjs": "^1.0.2"
     },
     "devDependencies": {
         "@vitejs/plugin-react": "^1.0.7",

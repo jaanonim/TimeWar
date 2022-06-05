@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
 import { PlayerTeams } from "../enums/PlayerTeams";
 import GameManager from "../GameManager";
 import ModelsManager from "../managers/ModelsManager";
@@ -56,6 +57,7 @@ export default class Figure extends THREE.Object3D {
         this.price = data.price;
         this.takeDamage = false;
         this.highlighted = false;
+        this.color = [0, 0, 0];
         this.data = data;
 
         this.place(positionX, positionY);
@@ -63,6 +65,7 @@ export default class Figure extends THREE.Object3D {
 
         this.cursor = new Cursor(true);
         this.cursor.hide();
+
         GameManager.instance.sceneManager.scene.add(this.cursor);
     }
 
@@ -105,6 +108,24 @@ export default class Figure extends THREE.Object3D {
 
     update() {
         this.cursor.move(this);
+        this.model.material.emissive = new THREE.Color(...this.color);
+    }
+
+    damageAnim(callback) {
+        GameManager.instance.startAnim();
+        new TWEEN.Tween(this.color)
+            .to([0.75, 0, 0], 150)
+            .easing(TWEEN.Easing.Linear.None)
+            .onComplete(() => {
+                this.color = [0, 0, 0];
+            })
+            .repeat(5)
+            .onComplete(() => {
+                this.color = [0, 0, 0];
+                GameManager.instance.endAnim();
+                if (callback) callback();
+            })
+            .start();
     }
 
     lateUpdate() {
@@ -136,14 +157,16 @@ export default class Figure extends THREE.Object3D {
     }
 
     makeDamage(damage) {
-        this.lives -= damage;
-        this.takeDamage = true;
-        if (this.lives <= 0) {
-            GameManager.instance.removeFigure(
-                this.mapPositionX,
-                this.mapPositionY
-            );
-        }
+        this.damageAnim(() => {
+            this.lives -= damage;
+            this.takeDamage = true;
+            if (this.lives <= 0) {
+                GameManager.instance.removeFigure(
+                    this.mapPositionX,
+                    this.mapPositionY
+                );
+            }
+        });
     }
 
     capture() {}
