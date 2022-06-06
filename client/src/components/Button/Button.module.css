@@ -1,44 +1,61 @@
 .button {
-	width: var(--w);
-	height: var(--h);
+    width: var(--w);
+    height: var(--h);
 
-	-webkit-box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
-	-moz-box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
-	box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
-	border: var(--border-size) solid var(--borderColor);
-	display: block;
-	text-decoration: none;
-	background-color: var(--color);
-	color: var(--text);
-	transition: all 0.1s ease-in-out;
-	letter-spacing: 2px;
-	font-variant: small-caps;
-	cursor: pointer;
+    -webkit-box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
+    -moz-box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
+    box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
+    border: var(--border-size) solid var(--borderColor);
+    display: block;
+    text-decoration: none;
+    background-color: var(--color);
+    color: var(--text);
+    transition: all 0.1s ease-in-out;
+    letter-spacing: 2px;
+    font-variant: small-caps;
+    cursor: pointer;
 }
 
 .button:hover {
-	background-color: var(--hover);
-	border: var(--border-size) solid var(--borderColorHover);
-	transform: translate(var(--shadow-s), var(--shadow-s));
-	-webkit-box-shadow: 0px 0px 0px 0px var(--shadow);
-	-moz-box-shadow: 0px 0px 0px 0px var(--shadow);
-	box-shadow: 0px 0px 0px 0px var(--shadow);
+    background-color: var(--hover);
+    border: var(--border-size) solid var(--borderColorHover);
+    transform: translate(var(--shadow-s), var(--shadow-s));
+    -webkit-box-shadow: 0px 0px 0px 0px var(--shadow);
+    -moz-box-shadow: 0px 0px 0px 0px var(--shadow);
+    box-shadow: 0px 0px 0px 0px var(--shadow);
 }
 
 .buttonDisabled {
-	width: var(--w);
-	height: var(--h);
-	background-color: var(--hover);
-	border: var(--border-size) solid var(--borderColorHover);
-	transform: translate(var(--shadow-s), var(--shadow-s));
-	-webkit-box-shadow: 0px 0px 0px 0px var(--shadow);
-	-moz-box-shadow: 0px 0px 0px 0px var(--shadow);
-	box-shadow: 0px 0px 0px 0px var(--shadow);
-	display: block;
-	text-decoration: none;
-	color: var(--borderColorHover);
-	transition: all 0.1s ease-in-out;
-	letter-spacing: 2px;
-	font-variant: small-caps;
-	cursor: pointer;
+    width: var(--w);
+    height: var(--h);
+    background-color: var(--hover);
+    border: var(--border-size) solid var(--borderColorHover);
+    transform: translate(var(--shadow-s), var(--shadow-s));
+    -webkit-box-shadow: 0px 0px 0px 0px var(--shadow);
+    -moz-box-shadow: 0px 0px 0px 0px var(--shadow);
+    box-shadow: 0px 0px 0px 0px var(--shadow);
+    display: block;
+    text-decoration: none;
+    color: var(--borderColorHover);
+    transition: all 0.1s ease-in-out;
+    letter-spacing: 2px;
+    font-variant: small-caps;
+    cursor: pointer;
+}
+
+.inactive {
+    width: var(--w);
+    height: var(--h);
+    background-color: var(--hover);
+    border: var(--border-size) solid var(--borderColorHover);
+    -webkit-box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
+    -moz-box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
+    box-shadow: var(--shadow-s) var(--shadow-s) 0px 0px var(--shadow);
+    display: block;
+    text-decoration: none;
+    color: var(--borderColorHover);
+    transition: all 0.1s ease-in-out;
+    letter-spacing: 2px;
+    font-variant: small-caps;
+    cursor: pointer;
 }

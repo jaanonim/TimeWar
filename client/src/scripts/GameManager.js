@@ -40,7 +40,18 @@ export default class GameManager {
         this.selectFigureIdInUI = null;
         this.selectFigureTypeInUI = null;
         this.isDisplayInit = false;
+        this.isInAnim = false;
         this.clock = new Clock();
+    }
+
+    startAnim() {
+        this.isInAnim = true;
+        UiHandlers.instance.setInAnim(true);
+    }
+
+    endAnim() {
+        this.isInAnim = false;
+        UiHandlers.instance.setInAnim(false);
     }
 
     async initDisplay(displayElement, roomCode) {

@@ -1,5 +1,6 @@
 import Stats from "stats-js";
 import * as THREE from "three";
+import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
 import Camera from "./classes/Camera";
 import Cursor from "./classes/Cursor";
 import Settings from "./utilities/Settings";
@@ -66,6 +67,7 @@ export class SceneInitializator {
         this.scene.children.forEach((child) => {
             if (child.update !== undefined) child.update(delta);
         });
+        TWEEN.update();
         this.camera.update(delta, this.scene);
         this.scene.children.forEach((child) => {
             if (child.lateUpdate !== undefined) child.lateUpdate(delta);
