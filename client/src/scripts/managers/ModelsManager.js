@@ -31,7 +31,13 @@ export default class ModelsManager {
             ["red", "blue"]
         );
         this.models.land = this.loadModel("models/Land/Land/Land");
+        this.models.land2 = this.loadModel("models/Land/Land2/Land2");
         this.models.mountain = this.loadModel("models/Land/Mountain/Mountain");
+        this.models.mountain2 = this.loadModel(
+            "models/Land/Mountain2/Mountain2"
+        );
+        this.models.see = this.loadModel("models/Land/See/See");
+        this.models.see2 = this.loadModel("models/Land/See2/See2");
 
         for (const [key, value] of Object.entries(this.models)) {
             this.models[key] = await value;

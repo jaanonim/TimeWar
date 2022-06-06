@@ -1,5 +1,6 @@
 export const MapLandTypes = {
+    NOTHING: -1,
+    SEE: 0,
     LAND: 1,
-    NOTHING: 0,
-    MOUNTAIN: 2
+    MOUNTAIN: 2,
 };
