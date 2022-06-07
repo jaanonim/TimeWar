@@ -6,6 +6,7 @@ export default class ModelsManager {
     static models = {};
 
     static async loadModels() {
+        //Figures
         this.models.arachnoid = this.loadModel(
             "models/Figures/Arachnodroid/Arachnoid",
             ["red", "blue"]
@@ -14,6 +15,28 @@ export default class ModelsManager {
             "models/Figures/ReconBot/ReconBot",
             ["red", "blue"]
         );
+        this.models.MechaTrooper = this.loadModel(
+            "models/Figures/MechaTrooper/MechaTrooper",
+            ["red", "blue"]
+        );
+        this.models.StarMarineTrooper = this.loadModel(
+            "models/Figures/StarMarineTrooper/StarMarineTrooper",
+            ["red", "blue"]
+        );
+        this.models.RedFighter = this.loadModel(
+            "models/Figures/RedFighter/RedFighter",
+            ["red", "blue"]
+        );
+        this.models.QuadrupedTank = this.loadModel(
+            "models/Figures/QuadrupedTank/QuadrupedTank",
+            ["red", "blue"]
+        );
+        this.models.CamoStellarJet = this.loadModel(
+            "models/Figures/CamoStellarJet/CamoStellarJet",
+            ["red", "blue"]
+        );
+
+        // Buildings
         this.models.factory = this.loadModel(
             "models/Buildings/Factory/Factory",
             ["red", "blue"]
@@ -30,9 +53,18 @@ export default class ModelsManager {
             "models/Buildings/Barracks/Barracks",
             ["red", "blue"]
         );
-        this.models.land = this.loadModel("models/Land/Land/Land");
-        this.models.mountain = this.loadModel("models/Land/Mountain/Mountain");
 
+        // Land
+        this.models.land = this.loadModel("models/Land/Land/Land");
+        this.models.land2 = this.loadModel("models/Land/Land2/Land2");
+        this.models.mountain = this.loadModel("models/Land/Mountain/Mountain");
+        this.models.mountain2 = this.loadModel(
+            "models/Land/Mountain2/Mountain2"
+        );
+        this.models.see = this.loadModel("models/Land/See/See");
+        this.models.see2 = this.loadModel("models/Land/See2/See2");
+
+        // -----------------------------------------------------------
         for (const [key, value] of Object.entries(this.models)) {
             this.models[key] = await value;
         }
