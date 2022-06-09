@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GameScreen from "../../components/GameScreen";
 import Input from "../../components/Input";
 import Loading from "../../components/Loading";
 import Modal from "../../components/Modal";
 import UiOverlay from "../../components/UiOverlay";
 import useToast from "../../hooks/useToast";
+import GameManager from "../../scripts/GameManager";
 import { UiHandlers } from "../../scripts/managers/UiHandlers";
 import styles from "./GamePage.module.css";
 
@@ -15,6 +16,13 @@ function GamePage() {
     const [isLoading, setIsLoading] = useState(true);
     UiHandlers.instance.setIsLoading = setIsLoading;
     UiHandlers.instance.setInfoRoomPanel = setInfoPanelEnable;
+    useEffect(() => {
+        return () => {
+            console.log("GameManager unmount");
+            GameManager.instance.destroy();
+        };
+    }, []);
+
     const queryParams = new URLSearchParams(window.location.search);
     let roomCode = queryParams.get("room");
     return (

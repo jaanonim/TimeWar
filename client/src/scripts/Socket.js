@@ -12,7 +12,13 @@ export default class Socket {
     static instance = null;
 
     constructor(room) {
-        if (Socket.instance != null) return null;
+        if (Socket.instance != null) {
+            if (!this.init && this.socket && !this.socket.connected) {
+                this.socket.connect();
+            }
+            return;
+        }
+        this.init = true;
         console.log("ROOM NUMBER", room);
         Socket.instance = this;
         this.socket = io(
@@ -24,8 +30,23 @@ export default class Socket {
                 },
             }
         );
+
         this.room = room;
         this.setup();
+        this.waitForConnection(() => {
+            this.init = false;
+        });
+    }
+
+    waitForConnection(callback) {
+        setTimeout(() => {
+            if (this.socket.connected) {
+                callback();
+            } else {
+                console.log("Waiting for connection...");
+                this.waitForConnection(callback);
+            }
+        }, 100);
     }
 
     placeFigure(figure) {
@@ -63,9 +84,12 @@ export default class Socket {
     setup() {
         this.socket.on("connect", () => {
             console.log("connect", this.socket.id);
+            UiHandlers.instance.setIsLoading(false);
         });
 
         this.socket.on("startGame", async (data) => {
+            console.log("START");
+
             const player = GameManager.instance.player;
             player.setTeam(data.team);
             player.setSupply(data.player.supplies);
@@ -94,6 +118,9 @@ export default class Socket {
             UiHandlers.instance.updateSupply();
             await runWhenExist(UiHandlers.instance.setInfoRoomPanel, () =>
                 UiHandlers.instance.setInfoRoomPanel(false)
+            );
+            await runWhenExist(UiHandlers.instance.unsetDisconnectTimer, () =>
+                UiHandlers.instance.unsetDisconnectTimer()
             );
         });
 
@@ -128,15 +155,31 @@ export default class Socket {
             GameManager.instance.setTurn(turn.msg);
         });
 
-        this.socket.on("endGame", (data) => {
+        this.socket.on("endGame", async (data) => {
+            await runWhenExist(UiHandlers.instance.unsetDisconnectTimer, () =>
+                UiHandlers.instance.unsetDisconnectTimer()
+            );
             UiHandlers.instance.setEndPanel(
                 true,
                 data.who === GameManager.instance.player.team
             );
         });
 
+        this.socket.on("playerDisconnect", (data) => {
+            console.log(data);
+            UiHandlers.instance.setDisconnectTimer(data.timer, data.nick);
+        });
+
         this.socket.on("disconnect", () => {
             console.log("disconnect");
         });
+
+        this.socket.on("error", (error) => {
+            console.log("error", error);
+        });
+    }
+
+    destroy() {
+        this.socket.disconnect();
     }
 }

@@ -54,14 +54,16 @@ export default class GameManager {
     }
 
     async initDisplay(displayElement, roomCode) {
-        if (this.isDisplayInit) return;
-        this.isDisplayInit = true;
-        await ModelsManager.loadModels();
-        this.sceneManager = await new SceneInitializator(displayElement);
-        this.mouseKeyboardManager = new MouseKeyboardManager(displayElement);
-        this.labelsManager = await new LabelsManager(displayElement);
-        this.update();
-        UiHandlers.instance.setIsLoading(false);
+        if (!this.isDisplayInit) {
+            this.isDisplayInit = true;
+            await ModelsManager.loadModels();
+            this.sceneManager = await new SceneInitializator(displayElement);
+            this.mouseKeyboardManager = new MouseKeyboardManager(
+                displayElement
+            );
+            this.labelsManager = await new LabelsManager(displayElement);
+            this.update();
+        }
         new Socket(roomCode);
     }
 
@@ -180,5 +182,9 @@ export default class GameManager {
         this.figuries = this.figuries.filter((fig) => fig !== figure);
         figure.onDestroy();
         MapCreator.instance.mapObjects[x][y].figure = null;
+    }
+
+    destroy() {
+        Socket.instance.destroy();
     }
 }

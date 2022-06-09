@@ -1,7 +1,11 @@
 const Map = require("./Map");
 const Figures = require("./Figures");
 const Player = require("./Player");
-const {runWhenUnlock} = require("../utils/asyncSync");
+const { runWhenUnlock } = require("../utils/asyncSync");
+
+//TODO: move to some settings
+const KICK_TIME = 100; // in seconds
+
 module.exports = class Room {
     constructor(name, settings) {
         this.settings = settings;
@@ -147,13 +151,52 @@ module.exports = class Room {
         }
     }
 
+    waitForReconnect(player) {
+        setTimeout(() => {
+            if (!this.bluePlayer.isConnect || !this.redPlayer.isConnect) {
+                if (!this.bluePlayer.isConnect && !this.redPlayer.isConnect)
+                    return;
+                this.winTimer--;
+                if (this.winTimer > 0) {
+                    player.socket.emit("playerDisconnect", {
+                        nick: this.bluePlayer.nick,
+                        timer: this.winTimer,
+                    });
+                    this.waitForReconnect(player);
+                } else {
+                    this.win(
+                        this.bluePlayer.isConnect
+                            ? this.bluePlayer
+                            : this.redPlayer
+                    );
+                }
+            }
+        }, 1000);
+    }
+
     disconnectPlayer(player) {
         if (this.bluePlayer && this.bluePlayer.socket.id === player) {
             this.bluePlayer.isConnect = false;
             this.isStartGame = false;
+            if (this.redPlayer) {
+                this.winTimer = KICK_TIME;
+                this.redPlayer.socket.emit("playerDisconnect", {
+                    nick: this.bluePlayer.nick,
+                    timer: this.winTimer,
+                });
+                this.waitForReconnect(this.redPlayer);
+            }
         } else if (this.redPlayer && this.redPlayer.socket.id === player) {
             this.redPlayer.isConnect = false;
             this.isStartGame = false;
+            if (this.bluePlayer) {
+                this.winTimer = KICK_TIME;
+                this.bluePlayer.socket.emit("playerDisconnect", {
+                    nick: this.redPlayer.nick,
+                    timer: this.winTimer,
+                });
+                this.waitForReconnect(this.bluePlayer);
+            }
         }
 
         return this.bluePlayer?.isConnect || this.redPlayer?.isConnect;

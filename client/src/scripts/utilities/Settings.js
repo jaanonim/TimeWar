@@ -5,8 +5,8 @@ const defaultSettings = {
     "renderer.antialias": true,
     "renderer.shadowMap.enabled": true,
     "renderer.pixelRatio": 1,
-    "shadow.mapSize.width": 64,
-    "shadow.mapSize.height": 64,
+    "shadow.mapSize.width": 8,
+    "shadow.mapSize.height": 8,
 };
 
 export default class Settings {
