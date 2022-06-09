@@ -10,7 +10,6 @@ import { UiHandlers } from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
 import { SceneInitializator } from "./SceneInitializator";
 import Socket from "./Socket";
-import { runWhenExist } from "./utilities/RunWhenExist";
 
 export default class GameManager {
     static _instance = null;
@@ -62,16 +61,8 @@ export default class GameManager {
         this.mouseKeyboardManager = new MouseKeyboardManager(displayElement);
         this.labelsManager = await new LabelsManager(displayElement);
         this.update();
+        UiHandlers.instance.setIsLoading(false);
         new Socket(roomCode);
-    }
-
-    async startGame() {
-        console.log("START");
-        MapCreator.instance.createMap(this.sceneManager.scene);
-        UiHandlers.instance.updateSupply();
-        await runWhenExist(UiHandlers.instance.setInfoRoomPanel, () =>
-            UiHandlers.instance.setInfoRoomPanel(false)
-        );
     }
 
     update() {
