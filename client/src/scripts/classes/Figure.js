@@ -190,6 +190,7 @@ export default class Figure extends THREE.Object3D {
 
     onLeftClick(event) {
         let gm = GameManager.instance;
+        gm.unselectFigureInUI();
         if (gm.selectedFigure === this) {
             gm.selectedFigure.unselect();
         } else {

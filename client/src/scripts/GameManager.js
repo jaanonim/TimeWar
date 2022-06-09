@@ -108,6 +108,7 @@ export default class GameManager {
         }
         UiHandlers.instance.updateSupply();
         this.figuries.forEach((figure) => figure?.renew());
+        this.unselectFigureInUI();
     }
 
     loadFigures(figures) {
@@ -153,11 +154,15 @@ export default class GameManager {
         if (figure) {
             Socket.instance.placeFigure(figure);
             if (!FigureFactor.canBuy(figure.data, this.selectFigureTypeInUI)) {
-                UiHandlers.instance.unselectFigureInUI();
-                this.selectFigureIdInUI = null;
-                this.selectFigureTypeInUI = null;
+                this.unselectFigureInUI();
             }
         }
+    }
+
+    unselectFigureInUI() {
+        UiHandlers.instance.unselectFigureInUI();
+        this.selectFigureIdInUI = null;
+        this.selectFigureTypeInUI = null;
     }
 
     placeFigure(who, x, y, figureID, figureType, isBuying) {
