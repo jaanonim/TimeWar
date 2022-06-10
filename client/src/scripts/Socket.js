@@ -181,7 +181,8 @@ export default class Socket {
             } else {
                 UiHandlers.instance.sendToast({
                     message: `If you do nothing in the next turn, you will be disconnected.`,
-                    dismissTime: 10000,
+                    type: "error",
+                    dismissTime: 5000,
                 });
             }
         });

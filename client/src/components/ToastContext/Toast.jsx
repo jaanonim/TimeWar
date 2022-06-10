@@ -1,6 +1,6 @@
-import React, {useContext, useEffect} from "react";
+import { useContext, useEffect } from "react";
 import styles from "./Toast.module.css";
-import {ToastContext} from "./ToastContext";
+import { ToastContext } from "./ToastContext";
 
 const Toast = (props) => {
     const [t, st] = useContext(ToastContext);
@@ -11,11 +11,16 @@ const Toast = (props) => {
             st(toast);
         }, props.toast.dismissTime);
         return () => {
-            if (!t.current.some((t) => t === props.toast)) clearTimeout(interval);
+            if (!t.current.some((t) => t === props.toast))
+                clearTimeout(interval);
         };
     }, []);
 
-    return <div className={styles.box}>{props.toast.message}</div>;
+    return (
+        <div className={styles.box + " " + styles[props.toast.type]}>
+            {props.toast.message}
+        </div>
+    );
 };
 
 export default Toast;
