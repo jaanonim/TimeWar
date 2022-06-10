@@ -20,7 +20,13 @@ module.exports = {
 
         io.on("connection", async (socket) => {
             let roomName = socket.handshake.query.room;
-            console.log(roomName, socket.handshake.query.nick);
+            console.log(
+                "CONNECTED",
+                "room:",
+                roomName,
+                "nick:",
+                socket.handshake.query.nick
+            );
             let room = await runWhenUnlock("createRoom", async () => {
                 let room = rooms.find((r) => r.name === roomName);
                 if (room == null) {
@@ -31,14 +37,16 @@ module.exports = {
                 }
                 return room;
             });
+
             if ((await room.addPlayer(socket)) == null) {
                 socket.disconnect();
                 return;
             }
+
             socket.join(roomName);
 
             if (await room.startGame()) {
-                console.log("game started");
+                console.log("START GAME");
                 room.redPlayer.socket.emit("startGame", {
                     team: "RED",
                     player: room.redPlayer.getPlayerData(),
@@ -48,7 +56,7 @@ module.exports = {
                     figures: room.figures.getFigures(),
                     winTarget: room.winTarget,
                     opponentNick: room.bluePlayer.nick,
-                    labId: room.settings.labId
+                    labId: room.settings.labId,
                 });
                 room.bluePlayer.socket.emit("startGame", {
                     team: "BLUE",
@@ -63,23 +71,28 @@ module.exports = {
                 });
             }
             socket.on("placeFigure", (figure) => {
+                room.hasMoved = true;
                 room.placeFigure(socket.id, figure);
             });
             socket.on("moveFigure", (figure) => {
+                room.hasMoved = true;
                 room.moveFigure(socket.id, figure);
             });
             socket.on("attackFigure", (figure) => {
+                room.hasMoved = true;
                 room.attackFigure(socket.id, figure);
             });
             socket.on("endTurn", () => {
+                room.hasMoved = true;
                 room.endTurn(socket.id);
             });
 
             socket.on("disconnecting", () => {
+                console.log("DISCONNECTING", socket.id);
                 if (!room.disconnectPlayer(socket.id)) {
+                    console.log("DROP ROOM:", room.name);
                     rooms = rooms.filter((r) => r.name !== room.name);
                 }
-                console.log("disconnecting ", socket.id);
             });
         });
     },

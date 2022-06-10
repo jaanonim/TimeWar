@@ -1,4 +1,4 @@
-.loading{
+.loading {
     text-align: center;
     display: flex;
     justify-content: center;
@@ -9,4 +9,9 @@
     top: 0;
     left: 0;
     font-size: 2rem;
+    z-index: 1000;
+    padding: 0;
+    margin: 0;
+    background-color: var(--background);
+    color: var(--text);
 }

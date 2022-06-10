@@ -3,6 +3,7 @@ module.exports = class Player {
         this.room = room;
         this.nick = nick;
         this.isConnect = true;
+        this.isIdle = false;
         this.supplies = {
             land_army: {
                 supply: this.room.settings.supply.land_army,
@@ -40,6 +41,8 @@ module.exports = class Player {
         this.winProgress++;
         if (this.winProgress >= this.room.winTarget) {
             this.room.win(this);
+            return true;
         }
+        return false;
     }
 };
