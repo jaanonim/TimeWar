@@ -4,7 +4,7 @@ import styles from "./FigurePlace.module.css";
 
 function FigurePlace({ isSelected, figure, onClick, disabled = true }) {
     return (
-        <Tooltip>
+        <Tooltip figure={figure}>
             <div
                 className={
                     styles.box +

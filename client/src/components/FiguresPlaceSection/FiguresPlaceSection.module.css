@@ -1,23 +1,24 @@
 .items {
-	width: 100%;
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-gap: 0;
-	padding: 1rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 0;
+    padding: 1rem;
 }
 
 .header {
-	width: 70%;
-	margin: 0;
-	padding: 1rem 1rem 0 1rem;
-	display: inline-block;
+    width: 70%;
+    margin: 0;
+    padding: 1rem 1rem 0 1rem;
+    display: inline-block;
+    font-size: 2rem;
 }
 
 .number {
-	display: inline-block;
-	font-size: 1.5rem;
-	width: 30%;
-	margin: 0;
-	padding: 0 1rem 0 1rem;
-	text-align: right;
+    display: inline-block;
+    font-size: 1.5rem;
+    width: 30%;
+    margin: 0;
+    padding: 0 1rem 0 1rem;
+    text-align: right;
 }

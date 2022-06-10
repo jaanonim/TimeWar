@@ -1,14 +1,17 @@
 import styles from "./Tooltip.module.css";
 
-function Tooltip({ children }) {
+function Tooltip({ children, figure }) {
     return (
         <div className={styles.wrapper}>
             {children}
             <div className={styles.box}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Asperiores repudiandae libero dolores? Perspiciatis, maiores?
-                Veritatis ea, quidem itaque asperiores earum, maiores ipsum vero
-                sapiente, odit pariatur nisi laborum quae inventore!
+                <h3>{figure.name}</h3>
+                <p>{figure.description}</p>
+                <ul>
+                    <li>Price: {figure.price}</li>
+                    <li>Lives: {figure.maxLives}</li>
+                    {figure.damage ? <li>Damage: {figure.damage}</li> : null}
+                </ul>
             </div>
         </div>
     );

@@ -1,15 +1,31 @@
 .box {
     position: fixed;
-    width: 15vw;
     height: auto;
+    max-width: 25vw;
     background: var(--secend-background);
     z-index: 2;
     display: none;
     font-size: 1.5rem;
     transform: translateX(calc((20vw - 2rem) / 3))
         translateY(calc((20vw - 4rem) / (0 - 3)));
-    padding: 0.5rem;
+    padding: 1rem;
     border: var(--border-size) solid var(--text);
+}
+
+.box h3 {
+    color: var(--main);
+    padding: 0;
+    margin: 0;
+}
+
+.box p {
+    padding: 0;
+    margin: 0;
+}
+
+.box ul {
+    padding: 0;
+    margin: 0.5rem 0.5rem 0.5rem 1rem;
 }
 
 .wrapper {
