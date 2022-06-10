@@ -12,14 +12,16 @@ export default class Socket {
     static instance = null;
 
     constructor(room) {
-        if (Socket.instance != null) {
+        console.log("ROOM NUMBER", room);
+
+        if (Socket.instance != null && Socket.instance.room == room) {
             if (!this.init && this.socket && !this.socket.connected) {
                 this.socket.connect();
             }
             return;
         }
+
         this.init = true;
-        console.log("ROOM NUMBER", room);
         Socket.instance = this;
         this.socket = io(
             environment === "development" ? developmentUrl : productionUrl,
@@ -181,7 +183,8 @@ export default class Socket {
             } else {
                 UiHandlers.instance.sendToast({
                     message: `If you do nothing in the next turn, you will be disconnected.`,
-                    dismissTime: 10000,
+                    type: "error",
+                    dismissTime: 5000,
                 });
             }
         });

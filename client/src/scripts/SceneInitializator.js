@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
 import Camera from "./classes/Camera";
 import Cursor from "./classes/Cursor";
+import MapBase from "./classes/MapBase";
 import Settings from "./utilities/Settings";
 
 export class SceneInitializator {
@@ -36,6 +37,8 @@ export class SceneInitializator {
         //Inits
         this.initHelpers();
         this.initShadows(light);
+
+        this.scene.add(new MapBase());
     }
 
     initHelpers() {

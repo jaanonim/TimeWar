@@ -10,7 +10,7 @@ import { UiHandlers } from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
 import { SceneInitializator } from "./SceneInitializator";
 import Socket from "./Socket";
-
+import { getRandomString } from "./utilities/Random";
 export default class GameManager {
     static _instance = null;
 
@@ -27,6 +27,10 @@ export default class GameManager {
 
     constructor() {
         window.GameManager = this;
+
+        if (!sessionStorage.getItem("nick"))
+            sessionStorage.setItem("nick", "Anonymous_" + getRandomString(4));
+
         console.log("NICK", sessionStorage.getItem("nick"));
         this.player = new Player(sessionStorage.getItem("nick"), "blue");
         this.attackOption = false;

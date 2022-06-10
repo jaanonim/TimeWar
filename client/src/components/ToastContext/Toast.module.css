@@ -1,11 +1,19 @@
 .box {
-  background-color: var(--main-ligth);
-  margin: 1rem;
-  font-size: 1.75rem;
-  padding: 0.2rem;
-  -webkit-box-shadow: var(--shadow-size) var(--shadow-size) 0px 0px
-    var(--shadow-color);
-  -moz-box-shadow: var(--shadow-size) var(--shadow-size) 0px 0px
-    var(--shadow-color);
-  box-shadow: var(--shadow-size) var(--shadow-size) 0px 0px var(--shadow-color);
+    margin: 1rem;
+    font-size: 1.75rem;
+    padding: 0.2rem;
+    -webkit-box-shadow: var(--shadow-size) var(--shadow-size) 0px 0px
+        var(--shadow-color);
+    -moz-box-shadow: var(--shadow-size) var(--shadow-size) 0px 0px
+        var(--shadow-color);
+    box-shadow: var(--shadow-size) var(--shadow-size) 0px 0px
+        var(--shadow-color);
+}
+
+.info {
+    background-color: var(--main-ligth);
+}
+
+.error {
+    background-color: var(--main-danger);
 }
