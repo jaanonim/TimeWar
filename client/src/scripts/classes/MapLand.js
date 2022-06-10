@@ -33,7 +33,6 @@ export default class MapLand extends THREE.Object3D {
 
         //PATH FINDING DATA
         this.prev = null;
-        this.next = null;
         this.distance = null;
 
         this.createBorders();
@@ -142,7 +141,6 @@ export default class MapLand extends THREE.Object3D {
 
     unHighLight() {
         //reset path finding variables
-        this.next = null;
         this.prev = null;
         this.distance = 0;
     }

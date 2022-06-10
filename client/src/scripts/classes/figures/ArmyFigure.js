@@ -226,17 +226,15 @@ export default class ArmyFigure extends Figure {
             }
             return;
         }
-        console.log(this.moveMask);
         PathFinding.generateMovePosition(
             this.mapPositionX,
             this.mapPositionY,
-            this.moveMask,
+            [...this.moveMask],
             this
         );
     }
 
     unHighLightMovePosition() {
-        console.log(this.moveMask);
         for (let x = 0; x < this.moveMask.length; x++) {
             for (let y = 0; y < this.moveMask[0].length; y++) {
                 let xPos =
@@ -245,31 +243,10 @@ export default class ArmyFigure extends Figure {
                     this.mapPositionY - (this.moveMask[0].length - 1) / 2 + y;
                 if (MapCreator.instance.mapObjects[xPos] == null) break;
                 let object = MapCreator.instance.mapObjects[xPos][yPos];
-                console.log(x, y);
-                if (x === 5 && y === 1) {
-                    console.log(
-                        x,
-                        y,
-                        this.moveMask,
-                        this.moveMask[x][y],
-                        object
-                    );
-                }
                 if (object != null) {
                     if (this.moveMask[x][y]) {
                         object.hightLightType = HighLightType.NONE;
                         object.unHighLight();
-                        if (x === 5 && y === 1) {
-                            console.log(
-                                "2",
-                                x,
-                                y,
-                                this.moveMask,
-                                this.moveMask[x][y],
-                                object
-                            );
-                            object.update();
-                        }
                     }
                 }
             }
