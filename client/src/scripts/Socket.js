@@ -83,7 +83,7 @@ export default class Socket {
 
     setup() {
         this.socket.on("connect", () => {
-            console.log("connect", this.socket.id);
+            console.log("CONNECT", this.socket.id);
             UiHandlers.instance.setIsLoading(false);
         });
 
@@ -152,7 +152,6 @@ export default class Socket {
         });
 
         this.socket.on("changeTurn", (turn) => {
-            console.log("changeTurn", turn);
             GameManager.instance.setTurn(turn.msg);
         });
 
@@ -167,7 +166,6 @@ export default class Socket {
         });
 
         this.socket.on("playerDisconnect", (data) => {
-            console.log(data);
             UiHandlers.instance.setDisconnectTimer(data.timer, data.nick);
         });
 
@@ -189,11 +187,11 @@ export default class Socket {
         });
 
         this.socket.on("disconnect", () => {
-            console.log("disconnect");
+            console.log("DISCONNECT");
         });
 
         this.socket.on("error", (error) => {
-            console.log("error", error);
+            console.log("ERROR", error);
         });
     }
 

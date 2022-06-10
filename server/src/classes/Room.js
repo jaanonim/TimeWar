@@ -137,7 +137,6 @@ module.exports = class Room {
             figure.takeDamage = false;
             figure.isAttack = false;
         });
-        console.log("end turn", this.turn);
         this.redPlayer.socket.emit("changeTurn", { msg: this.turn });
         this.bluePlayer.socket.emit("changeTurn", { msg: this.turn });
         this.startTurn();
