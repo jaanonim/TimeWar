@@ -5,7 +5,7 @@ const { runWhenUnlock } = require("../utils/asyncSync");
 
 //TODO: move to some settings
 const KICK_TIME = 100; // in seconds
-const TURN_TIME = 10; // in seconds
+const TURN_TIME = 100; // in seconds
 
 module.exports = class Room {
     constructor(name, settings) {
