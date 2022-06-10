@@ -1,0 +1,21 @@
+.box {
+    position: fixed;
+    width: 15vw;
+    height: auto;
+    background: var(--secend-background);
+    z-index: 2;
+    display: none;
+    font-size: 1.5rem;
+    transform: translateX(calc((20vw - 2rem) / 3))
+        translateY(calc((20vw - 4rem) / (0 - 3)));
+    padding: 0.5rem;
+    border: var(--border-size) solid var(--text);
+}
+
+.wrapper {
+    position: relative;
+}
+
+.wrapper:hover .box {
+    display: block;
+}
