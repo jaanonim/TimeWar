@@ -10,7 +10,6 @@ import { UiHandlers } from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
 import { SceneInitializator } from "./SceneInitializator";
 import Socket from "./Socket";
-import { runWhenExist } from "./utilities/RunWhenExist";
 
 export default class GameManager {
     static _instance = null;
@@ -55,23 +54,17 @@ export default class GameManager {
     }
 
     async initDisplay(displayElement, roomCode) {
-        if (this.isDisplayInit) return;
-        this.isDisplayInit = true;
-        await ModelsManager.loadModels();
-        this.sceneManager = await new SceneInitializator(displayElement);
-        this.mouseKeyboardManager = new MouseKeyboardManager(displayElement);
-        this.labelsManager = await new LabelsManager(displayElement);
-        this.update();
+        if (!this.isDisplayInit) {
+            this.isDisplayInit = true;
+            await ModelsManager.loadModels();
+            this.sceneManager = await new SceneInitializator(displayElement);
+            this.mouseKeyboardManager = new MouseKeyboardManager(
+                displayElement
+            );
+            this.labelsManager = await new LabelsManager(displayElement);
+            this.update();
+        }
         new Socket(roomCode);
-    }
-
-    async startGame() {
-        console.log("START");
-        MapCreator.instance.createMap(this.sceneManager.scene);
-        UiHandlers.instance.updateSupply();
-        await runWhenExist(UiHandlers.instance.setInfoRoomPanel, () =>
-            UiHandlers.instance.setInfoRoomPanel(false)
-        );
     }
 
     update() {
@@ -115,6 +108,7 @@ export default class GameManager {
         }
         UiHandlers.instance.updateSupply();
         this.figuries.forEach((figure) => figure?.renew());
+        this.unselectFigureInUI();
     }
 
     loadFigures(figures) {
@@ -160,11 +154,15 @@ export default class GameManager {
         if (figure) {
             Socket.instance.placeFigure(figure);
             if (!FigureFactor.canBuy(figure.data, this.selectFigureTypeInUI)) {
-                UiHandlers.instance.unselectFigureInUI();
-                this.selectFigureIdInUI = null;
-                this.selectFigureTypeInUI = null;
+                this.unselectFigureInUI();
             }
         }
+    }
+
+    unselectFigureInUI() {
+        UiHandlers.instance.unselectFigureInUI();
+        this.selectFigureIdInUI = null;
+        this.selectFigureTypeInUI = null;
     }
 
     placeFigure(who, x, y, figureID, figureType, isBuying) {
@@ -189,5 +187,9 @@ export default class GameManager {
         this.figuries = this.figuries.filter((fig) => fig !== figure);
         figure.onDestroy();
         MapCreator.instance.mapObjects[x][y].figure = null;
+    }
+
+    destroy() {
+        Socket.instance.destroy();
     }
 }

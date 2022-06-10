@@ -10,9 +10,9 @@ export default class Player {
         this.team = "";
         this.winProgress = 0;
         this.supplies = {};
-        this.supplies[SupplyTypes.LAND_ARMY] = new Supply(20);
-        this.supplies[SupplyTypes.AIR_ARMY] = new Supply(20);
-        this.supplies[SupplyTypes.BUILDING] = new Supply(10);
+        this.supplies[SupplyTypes.LAND_ARMY] = new Supply();
+        this.supplies[SupplyTypes.AIR_ARMY] = new Supply();
+        this.supplies[SupplyTypes.BUILDING] = new Supply();
     }
 
     setTeam(team) {

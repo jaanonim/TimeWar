@@ -1,7 +1,12 @@
 const Map = require("./Map");
 const Figures = require("./Figures");
 const Player = require("./Player");
-const {runWhenUnlock} = require("../utils/asyncSync");
+const { runWhenUnlock } = require("../utils/asyncSync");
+
+//TODO: move to some settings
+const KICK_TIME = 100; // in seconds
+const TURN_TIME = 100; // in seconds
+
 module.exports = class Room {
     constructor(name, settings) {
         this.settings = settings;
@@ -11,6 +16,8 @@ module.exports = class Room {
         this.redPlayer = null;
         this.isStartGame = false;
         this.turn = "RED";
+        this.timer = 0;
+        this.hasMoved = false;
         this.map = new Map();
         this.figures = new Figures();
     }
@@ -86,6 +93,7 @@ module.exports = class Room {
     async startGame() {
         if (!this.canStartGame()) return false;
         this.isStartGame = true;
+        this.startTurn();
         return true;
     }
 
@@ -116,11 +124,11 @@ module.exports = class Room {
 
     endTurn(player) {
         if (this.bluePlayer.socket.id === player) {
-            this.bluePlayer.addResearchPoint();
+            if (this.bluePlayer.addResearchPoint()) return;
             this.bluePlayer.renewSupplies();
             this.turn = "RED";
         } else {
-            this.redPlayer.addResearchPoint();
+            if (this.redPlayer.addResearchPoint()) return;
             this.redPlayer.renewSupplies();
             this.turn = "BLUE";
         }
@@ -129,7 +137,60 @@ module.exports = class Room {
             figure.takeDamage = false;
             figure.isAttack = false;
         });
-        this.sendToOpponent(player, "changeTurn", this.turn);
+        this.redPlayer.socket.emit("changeTurn", { msg: this.turn });
+        this.bluePlayer.socket.emit("changeTurn", { msg: this.turn });
+        this.startTurn();
+    }
+
+    startTurn() {
+        this.timer = TURN_TIME;
+        this.hasMoved = false;
+        this.turnTimer(this.turn);
+    }
+
+    turnTimer(turn) {
+        if (
+            this.turn !== turn ||
+            !this.bluePlayer?.isConnect ||
+            !this.redPlayer?.isConnect
+        )
+            return;
+        if (!this.isStartGame) {
+            setTimeout(() => {
+                this.turnTimer(turn);
+            }, 1000);
+        }
+
+        this.redPlayer.socket.emit("turnTimer", {
+            time: this.timer,
+            turn: this.turn,
+        });
+        this.bluePlayer.socket.emit("turnTimer", {
+            time: this.timer,
+            turn: this.turn,
+        });
+
+        setTimeout(() => {
+            if (this.timer > 0) {
+                this.timer--;
+                this.turnTimer(turn);
+            } else {
+                const player =
+                    turn === "RED" ? this.redPlayer : this.bluePlayer;
+                if (!this.hasMoved) {
+                    if (player.isIdle) {
+                        player.isIdle = false;
+                        player.socket.emit("idle", { disconnect: true });
+                        this.endTurn(player.socket.id);
+                        player.socket.disconnect();
+                        return;
+                    }
+                    player.isIdle = true;
+                }
+                player.socket.emit("idle", { disconnect: false });
+                this.endTurn(player.socket.id);
+            }
+        }, 1000);
     }
 
     sendToOpponent(player, endpoint, msg) {
@@ -147,13 +208,52 @@ module.exports = class Room {
         }
     }
 
+    waitForReconnect(player) {
+        setTimeout(() => {
+            if (!this.bluePlayer.isConnect || !this.redPlayer.isConnect) {
+                if (!this.bluePlayer.isConnect && !this.redPlayer.isConnect)
+                    return;
+                this.winTimer--;
+                if (this.winTimer > 0) {
+                    player.socket.emit("playerDisconnect", {
+                        nick: this.bluePlayer.nick,
+                        timer: this.winTimer,
+                    });
+                    this.waitForReconnect(player);
+                } else {
+                    this.win(
+                        this.bluePlayer.isConnect
+                            ? this.bluePlayer
+                            : this.redPlayer
+                    );
+                }
+            }
+        }, 1000);
+    }
+
     disconnectPlayer(player) {
         if (this.bluePlayer && this.bluePlayer.socket.id === player) {
             this.bluePlayer.isConnect = false;
             this.isStartGame = false;
+            if (this.redPlayer) {
+                this.winTimer = KICK_TIME;
+                this.redPlayer.socket.emit("playerDisconnect", {
+                    nick: this.bluePlayer.nick,
+                    timer: this.winTimer,
+                });
+                this.waitForReconnect(this.redPlayer);
+            }
         } else if (this.redPlayer && this.redPlayer.socket.id === player) {
             this.redPlayer.isConnect = false;
             this.isStartGame = false;
+            if (this.bluePlayer) {
+                this.winTimer = KICK_TIME;
+                this.bluePlayer.socket.emit("playerDisconnect", {
+                    nick: this.redPlayer.nick,
+                    timer: this.winTimer,
+                });
+                this.waitForReconnect(this.bluePlayer);
+            }
         }
 
         return this.bluePlayer?.isConnect || this.redPlayer?.isConnect;
