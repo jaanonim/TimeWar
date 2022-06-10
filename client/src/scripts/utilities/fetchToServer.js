@@ -1,6 +1,6 @@
 const environment = process.env.NODE_ENV;
-const productionUrl = "/";
-const developmentUrl = "http://localhost:5000/";
+const productionUrl = "/api/";
+const developmentUrl = "http://localhost:5000/api/";
 
 const fetchToServer = async (url, query) => {
     if (query.headers == null) {
@@ -8,11 +8,12 @@ const fetchToServer = async (url, query) => {
     }
     query.headers.append(
         "Authorization",
-        "Bearer " + (sessionStorage.getItem("authToken") || ""));
+        "Bearer " + (sessionStorage.getItem("authToken") || "")
+    );
 
     return fetch(
         (environment === "development" ? developmentUrl : productionUrl) + url,
         query
     );
 };
-export {fetchToServer};
+export { fetchToServer };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fetchToServer } from "../../scripts/utilities/fetchToServer";
+import { fetchToServer } from "../../../scripts/utilities/fetchToServer";
 
 function AdminLoginPage() {
     const [status, setStatus] = useState("");
