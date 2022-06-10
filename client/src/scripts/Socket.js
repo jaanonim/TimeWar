@@ -3,6 +3,7 @@ import GameManager from "./GameManager";
 import { UiHandlers } from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
 import { runWhenExist } from "./utilities/RunWhenExist";
+import { PathFinding } from "./PathFinding";
 
 const environment = process.env.NODE_ENV;
 const productionUrl = "/";
@@ -140,7 +141,19 @@ export default class Socket {
                 MapCreator.instance.mapObjects[data.msg.figureX][
                     data.msg.figureY
                 ].figure;
-            figure.move(data.msg.newX, data.msg.newY);
+            //make animation
+            PathFinding.generateMovePosition(
+                figure.mapPositionX,
+                figure.mapPositionY,
+                [...figure.moveMask],
+                figure,
+                false
+            );
+            let land =
+                MapCreator.instance.mapObjects[data.msg.newX][data.msg.newY];
+            let pathList = PathFinding.generatePathList(land);
+            figure.unselect();
+            figure.move(data.msg.newX, data.msg.newY, pathList);
         });
 
         this.socket.on("attackFigure", (data) => {

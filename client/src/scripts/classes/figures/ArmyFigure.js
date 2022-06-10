@@ -7,6 +7,7 @@ import MapCreator from "../../MapCreator";
 import Socket from "../../Socket";
 import Figure from "../Figure";
 import { PathFinding } from "../../PathFinding";
+import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
 
 export default class ArmyFigure extends Figure {
     constructor(who, positionX, positionY, data) {
@@ -19,16 +20,46 @@ export default class ArmyFigure extends Figure {
         this.isFlyable = data.isFlyable;
     }
 
-    move(x, y) {
+    move(x, y, pathList = null) {
         //TODO: path finding and animation
         let oldX = this.mapPositionX;
         let oldY = this.mapPositionY;
         if (this.isMoved) return false;
-        if (!this.place(x, y)) return false;
-        this.isMoved = true;
-        let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
-        oldLand.figure = null;
+        if (pathList == null) {
+            if (!this.place(x, y)) return false;
+        } else {
+            this.moveAnim(pathList).then(() => {
+                this.isMoved = true;
+                let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
+                oldLand.figure = null;
+            });
+        }
         return true;
+    }
+
+    async moveAnim(pathList) {
+        GameManager.instance.startAnim();
+        for (let i = 1; i < pathList.length; i++) {
+            let land = pathList[i];
+            await new Promise((resolve) =>
+                new TWEEN.Tween(this.position)
+                    .to({ x: land.position.x, z: land.position.z }, 150)
+                    .easing(TWEEN.Easing.Linear.None)
+                    .onComplete(() => {
+                        this.mapPositionX = land.mapPositionX;
+                        this.mapPositionY = land.mapPositionY;
+                        console.log(
+                            this.position.x,
+                            this.position.y,
+                            this.position.z
+                        );
+                        resolve();
+                    })
+                    .start()
+            );
+        }
+        pathList[pathList.length - 1].figure = this;
+        GameManager.instance.endAnim();
     }
 
     canMove(x, y) {
@@ -101,7 +132,7 @@ export default class ArmyFigure extends Figure {
         this.unHighLightAttackPosition();
     }
 
-    makeAction(event, land) {
+    async makeAction(event, land) {
         let x = land.mapPositionX;
         let y = land.mapPositionY;
         let gm = GameManager.instance;
@@ -117,10 +148,12 @@ export default class ArmyFigure extends Figure {
             }
         } else {
             if (this.canMove(x, y)) {
+                let land = MapCreator.instance.mapObjects[x][y];
+                let pathList = PathFinding.generatePathList(land);
                 this.unselect();
                 let myX = this.mapPositionX;
                 let myY = this.mapPositionY;
-                if (this.move(x, y)) {
+                if (this.move(x, y, pathList)) {
                     Socket.instance.moveFigure(myX, myY, x, y);
                 }
                 gm.selectedFigure?.unselect();
@@ -247,6 +280,7 @@ export default class ArmyFigure extends Figure {
                     if (this.moveMask[x][y]) {
                         object.hightLightType = HighLightType.NONE;
                         object.unHighLight();
+                        object.resetPath();
                     }
                 }
             }
