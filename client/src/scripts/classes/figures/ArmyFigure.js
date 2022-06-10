@@ -6,12 +6,13 @@ import GameManager from "../../GameManager";
 import MapCreator from "../../MapCreator";
 import Socket from "../../Socket";
 import Figure from "../Figure";
+import { PathFinding } from "../../PathFinding";
 
 export default class ArmyFigure extends Figure {
     constructor(who, positionX, positionY, data) {
         super(who, positionX, positionY, FigureTypes.ARMY, data);
-        this.isMoved = true;
-        this.isAttack = true;
+        this.isMoved = false;
+        this.isAttack = false;
         this.attackMask = data.attackMask;
         this.moveMask = data.moveMask;
         this.damage = data.damage;
@@ -225,25 +226,17 @@ export default class ArmyFigure extends Figure {
             }
             return;
         }
-        for (let x = 0; x < this.moveMask.length; x++) {
-            for (let y = 0; y < this.moveMask[0].length; y++) {
-                let xPos =
-                    this.mapPositionX - (this.moveMask.length - 1) / 2 + x;
-                let yPos =
-                    this.mapPositionY - (this.moveMask[0].length - 1) / 2 + y;
-                if (MapCreator.instance.mapObjects[xPos] == null) break;
-                let object = MapCreator.instance.mapObjects[xPos][yPos];
-                if (object != null) {
-                    if (this.moveMask[x][y]) {
-                        object.hightLightType = HighLightType.MOVE;
-                        object.unHighLight();
-                    }
-                }
-            }
-        }
+        console.log(this.moveMask);
+        PathFinding.generateMovePosition(
+            this.mapPositionX,
+            this.mapPositionY,
+            this.moveMask,
+            this
+        );
     }
 
     unHighLightMovePosition() {
+        console.log(this.moveMask);
         for (let x = 0; x < this.moveMask.length; x++) {
             for (let y = 0; y < this.moveMask[0].length; y++) {
                 let xPos =
@@ -252,10 +245,31 @@ export default class ArmyFigure extends Figure {
                     this.mapPositionY - (this.moveMask[0].length - 1) / 2 + y;
                 if (MapCreator.instance.mapObjects[xPos] == null) break;
                 let object = MapCreator.instance.mapObjects[xPos][yPos];
+                console.log(x, y);
+                if (x === 5 && y === 1) {
+                    console.log(
+                        x,
+                        y,
+                        this.moveMask,
+                        this.moveMask[x][y],
+                        object
+                    );
+                }
                 if (object != null) {
                     if (this.moveMask[x][y]) {
                         object.hightLightType = HighLightType.NONE;
                         object.unHighLight();
+                        if (x === 5 && y === 1) {
+                            console.log(
+                                "2",
+                                x,
+                                y,
+                                this.moveMask,
+                                this.moveMask[x][y],
+                                object
+                            );
+                            object.update();
+                        }
                     }
                 }
             }

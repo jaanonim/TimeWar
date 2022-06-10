@@ -30,6 +30,12 @@ export default class MapLand extends THREE.Object3D {
         this.blueColor = 0xff4444;
         this.attackColor = 0xff0000;
         this.moveColor = 0x00ff00;
+
+        //PATH FINDING DATA
+        this.prev = null;
+        this.next = null;
+        this.distance = null;
+
         this.createBorders();
     }
 
@@ -134,8 +140,13 @@ export default class MapLand extends THREE.Object3D {
 
     highLight() {}
 
-    unHighLight() {}
-
+    unHighLight() {
+        //reset path finding variables
+        this.next = null;
+        this.prev = null;
+        this.distance = 0;
+    }
+    canFigurePlace(){}
     //HOOKS
     onHoverEnter(event) {}
 
