@@ -1,5 +1,6 @@
 import DisconnectTimer from "../DisconnectTimer";
 import EndScreen from "../EndScreen";
+import IdleScreen from "../IdleScreen";
 import LeftPanel from "../LeftPanel";
 import MasterBar from "../MasterBar";
 import NextTurn from "../NextTurn";
@@ -13,6 +14,7 @@ function UiOverlay() {
             <NextTurn />
             <MasterBar />
             <TopInfo />
+            <IdleScreen />
             <DisconnectTimer />
             <EndScreen />
         </main>

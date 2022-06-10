@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import GameScreen from "../../components/GameScreen";
 import Input from "../../components/Input";
 import Loading from "../../components/Loading";
@@ -16,6 +16,7 @@ function GamePage() {
     const [isLoading, setIsLoading] = useState(true);
     UiHandlers.instance.setIsLoading = setIsLoading;
     UiHandlers.instance.setInfoRoomPanel = setInfoPanelEnable;
+    UiHandlers.instance.sendToast = toast;
     useEffect(() => {
         return () => {
             console.log("GameManager unmount");

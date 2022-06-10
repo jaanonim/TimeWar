@@ -71,15 +71,19 @@ module.exports = {
                 });
             }
             socket.on("placeFigure", (figure) => {
+                room.hasMoved = true;
                 room.placeFigure(socket.id, figure);
             });
             socket.on("moveFigure", (figure) => {
+                room.hasMoved = true;
                 room.moveFigure(socket.id, figure);
             });
             socket.on("attackFigure", (figure) => {
+                room.hasMoved = true;
                 room.attackFigure(socket.id, figure);
             });
             socket.on("endTurn", () => {
+                room.hasMoved = true;
                 room.endTurn(socket.id);
             });
 

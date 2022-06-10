@@ -1,19 +1,11 @@
 import { useState } from "react";
+import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import { UiHandlers } from "../../scripts/managers/UiHandlers";
 
-function DisconnectTimer() {
+function IdleScreen() {
     const [show, setShow] = useState(false);
-    const [time, setTime] = useState(0);
-    const [nick, setNick] = useState("");
-    UiHandlers.instance.setDisconnectTimer = (time, nick) => {
-        setTime(time);
-        setNick(nick);
-        setShow(true);
-    };
-    UiHandlers.instance.unsetDisconnectTimer = () => {
-        setShow(false);
-    };
+    UiHandlers.instance.setIdleScreen = setShow;
 
     return (
         <div style={{ zIndex: "10000", pointerEvents: "all" }}>
@@ -25,7 +17,7 @@ function DisconnectTimer() {
                         fontSize: "3rem",
                     }}
                 >
-                    Player {nick} has disconnected.
+                    You have been idle for too long.
                 </div>
                 <div
                     style={{
@@ -34,20 +26,21 @@ function DisconnectTimer() {
                         fontSize: "1.5rem",
                     }}
                 >
-                    If he don't reconnect, you will win.
+                    You will be kicked if you don't reconnect.
                 </div>
-                <div
-                    style={{
-                        margin: "1rem",
-                        textAlign: "center",
-                        fontSize: "3rem",
-                        color: "var(--main)",
-                    }}
-                >
-                    {time}
+                <div style={{ margin: "2rem auto", width: "50%" }}>
+                    <Button
+                        onClick={() => {
+                            window.location.reload();
+                        }}
+                    >
+                        <div style={{ padding: "0.2rem", textAlign: "center" }}>
+                            Reconnect
+                        </div>
+                    </Button>
                 </div>
             </Modal>
         </div>
     );
 }
-export default DisconnectTimer;
+export default IdleScreen;

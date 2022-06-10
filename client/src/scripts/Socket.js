@@ -152,6 +152,7 @@ export default class Socket {
         });
 
         this.socket.on("changeTurn", (turn) => {
+            console.log("changeTurn", turn);
             GameManager.instance.setTurn(turn.msg);
         });
 
@@ -168,6 +169,23 @@ export default class Socket {
         this.socket.on("playerDisconnect", (data) => {
             console.log(data);
             UiHandlers.instance.setDisconnectTimer(data.timer, data.nick);
+        });
+
+        this.socket.on("turnTimer", async (data) => {
+            await runWhenExist(UiHandlers.instance.setTurnTimer, () => {
+                UiHandlers.instance.setTurnTimer(data.time);
+            });
+        });
+
+        this.socket.on("idle", (data) => {
+            if (data.disconnect) {
+                UiHandlers.instance.setIdleScreen(true);
+            } else {
+                UiHandlers.instance.sendToast({
+                    message: `If you do nothing in the next turn, you will be disconnected.`,
+                    dismissTime: 10000,
+                });
+            }
         });
 
         this.socket.on("disconnect", () => {
