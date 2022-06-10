@@ -95,6 +95,7 @@ export default class Camera extends PerspectiveCamera {
             antialias: Settings.instance.get("renderer.antialias"),
             powerPreference: "high-performance",
         });
+        this.renderer.setClearColor(0x1d1e2f);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(
             window.devicePixelRatio *
