@@ -9,9 +9,13 @@ class PathFinding {
         figure,
         highlighting = true
     ) {
-        if (MapCreator.instance.mapObjects[startX] == null) return;
+        if (MapCreator.instance.mapObjects[startX] == null) {
+            return;
+        }
         let land = MapCreator.instance.mapObjects[startX][startY];
-        if (land == null) return;
+        if (land == null) {
+            return;
+        }
         if (land.prev == null && highlighting) {
             land.distance = 1;
             land.hightLightType = HighLightType.MOVE;
@@ -60,20 +64,30 @@ class PathFinding {
     ) {
         let x = nextX - figure.mapPositionX + (moveMask.length - 1) / 2;
         let y = nextY - figure.mapPositionY + (moveMask[0].length - 1) / 2;
-        if (MapCreator.instance.mapObjects[nextX] == null) return;
+        if (MapCreator.instance.mapObjects[nextX] == null) {
+            return;
+        }
         let nextLand = MapCreator.instance.mapObjects[nextX][nextY];
-        if (nextLand == null) return;
+        if (nextLand == null) {
+            return;
+        }
         if (x < 0 || y < 0 || x >= moveMask.length || y >= moveMask[0].length) {
             return;
         }
-        if (!moveMask[x][y]) return;
+        if (!moveMask[x][y]) {
+            return;
+        }
         if (nextLand.distance !== 0 && land.distance + 1 >= nextLand.distance) {
             return;
         }
-        if (!nextLand.canFigurePlace(figure)) return;
+        if (!nextLand.canFigurePlace(figure)) {
+            return;
+        }
         nextLand.distance = land.distance + 1;
         nextLand.prev = land;
-        if (highlighting) nextLand.hightLightType = HighLightType.MOVE;
+        if (highlighting) {
+            nextLand.hightLightType = HighLightType.MOVE;
+        }
         this.generateMovePosition(nextX, nextY, moveMask, figure, highlighting);
     }
 
