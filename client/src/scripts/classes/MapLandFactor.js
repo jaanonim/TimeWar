@@ -1,5 +1,7 @@
 import { MapLandTypes } from "../enums/MapTileTypes";
 import Land from "./lands/Land";
+import MountainsLand from "./lands/MountainsLand";
+import WaterLand from "./lands/WaterLand";
 
 export default class MapLandFactor {
     createTile(x, y, mapPositionX, mapPositionY, width, height, type) {
@@ -15,7 +17,7 @@ export default class MapLandFactor {
                     "land2"
                 );
             case MapLandTypes.MOUNTAIN:
-                return new Land(
+                return new MountainsLand(
                     x,
                     y,
                     mapPositionX,
@@ -25,7 +27,7 @@ export default class MapLandFactor {
                     "mountain2"
                 );
             case MapLandTypes.SEE:
-                return new Land(
+                return new WaterLand(
                     x,
                     y,
                     mapPositionX,
