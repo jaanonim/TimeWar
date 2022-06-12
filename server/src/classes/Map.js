@@ -45,11 +45,8 @@ module.exports = class Map {
         let figure1 =
             this.mapObjects[figureAttackData.figureX][figureAttackData.figureY];
         let figure2 = this.mapObjects[figureAttackData.x][figureAttackData.y];
-
         figure1.isAttack = true;
-
         figure2.takeDamage = true;
-        // console.log(figure2);
         if (figure2.lives !== -1) {
             figure2.lives -= figure1.damage;
             console.log(figure2, figure1.damage);
@@ -63,5 +60,6 @@ module.exports = class Map {
                 this.mapObjects[figureAttackData.x][figureAttackData.y] = null;
             }
         }
+        console.log(figure1.name, figure2.name, figure2.lives,figure2.maxLives);
     }
 };
