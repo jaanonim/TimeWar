@@ -7,6 +7,7 @@ const defaultSettings = {
     "renderer.pixelRatio": 1,
     "shadow.mapSize.width": 8,
     "shadow.mapSize.height": 8,
+    "stats.fpsCounter": false,
 };
 
 export default class Settings {

@@ -43,9 +43,11 @@ export class SceneInitializator {
 
     initHelpers() {
         //Stats
-        this.stats = new Stats();
-        this.stats.showPanel(0);
-        document.body.appendChild(this.stats.dom);
+        if (Settings.instance.get("stats.fpsCounter")) {
+            this.stats = new Stats();
+            this.stats.showPanel(0);
+            document.body.appendChild(this.stats.dom);
+        }
     }
 
     initShadows(light) {
@@ -66,15 +68,23 @@ export class SceneInitializator {
     }
 
     update(delta) {
-        this.stats.begin();
+        try {
+            this.stats.begin();
+        } catch {}
+
         this.scene.children.forEach((child) => {
             if (child.update !== undefined) child.update(delta);
         });
+
         TWEEN.update();
         this.camera.update(delta, this.scene);
+
         this.scene.children.forEach((child) => {
             if (child.lateUpdate !== undefined) child.lateUpdate(delta);
         });
-        this.stats.end();
+
+        try {
+            this.stats.end();
+        } catch {}
     }
 }
