@@ -51,6 +51,10 @@ function SettingsPage() {
                         max={2}
                         step={0.1}
                     ></SettingsSlider>
+                    <SettingsCheckbox
+                        name="stats.fpsCounter"
+                        text="Show FPS Counter"
+                    ></SettingsCheckbox>
                     <div
                         className={styles.resetSettings}
                         onClick={() => {
