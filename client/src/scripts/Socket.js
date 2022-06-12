@@ -94,7 +94,6 @@ export default class Socket {
 
         this.socket.on("startGame", async (data) => {
             console.log("START");
-            console.log(data);
             const player = GameManager.instance.player;
 
             let scene = GameManager.instance.sceneManager.scene;
