@@ -12,8 +12,8 @@ import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
 export default class ArmyFigure extends Figure {
     constructor(who, positionX, positionY, data) {
         super(who, positionX, positionY, FigureTypes.ARMY, data);
-        this.isMoved = false;
-        this.isAttack = false;
+        this.isMoved = true;
+        this.isAttack = true;
         this.attackMask = data.attackMask;
         this.moveMask = data.moveMask;
         this.damage = data.damage;

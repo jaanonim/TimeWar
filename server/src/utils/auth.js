@@ -2,13 +2,6 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const authInfo = (req, res, next) => {
-    const err = req.session.error;
-    const msg = req.session.success;
-    delete req.session.error;
-    delete req.session.success;
-    res.locals.message = "";
-    if (err) res.locals.message = '<p class="msg error">' + err + "</p>";
-    if (msg) res.locals.message = '<p class="msg success">' + msg + "</p>";
     next();
 };
 const authenticate = (name, pass, fn) => {

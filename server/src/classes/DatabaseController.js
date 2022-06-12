@@ -14,7 +14,7 @@ class DatabaseController {
     }
 
     async getArmyList(query = {}) {
-        let army = await Army.find(query);
+        let army = await Army.find(query).sort("price");
 
         return army.map((a) => {
             return { id: a._id.toString(), ...a._doc };
@@ -22,7 +22,7 @@ class DatabaseController {
     }
 
     async getBuildingList(query = {}) {
-        let building = await Building.find(query);
+        let building = await Building.find(query).sort("price");
 
         return building.map((a) => {
             return { id: a._id.toString(), ...a._doc };
