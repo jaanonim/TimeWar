@@ -1,27 +1,37 @@
 .container {
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
-    1px 1px 0 #000;
-  text-align: center;
-  font-size: 1.2rem;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+        1px 1px 0 #000;
+    text-align: center;
+    font-size: 1.2rem;
 }
-.circle {
-  background-image: url("/img/Circle.png");
-  background-size: cover;
-  background-position: center;
-  image-rendering: auto;
-  image-rendering: crisp-edges;
-  image-rendering: pixelated;
 
-  image-rendering: -webkit-optimize-contrast;
-  width: 1rem;
-  height: 1rem;
-  margin: auto;
+.progress {
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle {
+    background-image: url("/img/Circle.png");
+    background-size: cover;
+    background-position: center;
+    image-rendering: auto;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+
+    image-rendering: -webkit-optimize-contrast;
+    width: 1rem;
+    height: 1rem;
+    margin: auto;
 }
 
 .red {
-  background-image: url("/img/Circle-red.png");
+    background-image: url("/img/Circle-red.png");
 }
 
 .blue {
-  background-image: url("/img/Circle-blue.png");
+    background-image: url("/img/Circle-blue.png");
 }
