@@ -33,4 +33,8 @@ export default class Land extends MapLand {
             this.setColor(0x000000);
         }
     }
+
+    canFigurePlace(figure) {
+        return this.figure == null;
+    }
 }

@@ -127,7 +127,6 @@ export default class Figure extends THREE.Object3D {
             })
             .start();
     }
-
     lateUpdate() {
         this.lable.update();
     }
