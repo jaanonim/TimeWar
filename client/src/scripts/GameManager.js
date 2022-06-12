@@ -192,6 +192,12 @@ export default class GameManager {
         figure.destroy();
         MapCreator.instance.mapObjects[x][y].figure = null;
     }
+    removeFigureOnlyStrategy(x, y) {
+        let figure = MapCreator.instance.mapObjects[x][y].figure;
+        this.figuries = this.figuries.filter((fig) => fig !== figure);
+        MapCreator.instance.mapObjects[x][y].figure = null;
+        return figure;
+    }
 
     destroy() {
         Socket.instance.destroy();

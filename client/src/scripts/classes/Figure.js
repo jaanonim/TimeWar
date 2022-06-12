@@ -127,6 +127,7 @@ export default class Figure extends THREE.Object3D {
             })
             .start();
     }
+
     lateUpdate() {
         this.lable.update();
     }
@@ -156,14 +157,17 @@ export default class Figure extends THREE.Object3D {
     }
 
     makeDamage(damage) {
+        this.lives -= damage;
+        this.takeDamage = true;
+        if (this.lives <= 0) {
+            GameManager.instance.removeFigureOnlyStrategy(
+                this.mapPositionX,
+                this.mapPositionY
+            );
+        }
         this.damageAnim(() => {
-            this.lives -= damage;
-            this.takeDamage = true;
             if (this.lives <= 0) {
-                GameManager.instance.removeFigure(
-                    this.mapPositionX,
-                    this.mapPositionY
-                );
+                this.destroy();
             }
         });
     }
