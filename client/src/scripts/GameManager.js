@@ -131,10 +131,14 @@ export default class GameManager {
         //TODO: move validation of places to plaece figuer here
         // If valid return {id, type} else return null
         if (land.captured !== this.player.team) return null;
-        if (land.figure != null) return null;
-        return this.selectFigureIdInUI && this.selectFigureTypeInUI
-            ? { id: this.selectFigureIdInUI, type: this.selectFigureTypeInUI }
-            : null;
+        if (!this.selectFigureIdInUI || !this.selectFigureTypeInUI) return null;
+
+        let objData = FigureManager.instance.getFigure(
+            this.selectFigureTypeInUI,
+            this.selectFigureIdInUI
+        );
+        if (!land.canFigurePlace(objData)) return null;
+        return { id: this.selectFigureIdInUI, type: this.selectFigureTypeInUI };
     }
 
     placeFigureAction(land) {
@@ -192,6 +196,7 @@ export default class GameManager {
         figure.destroy();
         MapCreator.instance.mapObjects[x][y].figure = null;
     }
+
     removeFigureOnlyStrategy(x, y) {
         let figure = MapCreator.instance.mapObjects[x][y].figure;
         this.figuries = this.figuries.filter((fig) => fig !== figure);
