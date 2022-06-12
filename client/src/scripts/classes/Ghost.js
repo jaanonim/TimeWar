@@ -10,8 +10,11 @@ export default class Ghost extends Object3D {
         super();
 
         this.rotateX(-Math.PI / 2);
+
         runWhenTeamIsSet(() => {
             this.material = this.createMaterial();
+            if (GameManager.instance.player.team === "BLUE")
+                this.rotateY(Math.PI);
         });
     }
 
