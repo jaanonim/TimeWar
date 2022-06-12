@@ -3,6 +3,8 @@ import GameManager from "./GameManager";
 import { UiHandlers } from "./managers/UiHandlers";
 import MapCreator from "./MapCreator";
 import { runWhenExist } from "./utilities/RunWhenExist";
+import Figure from "./classes/Figure";
+import MapLand from "./classes/MapLand";
 
 const environment = process.env.NODE_ENV;
 const productionUrl = "/";
@@ -14,7 +16,7 @@ export default class Socket {
     constructor(room) {
         console.log("ROOM NUMBER", room);
 
-        if (Socket.instance != null && Socket.instance.room == room) {
+        if (Socket.instance != null && Socket.instance.room === room) {
             if (!this.init && this.socket && !this.socket.connected) {
                 this.socket.connect();
             }
@@ -91,8 +93,16 @@ export default class Socket {
 
         this.socket.on("startGame", async (data) => {
             console.log("START");
-
+            console.log(data);
             const player = GameManager.instance.player;
+
+            let scene = GameManager.instance.sceneManager.scene;
+            [...scene.children].forEach((child) => {
+                if (child instanceof Figure || child instanceof MapLand) {
+                    scene.remove(child);
+                }
+            });
+
             player.setTeam(data.team);
             player.setSupply(data.player.supplies);
             player.setWinProgress(data.player.winProgress);
