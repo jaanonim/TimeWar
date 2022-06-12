@@ -28,10 +28,10 @@ export default class ArmyFigure extends Figure {
         if (pathList == null) {
             if (!this.place(x, y)) return false;
         } else {
+            let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
+            oldLand.figure = null;
             this.moveAnim(pathList).then(() => {
                 this.isMoved = true;
-                let oldLand = MapCreator.instance.mapObjects[oldX][oldY];
-                oldLand.figure = null;
             });
         }
         return true;
@@ -39,6 +39,7 @@ export default class ArmyFigure extends Figure {
 
     async moveAnim(pathList) {
         GameManager.instance.startAnim();
+        pathList[pathList.length - 1].figure = this;
         for (let i = 1; i < pathList.length; i++) {
             let land = pathList[i];
             await new Promise((resolve) =>
@@ -58,7 +59,6 @@ export default class ArmyFigure extends Figure {
                     .start()
             );
         }
-        pathList[pathList.length - 1].figure = this;
         GameManager.instance.endAnim();
     }
 
