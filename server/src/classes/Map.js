@@ -1,6 +1,7 @@
 const databaseController = require("./DatabaseController");
-module.exports = class Room {
-    constructor() {
+module.exports = class Map {
+    constructor(room) {
+        this.room = room;
         this.mapStruct = [];
         this.mapObjects = [];
         this.figures = [];
@@ -44,16 +45,21 @@ module.exports = class Room {
         let figure1 =
             this.mapObjects[figureAttackData.figureX][figureAttackData.figureY];
         let figure2 = this.mapObjects[figureAttackData.x][figureAttackData.y];
-
         figure1.isAttack = true;
-
         figure2.takeDamage = true;
         if (figure2.lives !== -1) {
             figure2.lives -= figure1.damage;
             console.log(figure2, figure1.damage);
             if (figure2.lives <= 0) {
+                let player =
+                    figure2.who === "RED"
+                        ? this.room.redPlayer
+                        : this.room.bluePlayer;
+
+                this.room.figures.supplyRemove(figure2, player);
                 this.mapObjects[figureAttackData.x][figureAttackData.y] = null;
             }
         }
+        console.log(figure1.name, figure2.name, figure2.lives,figure2.maxLives);
     }
 };

@@ -46,6 +46,7 @@ export default class MapCreator {
                         figure.figureType,
                         false
                     );
+                    object.lives = figure.lives;
                     object.isMoved = figure.isMoved;
                     object.isAttack = figure.isAttack;
                 }

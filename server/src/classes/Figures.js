@@ -45,4 +45,15 @@ module.exports = class Figures {
             supply.maxSupply += obj.increaseSupply;
         }
     }
+
+    supplyRemove(obj, playerObj) {
+        if (obj.increaseSupplyType != null) {
+            let supply =
+                playerObj.supplies[obj.increaseSupplyType.toLowerCase()];
+            supply.maxSupply -= obj.increaseSupply;
+            if (supply.supply > supply.maxSupply) {
+                supply.supply = supply.maxSupply;
+            }
+        }
+    }
 };

@@ -72,4 +72,18 @@ export default class BuildingFigure extends Figure {
             UiHandlers.instance.updateSupply();
         }
     }
+
+    destroy() {
+        super.destroy();
+        if (this.increaseSupplyType != null) {
+            let player = GameManager.instance.player;
+            if (player.team === this.who) {
+                player.supplies[this.increaseSupplyType]?.decreaseMaxSupply(
+                    this.increaseSupply
+                );
+                UiHandlers.instance.updateSupply();
+            }
+        }
+        GameManager.instance.capturingOperations();
+    }
 }

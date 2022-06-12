@@ -203,9 +203,9 @@ export default class Figure extends THREE.Object3D {
 
     destroy() {
         let gm = GameManager.instance;
-        runWhenExist(gm.scene, () => {
+        runWhenExist(gm.sceneManager.scene, () => {
             this.onDestroy();
-            gm.scene.remove(this);
+            gm.sceneManager.scene.remove(this);
         });
     }
 

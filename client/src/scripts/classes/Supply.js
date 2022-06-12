@@ -22,4 +22,11 @@ export class Supply {
     increaseMaxSupply(v = 1) {
         this.maxSupply += v;
     }
+
+    decreaseMaxSupply(v = 1) {
+        this.maxSupply -= v;
+        if (this.supply > this.maxSupply) {
+            this.supply = this.maxSupply;
+        }
+    }
 }

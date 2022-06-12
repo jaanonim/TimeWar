@@ -18,7 +18,7 @@ module.exports = class Room {
         this.turn = "RED";
         this.timer = 0;
         this.hasMoved = false;
-        this.map = new Map();
+        this.map = new Map(this);
         this.figures = new Figures();
     }
 
