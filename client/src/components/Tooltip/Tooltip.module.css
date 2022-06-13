@@ -10,6 +10,7 @@
         translateY(calc((20vw - 4rem) / (0 - 3)));
     padding: 1rem;
     border: var(--border-size) solid var(--text);
+    pointer-events: none;
 }
 
 .box h3 {

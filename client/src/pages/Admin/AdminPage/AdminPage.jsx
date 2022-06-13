@@ -54,7 +54,7 @@ function AdminPage() {
                     </li>
                 </ul>
                 <footer className={styles.footer}>
-                    jaanonim &amp; n2one &copy; 2021 - 2022
+                    jaanonim &amp; n2one &copy; 2022
                 </footer>
             </nav>
             <aside className={styles.aside}>
