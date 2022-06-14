@@ -53,6 +53,10 @@ export default class ModelsManager {
             "models/Buildings/Barracks/Barracks",
             ["red", "blue"]
         );
+        this.models.reconRadar = this.loadModel(
+            "models/Buildings/ReconRadar/ReconRadar",
+            ["red", "blue"]
+        );
 
         // Land
         this.models.land = this.loadModel("models/Land/Land/Land");
