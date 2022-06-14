@@ -104,7 +104,6 @@ export default class Socket {
             });
 
             player.setTeam(data.team);
-            player.setSupply(data.player.supplies);
             player.setWinProgress(data.player.winProgress);
 
             GameManager.instance.setTurn(data.turn);
@@ -127,6 +126,7 @@ export default class Socket {
             MapCreator.instance.recreateMap(data.mapObjects);
             GameManager.instance.capturingOperations();
 
+            player.setSupply(data.player.supplies);
             UiHandlers.instance.updateSupply();
             await runWhenExist(UiHandlers.instance.setInfoRoomPanel, () =>
                 UiHandlers.instance.setInfoRoomPanel(false)
