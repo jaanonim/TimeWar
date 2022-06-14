@@ -1,9 +1,10 @@
 module.exports = class Player {
-    constructor(room, nick, socket) {
+    constructor(room, nick, socket, color) {
         this.room = room;
         this.nick = nick;
         this.isConnect = true;
         this.isIdle = false;
+        this.team = color;
         this.supplies = {
             land_army: {
                 supply: this.room.settings.supply.land_army,
@@ -38,6 +39,13 @@ module.exports = class Player {
     }
 
     addResearchPoint() {
+        let lab = this.room.map.figures.find((figure) => {
+            return (
+                figure.id === this.room.settings.labId &&
+                figure.who === this.team
+            );
+        });
+        if (lab.takeDamage) return;
         this.winProgress++;
         if (this.winProgress >= this.room.winTarget) {
             this.room.win(this);

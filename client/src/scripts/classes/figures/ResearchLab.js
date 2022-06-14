@@ -8,8 +8,11 @@ export default class ResearchLab extends BuildingFigure {
     }
 
     renew() {
-        if (!this.takeDamage && this.who === GameManager.instance.player.team)
+        console.log("RENEW", this.takeDamage);
+        if (!this.takeDamage && this.who === GameManager.instance.player.team) {
+            console.log("INCEEASEWIN");
             GameManager.instance.player.increaseWinProgress();
+        }
         super.renew();
         this.lable.setData({
             atacked: false,
