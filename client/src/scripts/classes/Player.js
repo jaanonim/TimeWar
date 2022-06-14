@@ -38,7 +38,6 @@ export default class Player {
     }
 
     increaseWinProgress() {
-        console.log("INCREASE");
         this.winProgress++;
         UiHandlers.instance.changeWinTargetBar();
     }
