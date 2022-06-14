@@ -5,7 +5,12 @@ const { runWhenUnlock } = require("../utils/asyncSync");
 
 //TODO: move to some settings
 const KICK_TIME = 60; // in seconds
-const TURN_TIME = 100; // in seconds
+const BASE_TURN_TIME = 100; // in seconds
+const STEP_TIME = 15; // in seconds
+const MAX_TURN_TIME = 300; // in seconds
+const BASE_STEP_SIZE = 10; // in units in game (for both players)
+const MAX_STEP_SIZE = 100; // in units in game (for both players)
+const STEP_SIZE_STEP = 5; // in units in game (for both players)
 
 module.exports = class Room {
     constructor(name, settings) {
@@ -24,6 +29,18 @@ module.exports = class Room {
 
     get currentPlayer() {
         return this.turn === "RED" ? this.redPlayer : this.bluePlayer;
+    }
+
+    get currentTurnTimer() {
+        const figuresCount = this.map.figures.length
+        let stepSize = BASE_STEP_SIZE;
+        let steps = 0;
+        while (stepSize < figuresCount) {
+            if (stepSize <= figuresCount && stepSize < MAX_STEP_SIZE) steps++;
+            stepSize += STEP_SIZE_STEP;
+            stepSize = Math.min(MAX_STEP_SIZE, stepSize);
+        }
+        return Math.min(MAX_TURN_TIME, BASE_TURN_TIME + steps * STEP_TIME);
     }
 
     registerMove() {
@@ -59,11 +76,11 @@ module.exports = class Room {
         let nick = playerSocket.handshake.query.nick;
         return await runWhenUnlock("addPlayer", () => {
             if (this.bluePlayer == null) {
-                this.bluePlayer = new Player(this, nick, playerSocket,"BLUE");
+                this.bluePlayer = new Player(this, nick, playerSocket, "BLUE");
                 return "BLUE";
             }
             if (this.redPlayer == null) {
-                this.redPlayer = new Player(this, nick, playerSocket,"RED");
+                this.redPlayer = new Player(this, nick, playerSocket, "RED");
                 return "RED";
             }
 
@@ -142,7 +159,7 @@ module.exports = class Room {
             this.turn = "RED";
         }
         this.map.figures.forEach((figure) => {
-            if(figure.who === this.turn) {
+            if (figure.who === this.turn) {
                 figure.isMoved = false;
                 figure.takeDamage = false;
                 figure.isAttack = false;
@@ -154,7 +171,7 @@ module.exports = class Room {
     }
 
     startTurn() {
-        this.timer = TURN_TIME;
+        this.timer = this.currentTurnTimer;
         this.hasMoved = false;
         this.turnTimer(this.turn);
     }
