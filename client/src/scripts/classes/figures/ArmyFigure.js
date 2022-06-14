@@ -49,11 +49,6 @@ export default class ArmyFigure extends Figure {
                     .onComplete(() => {
                         this.mapPositionX = land.mapPositionX;
                         this.mapPositionY = land.mapPositionY;
-                        console.log(
-                            this.position.x,
-                            this.position.y,
-                            this.position.z
-                        );
                         resolve();
                     })
                     .start()
