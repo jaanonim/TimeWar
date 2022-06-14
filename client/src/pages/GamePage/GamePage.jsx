@@ -12,10 +12,9 @@ import styles from "./GamePage.module.css";
 function GamePage() {
     const toast = useToast();
     const [infoPanelEnable, setInfoPanelEnable] = useState(true);
-    UiHandlers.instance.setInfoRoomPanel = setInfoPanelEnable;
     const [isLoading, setIsLoading] = useState(true);
-    UiHandlers.instance.setIsLoading = setIsLoading;
     UiHandlers.instance.setInfoRoomPanel = setInfoPanelEnable;
+    UiHandlers.instance.setIsLoading = setIsLoading;
     UiHandlers.instance.sendToast = toast;
     useEffect(() => {
         return () => {
@@ -49,11 +48,13 @@ function GamePage() {
                         readonly={true}
                         value={roomCode}
                         onClick={(e) => {
-                            navigator.clipboard.writeText(e.target.value);
-                            toast({
-                                message: `Copied to clipboard`,
-                                dismissTime: 1000,
-                            });
+                            try {
+                                navigator.clipboard.writeText(e.target.value);
+                                toast({
+                                    message: `Copied to clipboard`,
+                                    dismissTime: 1000,
+                                });
+                            } catch (e) {}
                         }}
                     />
                     <p>Waiting for opponent to join room...</p>

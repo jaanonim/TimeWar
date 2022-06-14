@@ -4,8 +4,8 @@ const Player = require("./Player");
 const { runWhenUnlock } = require("../utils/asyncSync");
 
 //TODO: move to some settings
-const KICK_TIME = 100; // in seconds
-const TURN_TIME = 20; // in seconds
+const KICK_TIME = 60; // in seconds
+const TURN_TIME = 100; // in seconds
 
 module.exports = class Room {
     constructor(name, settings) {
@@ -103,7 +103,7 @@ module.exports = class Room {
         if (!this.canStartGame()) return false;
         this.isStartGame = true;
         if (this.timer == -1) this.startTurn();
-        else return true;
+        return true;
     }
 
     placeFigure(player, figure) {
