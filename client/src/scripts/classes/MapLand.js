@@ -157,7 +157,7 @@ export default class MapLand extends THREE.Object3D {
     onRightClick(event) {}
 
     onLeftClick(event) {
-        let gm = GameManager.instance;
+        const gm = GameManager.instance;
         if (this.figure !== null && !gm.attackOption) {
             this.figure.onLeftClick(event);
             return;
@@ -168,8 +168,11 @@ export default class MapLand extends THREE.Object3D {
             this.hightLightType !== HighLightType.NONE
         ) {
             gm.selectedFigure.makeAction(event, this);
+            gm.unselectAll();
         } else if (!gm.attackOption) {
             gm.placeFigureAction(this);
+        } else {
+            gm.unselectAll();
         }
     }
 }

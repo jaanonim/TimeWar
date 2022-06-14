@@ -129,8 +129,6 @@ export default class GameManager {
     }
 
     figureCanBePlaced(land) {
-        //TODO: move validation of places to plaece figuer here
-        // If valid return {id, type} else return null
         if (land.captured !== this.player.team) return null;
         if (!this.selectFigureIdInUI || !this.selectFigureTypeInUI) return null;
 
@@ -169,9 +167,26 @@ export default class GameManager {
     }
 
     unselectFigureInUI() {
-        UiHandlers.instance.unselectFigureInUI();
-        this.selectFigureIdInUI = null;
-        this.selectFigureTypeInUI = null;
+        if (
+            this.selectFigureIdInUI != null &&
+            this.selectFigureTypeInUI != null
+        ) {
+            UiHandlers.instance.unselectFigureInUI();
+            this.selectFigureIdInUI = null;
+            this.selectFigureTypeInUI = null;
+        }
+    }
+
+    unselectFigure() {
+        if (this.selectedFigure != null) {
+            this.selectedFigure.unselect();
+            this.selectedFigure = null;
+        }
+    }
+
+    unselectAll() {
+        this.unselectFigure();
+        this.unselectFigureInUI();
     }
 
     placeFigure(who, x, y, figureID, figureType, isBuying) {

@@ -23,6 +23,7 @@ export class UiHandlers {
 
     onSelectFigureInUI(newId, type) {
         GameManager.instance.setSelectFigureInUI(newId, type);
+        GameManager.instance.unselectFigure();
     }
 
     updateSupply() {
