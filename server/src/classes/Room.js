@@ -5,12 +5,12 @@ const { runWhenUnlock } = require("../utils/asyncSync");
 
 //TODO: move to some settings
 const KICK_TIME = 60; // in seconds
-const BASE_TURN_TIME = 100; // in seconds
-const STEP_TIME = 15; // in seconds
+const BASE_TURN_TIME = 45; // in seconds
+const STEP_TIME = 10; // in seconds
 const MAX_TURN_TIME = 300; // in seconds
 const BASE_STEP_SIZE = 10; // in units in game (for both players)
-const MAX_STEP_SIZE = 100; // in units in game (for both players)
-const STEP_SIZE_STEP = 5; // in units in game (for both players)
+const MAX_STEP_SIZE = 50; // in units in game (for both players)
+const STEP_SIZE_STEP = 10; // in units in game (for both players)
 
 module.exports = class Room {
     constructor(name, settings) {
@@ -32,7 +32,7 @@ module.exports = class Room {
     }
 
     get currentTurnTimer() {
-        const figuresCount = this.map.figures.length
+        const figuresCount = this.map.figures.length;
         let stepSize = BASE_STEP_SIZE;
         let steps = 0;
         while (stepSize < figuresCount) {
