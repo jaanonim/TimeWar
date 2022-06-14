@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AsideAnimation from "../../components/AsideAnimation";
 import Button from "../../components/Button";
@@ -15,7 +15,17 @@ function JoinPage() {
     const toast = useToast();
     let navigate = useNavigate();
 
-    const joinBtn = useRef(null);
+    const joinClick = useCallback(() => {
+        if (roomCode.length === 6) {
+            navigate("/game?room=" + roomCode);
+        } else {
+            toast({
+                message: "Invalid code",
+                type: "error",
+            });
+        }
+    }, [roomCode]);
+
     return (
         <div className={styles.container}>
             <nav className={styles.nav}>
@@ -78,24 +88,10 @@ function JoinPage() {
                                         event.target.value.toUpperCase()
                                     );
                                 }}
-                                onEnter={() => {
-                                    joinBtn.current.click();
-                                }}
+                                onEnter={joinClick}
                             />
                             <div style={{ marginTop: "1.5rem" }}>
-                                <Button
-                                    ref={joinBtn}
-                                    onClick={() => {
-                                        if (roomCode.length === 6) {
-                                            navigate("/game?room=" + roomCode);
-                                        } else {
-                                            toast({
-                                                message: "Invalid code",
-                                                type: "error",
-                                            });
-                                        }
-                                    }}
-                                >
+                                <Button onClick={joinClick}>
                                     <div className={styles.box2}>Join</div>
                                 </Button>
                             </div>

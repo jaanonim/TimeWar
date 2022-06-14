@@ -103,7 +103,7 @@ module.exports = class Room {
         if (!this.canStartGame()) return false;
         this.isStartGame = true;
         if (this.timer == -1) this.startTurn();
-        else return true;
+        return true;
     }
 
     placeFigure(player, figure) {
