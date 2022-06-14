@@ -123,14 +123,14 @@ module.exports = class Room {
     }
 
     endTurn(player) {
-        if (this.bluePlayer.socket.id === player) {
+        if (this.redPlayer.socket.id === player) {
             if (this.bluePlayer.addResearchPoint()) return;
             this.bluePlayer.renewSupplies();
-            this.turn = "RED";
+            this.turn = "BLUE";
         } else {
             if (this.redPlayer.addResearchPoint()) return;
             this.redPlayer.renewSupplies();
-            this.turn = "BLUE";
+            this.turn = "RED";
         }
         this.map.figures.forEach((figure) => {
             figure.isMoved = false;
