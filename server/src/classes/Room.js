@@ -5,7 +5,7 @@ const { runWhenUnlock } = require("../utils/asyncSync");
 
 //TODO: move to some settings
 const KICK_TIME = 100; // in seconds
-const TURN_TIME = 100; // in seconds
+const TURN_TIME = 20; // in seconds
 
 module.exports = class Room {
     constructor(name, settings) {
@@ -16,10 +16,19 @@ module.exports = class Room {
         this.redPlayer = null;
         this.isStartGame = false;
         this.turn = "RED";
-        this.timer = 0;
+        this.timer = -1;
         this.hasMoved = false;
         this.map = new Map(this);
         this.figures = new Figures();
+    }
+
+    get currentPlayer() {
+        return this.turn === "RED" ? this.redPlayer : this.bluePlayer;
+    }
+
+    registerMove() {
+        this.hasMoved = true;
+        this.currentPlayer.isIdle = false;
     }
 
     async initMap() {
@@ -93,8 +102,8 @@ module.exports = class Room {
     async startGame() {
         if (!this.canStartGame()) return false;
         this.isStartGame = true;
-        this.startTurn();
-        return true;
+        if (this.timer == -1) this.startTurn();
+        else return true;
     }
 
     placeFigure(player, figure) {
@@ -151,14 +160,18 @@ module.exports = class Room {
     turnTimer(turn) {
         if (
             this.turn !== turn ||
-            !this.bluePlayer?.isConnect ||
-            !this.redPlayer?.isConnect
+            (!this.bluePlayer?.isConnect && !this.redPlayer?.isConnect)
         )
             return;
-        if (!this.isStartGame) {
+        if (
+            !this.isStartGame ||
+            !this.bluePlayer?.isConnect ||
+            !this.redPlayer?.isConnect
+        ) {
             setTimeout(() => {
                 this.turnTimer(turn);
             }, 1000);
+            return;
         }
 
         this.redPlayer.socket.emit("turnTimer", {
@@ -175,20 +188,22 @@ module.exports = class Room {
                 this.timer--;
                 this.turnTimer(turn);
             } else {
-                const player =
-                    turn === "RED" ? this.redPlayer : this.bluePlayer;
                 if (!this.hasMoved) {
-                    if (player.isIdle) {
-                        player.isIdle = false;
-                        player.socket.emit("idle", { disconnect: true });
-                        this.endTurn(player.socket.id);
-                        player.socket.disconnect();
+                    if (this.currentPlayer.isIdle) {
+                        this.currentPlayer.isIdle = false;
+                        this.currentPlayer.socket.emit("idle", {
+                            disconnect: true,
+                        });
+                        this.endTurn(this.currentPlayer.socket.id);
+                        this.currentPlayer.socket.disconnect();
                         return;
                     }
-                    player.isIdle = true;
+                    this.currentPlayer.isIdle = true;
+                    this.currentPlayer.socket.emit("idle", {
+                        disconnect: false,
+                    });
                 }
-                player.socket.emit("idle", { disconnect: false });
-                this.endTurn(player.socket.id);
+                this.endTurn(this.currentPlayer.socket.id);
             }
         }, 1000);
     }
