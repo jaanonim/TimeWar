@@ -17,18 +17,29 @@ function AboutPage() {
                     <p>Authors:</p>
                     <ul>
                         <li>
-                            <a href="https://github.com/n2oneProgrammer">
+                            <a
+                                href="https://github.com/n2oneProgrammer"
+                                target="_blank"
+                            >
                                 n2one
                             </a>
                         </li>
                         <li>
-                            <a href="https://github.com/jaanonim">jaanonim</a>
+                            <a
+                                href="https://github.com/jaanonim"
+                                target="_blank"
+                            >
+                                jaanonim
+                            </a>
                         </li>
                     </ul>
                     <p>
                         It's open source.
                         <br />
-                        <a href="https://github.com/jaanonim/TimeWar">
+                        <a
+                            href="https://github.com/jaanonim/TimeWar"
+                            target="_blank"
+                        >
                             https://github.com/jaanonim/TimeWar
                         </a>
                     </p>
