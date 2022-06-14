@@ -38,14 +38,18 @@ module.exports = class Room {
         while (stepSize < figuresCount) {
             if (stepSize <= figuresCount && stepSize < MAX_STEP_SIZE) steps++;
             stepSize += STEP_SIZE_STEP;
-            stepSize = Math.min(MAX_STEP_SIZE, stepSize);
+            if (stepSize > MAX_STEP_SIZE) {
+                break;
+            }
         }
         return Math.min(MAX_TURN_TIME, BASE_TURN_TIME + steps * STEP_TIME);
     }
 
     registerMove() {
         this.hasMoved = true;
-        this.currentPlayer.isIdle = false;
+        try {
+            this.currentPlayer.isIdle = false;
+        } catch (e) {}
     }
 
     async initMap() {
