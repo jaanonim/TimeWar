@@ -59,11 +59,11 @@ module.exports = class Room {
         let nick = playerSocket.handshake.query.nick;
         return await runWhenUnlock("addPlayer", () => {
             if (this.bluePlayer == null) {
-                this.bluePlayer = new Player(this, nick, playerSocket);
+                this.bluePlayer = new Player(this, nick, playerSocket,"BLUE");
                 return "BLUE";
             }
             if (this.redPlayer == null) {
-                this.redPlayer = new Player(this, nick, playerSocket);
+                this.redPlayer = new Player(this, nick, playerSocket,"RED");
                 return "RED";
             }
 
@@ -142,9 +142,11 @@ module.exports = class Room {
             this.turn = "RED";
         }
         this.map.figures.forEach((figure) => {
-            figure.isMoved = false;
-            figure.takeDamage = false;
-            figure.isAttack = false;
+            if(figure.who === this.turn) {
+                figure.isMoved = false;
+                figure.takeDamage = false;
+                figure.isAttack = false;
+            }
         });
         this.redPlayer.socket.emit("changeTurn", { msg: this.turn });
         this.bluePlayer.socket.emit("changeTurn", { msg: this.turn });
