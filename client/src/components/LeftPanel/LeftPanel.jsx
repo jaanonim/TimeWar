@@ -90,7 +90,7 @@ function LeftPanel() {
                 disabled={disabled}
             />
             <FiguresPlaceSection
-                name="Air Army"
+                name="Air Force"
                 figures={airArmy}
                 select={
                     selectedFigureType === FigureTypes.ARMY
