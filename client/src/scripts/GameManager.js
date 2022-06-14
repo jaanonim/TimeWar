@@ -78,10 +78,16 @@ export default class GameManager {
     }
 
     setTurn(turn) {
+        this.unselectFigureInUI();
         this.turn = turn;
         UiHandlers.instance.changeTurnText(this.turn);
         if (this.turn === this.player.team) {
             this.capturingOperations();
+            for (let supply in this.player.supplies) {
+                this.player.supplies[supply].reset();
+            }
+            UiHandlers.instance.updateSupply();
+            this.figuries.forEach((figure) => figure?.renew());
         }
     }
 
@@ -107,11 +113,6 @@ export default class GameManager {
                 : PlayerTeams.RED
         );
         Socket.instance.endTurn();
-        for (let supply in this.player.supplies) {
-            this.player.supplies[supply].reset();
-        }
-        UiHandlers.instance.updateSupply();
-        this.figuries.forEach((figure) => figure?.renew());
         this.unselectFigureInUI();
     }
 
