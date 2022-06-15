@@ -5,9 +5,9 @@ const { runWhenUnlock } = require("../utils/asyncSync");
 
 //TODO: move to some settings
 const KICK_TIME = 60; // in seconds
-const BASE_TURN_TIME = 3600; //45; // in seconds
-const STEP_TIME = 0; //15; // in seconds
-const MAX_TURN_TIME = 1000000; //300; // in seconds
+const BASE_TURN_TIME = 45; // in seconds
+const STEP_TIME = 15; // in seconds
+const MAX_TURN_TIME = 300; // in seconds
 const BASE_STEP_SIZE = 10; // in units in game (for both players)
 const MAX_STEP_SIZE = 50; // in units in game (for both players)
 const STEP_SIZE_STEP = 7; // in units in game (for both players)
