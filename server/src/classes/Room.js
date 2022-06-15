@@ -32,14 +32,15 @@ module.exports = class Room {
     }
 
     get currentTurnTimer() {
-        const figuresCount = this.map.figures.length;
+        let figuresCount = this.map.figures.length;
         let stepSize = BASE_STEP_SIZE;
         let steps = 0;
         while (stepSize < figuresCount) {
-            if (stepSize <= figuresCount && stepSize < MAX_STEP_SIZE) steps++;
+            steps++;
+            figuresCount -= stepSize;
             stepSize += STEP_SIZE_STEP;
             if (stepSize > MAX_STEP_SIZE) {
-                break;
+                stepSize = MAX_STEP_SIZE;
             }
         }
         return Math.min(MAX_TURN_TIME, BASE_TURN_TIME + steps * STEP_TIME);
